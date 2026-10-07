@@ -1,0 +1,738 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
+<style>
+/* Layout: a night console that brightens toward dawn as the day fills up. Phone: one column. Wide: core + counters on one side, modules on the other. */
+:root{
+  --ink:#070b14; --deep:#0d1424; --panel:#111a2d; --line:#1f2b45; --line2:#2b3a5c;
+  --text:#ecf1fa; --frost:#93a5c6; --dim:#5f7092;
+  --gold:#f3b94d; --gold2:#ffdc93; --ember:#ff6a3d; --sky:#78c3ff; --mint:#5ee0b0;
+  --glow:rgba(243,185,77,.16);
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --quran:"Amiri","Traditional Arabic","Times New Roman",serif;
+  --dawn:0;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--ink);color:var(--text)}
+body{font-family:var(--body);font-size:15.5px;line-height:1.65;direction:rtl;overflow-x:hidden}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.dawn{position:fixed;left:0;right:0;bottom:0;height:46vh;z-index:0;pointer-events:none;
+  background:radial-gradient(120% 70% at 50% 110%, rgba(255,140,60,calc(.10 + var(--dawn)*.38)) 0%, rgba(243,185,77,calc(.04 + var(--dawn)*.18)) 38%, transparent 70%);
+  transition:background 1.2s}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:14px 60px}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:8px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:0 -16px 14px;padding:10px 16px;
+  background:linear-gradient(180deg,rgba(7,11,20,.96),rgba(7,11,20,.82));backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--gold);direction:ltr}
+.brand b{color:var(--text);font-weight:600}
+.grow{flex:1}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--line2);border-radius:20px;color:var(--frost);white-space:nowrap}
+.chip.on{color:var(--mint);border-color:rgba(94,224,176,.4)}
+.ib{background:var(--panel);border:1px solid var(--line2);border-radius:10px;width:36px;height:34px;display:grid;place-items:center;cursor:pointer;font-size:16px}
+.ib:disabled{opacity:.35;cursor:default}
+.ib.act{border-color:var(--gold);color:var(--gold)}
+.dates{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:6px}
+.greet{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.3}
+.greet span{color:var(--gold)}
+.sub{color:var(--frost);font-size:13.5px}
+.back-today{font-size:12px;color:var(--gold);background:none;border:none;cursor:pointer;text-decoration:underline;padding:0}
+
+/* grid */
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:900px){.grid{grid-template-columns:minmax(0,380px) minmax(0,1fr);align-items:start}}
+.col{display:grid;gap:14px;min-width:0}
+
+/* grain */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* panels */
+.pnl{background:linear-gradient(180deg,rgba(17,26,45,.92),rgba(13,20,36,.92));border:1px solid var(--line);border-radius:22px 6px 22px 6px;padding:16px;min-width:0;position:relative}
+.pnl.core{border-radius:50% 50% 22px 22px/26% 26% 22px 22px;background:radial-gradient(120% 90% at 50% 0%,rgba(243,185,77,.10),rgba(13,20,36,.95) 60%);border-color:rgba(243,185,77,.35);box-shadow:0 0 40px rgba(243,185,77,.08),inset 0 0 60px rgba(243,185,77,.04)}
+.core.full{box-shadow:0 0 60px rgba(243,185,77,.25)}
+.promises{background:linear-gradient(160deg,rgba(243,185,77,.10),rgba(13,20,36,.95) 45%)}
+.promgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px}
+.prom{background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:16px 4px 16px 4px;padding:12px 14px;position:relative;overflow:hidden;min-width:0}
+.prom::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--ember),var(--gold))}
+.prom .pt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--gold)}
+.prom .quran{font-size:19.5px;margin:6px 0 2px}
+.prom .pm{font-size:12.5px;color:var(--frost);margin-top:6px;border-top:1px dashed var(--line2);padding-top:6px}
+.greet{position:relative;padding-bottom:4px}
+.greet::after{content:"";position:absolute;inset-inline-start:0;bottom:-2px;width:52px;height:3px;background:linear-gradient(90deg,var(--ember),var(--gold));border-radius:3px}
+.glyph{border-radius:12px 3px 12px 3px;transform:rotate(-6deg)}
+.brand{text-shadow:0 0 14px rgba(243,185,77,.5)}
+.pct{font-size:50px;letter-spacing:-.02em}
+.it .box{border-radius:7px 2px 7px 2px}
+.it.done .box{animation:stamp .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes stamp{0%{transform:scale(1.6) rotate(-12deg)}100%{transform:none}}
+.core.full .r-total{animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{50%{filter:drop-shadow(0 0 18px rgba(243,185,77,.95))}}
+.ph{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.glyph{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:17px;background:rgba(243,185,77,.08);border:1px solid rgba(243,185,77,.25);color:var(--gold);flex:none}
+.ph h2{font-family:var(--display);font-size:19px;margin:0;font-weight:700;line-height:1.2}
+.ph .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--dim);direction:ltr;display:block}
+.ph .cnt{margin-inline-start:auto;font-family:var(--mono);font-size:12px;color:var(--frost);direction:ltr}
+.ph .cnt.full{color:var(--gold)}
+
+/* core */
+.core{text-align:center;overflow:hidden}
+.core svg{width:min(100%,280px);height:auto;display:block;margin:0 auto}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:10}
+.ring{fill:none;stroke-width:10;stroke-linecap:round;transform:rotate(-90deg);transform-origin:120px 120px;transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)}
+.r-total{stroke:url(#gg);filter:drop-shadow(0 0 6px rgba(243,185,77,.55))}
+.r-a{stroke:var(--gold2)} .r-b{stroke:var(--sky)} .r-c{stroke:var(--ember)}
+.ring-thin{stroke-width:5}
+.ring-bg.thin{stroke-width:5;stroke:#172238}
+.pct{font-family:var(--mono);font-size:44px;font-weight:600;fill:var(--text)}
+.pct-s{font-family:var(--mono);font-size:11px;fill:var(--frost);letter-spacing:.12em}
+.legend{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:6px;font-size:12.5px;color:var(--frost)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px;vertical-align:middle}
+.streaks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.stk{background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:12px;padding:8px 10px;text-align:start}
+.stk b{font-family:var(--mono);font-size:20px;color:var(--gold);display:block;line-height:1.2;direction:ltr;text-align:right}
+.stk span{font-size:12px;color:var(--frost)}
+.next{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13.5px;color:var(--frost);flex-wrap:wrap}
+.next b{color:var(--text)}
+.next .mono{font-family:var(--mono);color:var(--gold);direction:ltr}
+
+/* mission + message */
+.mission{font-family:var(--mono);direction:ltr;text-align:left;font-size:13px;line-height:1.7;color:var(--gold2);min-height:3.4em}
+.mission .cur{display:inline-block;width:.55em;height:1.05em;background:var(--gold);vertical-align:-2px;animation:blink 1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.msg{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line2)}
+.msg .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--dim);direction:ltr;display:block;text-align:right}
+.msg p{margin:4px 0 0;font-size:17px}
+.quran{font-family:var(--quran);font-size:22px;line-height:1.9;color:var(--text)}
+.ref{font-size:12px;color:var(--frost)}
+
+/* dustur */
+.verses{display:grid;gap:10px}
+.verse{border-inline-start:2px solid rgba(243,185,77,.5);padding-inline-start:12px}
+.verse .t{font-family:var(--display);font-size:13px;color:var(--gold);letter-spacing:.02em}
+.rules{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.rule{font-size:13.5px;padding:5px 11px;border-radius:20px;background:rgba(147,165,198,.08);border:1px solid var(--line2)}
+.rule.en{direction:ltr;font-family:var(--mono);font-size:12px;color:var(--gold2)}
+
+/* items */
+.items{display:grid;gap:6px}
+.it{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid transparent;background:rgba(7,11,20,.35);cursor:pointer;user-select:none;transition:background .2s,border-color .2s;min-width:0}
+.it:hover{border-color:var(--line2)}
+.it .box{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--line2);flex:none;display:grid;place-items:center;transition:all .2s;font-size:14px;color:transparent}
+.it.done{background:var(--glow);border-color:rgba(243,185,77,.28)}
+.it.done .box{background:var(--gold);border-color:var(--gold);color:#1b1305;box-shadow:0 0 12px rgba(243,185,77,.5)}
+.it .lbl{flex:1;min-width:0}
+.it .code{display:none;flex:1;font-family:var(--mono);letter-spacing:.12em;color:var(--frost);direction:ltr;text-align:right}
+.it .tm{font-family:var(--mono);font-size:12px;color:var(--frost);direction:ltr;white-space:nowrap}
+.it.off{opacity:.42;cursor:default}
+.it.off .tm{color:var(--dim)}
+.it.auto{cursor:default}
+.it .hint{display:block;font-size:12px;color:var(--frost)}
+.pop{animation:pop .35s ease}
+@keyframes pop{40%{transform:scale(1.02)}}
+.top3{display:grid;gap:6px;margin-bottom:6px}
+.t3{display:flex;gap:8px;align-items:center}
+.t3 input{flex:1;min-width:0;background:rgba(7,11,20,.55);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;font-size:14.5px}
+.t3 input::placeholder{color:var(--dim)}
+.t3 .n{font-family:var(--mono);color:var(--gold);width:18px;text-align:center}
+.minibtn{background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:5px 10px;font-size:13px;cursor:pointer}
+.minibtn:hover{border-color:var(--gold)}
+.minibtn.gold{background:var(--gold);color:#1b1305;border-color:var(--gold);font-weight:600}
+
+/* time module tools */
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+@media (max-width:420px){.tools{grid-template-columns:1fr}}
+.tool{background:rgba(7,11,20,.5);border:1px solid var(--line);border-radius:12px;padding:10px}
+.tool .tt{font-size:12.5px;color:var(--frost)}
+.timer{font-family:var(--mono);font-size:30px;direction:ltr;text-align:right;color:var(--text);line-height:1.3}
+.timer.run{color:var(--gold)}
+.trow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.scr{display:flex;align-items:center;gap:8px;margin-top:4px}
+.scr input{width:76px;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:9px;color:var(--text);padding:6px 8px;font:inherit;font-family:var(--mono);direction:ltr}
+.bars{display:flex;align-items:flex-end;gap:5px;height:46px;margin-top:8px;direction:ltr}
+.bars div{flex:1;background:var(--line2);border-radius:4px 4px 0 0;min-height:3px;position:relative}
+.bars div.ok{background:var(--mint)} .bars div.bad{background:var(--ember)}
+.bars div.cur{outline:1px solid var(--gold);outline-offset:1px}
+.blbl{display:flex;gap:5px;direction:ltr;font-family:var(--mono);font-size:9.5px;color:var(--dim)}
+.blbl span{flex:1;text-align:center}
+
+/* counters */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{background:none;border:1px solid var(--line2);border-radius:20px;padding:4px 12px;font-size:13px;cursor:pointer;color:var(--frost)}
+.tab.on{background:var(--gold);border-color:var(--gold);color:#1b1305;font-weight:600}
+.tap{width:100%;border:none;cursor:pointer;background:radial-gradient(circle at 50% 40%,rgba(243,185,77,.18),rgba(7,11,20,.6) 70%);border-radius:18px;border:1px solid rgba(243,185,77,.25);padding:18px 10px;display:grid;gap:4px;place-items:center;touch-action:manipulation}
+.tap:active{transform:scale(.985)}
+.tap .num{font-family:var(--mono);font-size:46px;font-weight:600;color:var(--gold);direction:ltr;line-height:1}
+.tap .of{font-family:var(--mono);font-size:12px;color:var(--frost);direction:ltr}
+.tap .z{font-family:var(--quran);font-size:20px;line-height:1.7}
+.tap.done .num{color:var(--mint)}
+.tline{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12.5px;color:var(--frost)}
+details.az{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:rgba(7,11,20,.35)}
+details.az summary{cursor:pointer;padding:10px 12px;font-weight:600;display:flex;align-items:center;gap:8px;list-style:none}
+details.az summary::-webkit-details-marker{display:none}
+details.az summary::after{content:"＋";margin-inline-start:auto;color:var(--gold)}
+details.az[open] summary::after{content:"－"}
+details.az summary .cnt{font-family:var(--mono);font-size:12px;color:var(--frost);direction:ltr}
+.dz{display:grid;gap:8px;padding:0 10px 12px}
+.dk{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(17,26,45,.8);border:1px solid var(--line);cursor:pointer;touch-action:manipulation;user-select:none}
+.dk .z{flex:1;font-family:var(--quran);font-size:18.5px;line-height:1.75;min-width:0}
+.dk .z small{display:block;font-family:var(--body);font-size:12px;color:var(--frost)}
+.dk .c{font-family:var(--mono);font-size:13px;color:var(--gold);direction:ltr;min-width:52px;text-align:center;border:1px solid var(--line2);border-radius:9px;padding:4px 6px}
+.dk.done{border-color:rgba(94,224,176,.35)}
+.dk.done .c{color:var(--mint);border-color:rgba(94,224,176,.4)}
+.note{font-size:12px;color:var(--frost);margin-top:8px}
+
+/* business */
+.count30{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.count30 b{font-family:var(--mono);font-size:40px;color:var(--gold);line-height:1;direction:ltr}
+.track{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0 12px}
+.track i{display:block;height:100%;background:linear-gradient(90deg,var(--ember),var(--gold));border-radius:6px;transition:width .8s}
+.ms{display:grid;gap:6px}
+.ms .it .lbl small{color:var(--frost)}
+
+/* week */
+.week7{display:flex;gap:5px;margin-bottom:10px;direction:rtl}
+.week7 div{flex:1;text-align:center;font-size:11px;color:var(--frost);border:1px solid var(--line);border-radius:9px;padding:4px 0}
+.week7 div.tr{border-color:rgba(255,106,61,.45);color:var(--text)}
+.week7 div.tr.ok{background:rgba(255,106,61,.18)}
+.week7 div.today{outline:1px solid var(--gold)}
+
+/* settings */
+details.set summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+details.set summary::-webkit-details-marker{display:none}
+.field{display:grid;gap:6px;margin-top:12px}
+.field label{font-size:13px;color:var(--frost)}
+.field input{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;max-width:100%}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days button{background:none;border:1px solid var(--line2);border-radius:9px;padding:5px 9px;font-size:13px;cursor:pointer;color:var(--frost)}
+.days button.on{background:rgba(255,106,61,.2);border-color:var(--ember);color:var(--text)}
+.foot{margin-top:18px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim);direction:ltr}
+
+/* cipher mode */
+body.cipher .it .lbl,body.cipher .t3 .lbl{display:none}
+body.cipher .it .code{display:block}
+body.cipher .blur{filter:blur(7px);user-select:none}
+body.cipher .t3 input{-webkit-text-security:disc}
+body.cipher .greet span{filter:blur(5px)}
+
+/* day arc */
+.arc{margin:-6px 0 12px;padding:0 4px}
+.arc svg{width:100%;height:auto;display:block;overflow:visible}
+.arc .path{fill:none;stroke:var(--line2);stroke-width:2;stroke-dasharray:3 5}
+.arc .sunp{filter:drop-shadow(0 0 8px rgba(243,185,77,.9))}
+.arc .lbl{font-family:var(--mono);font-size:8.5px;fill:var(--dim);letter-spacing:.05em}
+.arc .lbl.done{fill:var(--gold)}
+.arc .dot{fill:var(--line2)} .arc .dot.done{fill:var(--gold)}
+/* counter ring */
+.tap{position:relative;padding:26px 10px 20px}
+.tap svg.cring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.tap .cr-bg{fill:none;stroke:rgba(243,185,77,.12);stroke-width:3}
+.tap .cr{fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .25s}
+.tap .num{transition:transform .12s}
+.tap.bump .num{transform:scale(1.12)}
+/* typewriter dustur */
+.verse .quran .tw{border-inline-end:2px solid var(--gold);padding-inline-end:2px}
+/* glow headline */
+.greet span{text-shadow:0 0 18px rgba(243,185,77,.45)}
+/* module ribbon */
+.pnl .ph h2{position:relative}
+.pnl .ph h2::before{content:"";position:absolute;inset-inline-start:-6px;top:50%;width:0;height:2px;background:var(--gold);transition:width .4s}
+.pnl:hover .ph h2::before{width:0}
+/* streak fire */
+.stk.hot{border-color:rgba(255,106,61,.5);background:linear-gradient(180deg,rgba(255,106,61,.12),rgba(7,11,20,.55))}
+/* mission card */
+.mission{position:relative}
+.mission::before{content:"> ";color:var(--ember)}
+/* progress label */
+.pct-note{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--frost);margin-top:4px;direction:ltr}
+/* calm corner */
+.calm{background:radial-gradient(120% 100% at 50% 0%,rgba(120,195,255,.10),rgba(13,20,36,.95) 60%)}
+.breath{display:grid;place-items:center;padding:14px 0 6px}
+.orb{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;position:relative;
+ background:radial-gradient(circle at 40% 35%,rgba(120,195,255,.55),rgba(94,224,176,.25) 45%,rgba(7,11,20,0) 70%);
+ box-shadow:0 0 50px rgba(120,195,255,.25),inset 0 0 40px rgba(120,195,255,.15);transition:transform 4s ease-in-out,box-shadow 4s ease-in-out;transform:scale(.72)}
+.orb::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(120,195,255,.25);transition:inherit}
+.orb.in{transform:scale(1);box-shadow:0 0 90px rgba(120,195,255,.45),inset 0 0 60px rgba(120,195,255,.25)}
+.orb.hold{transform:scale(1)}
+.orb.out{transform:scale(.72)}
+.orb span{font-family:var(--display);font-size:17px;color:var(--text);text-shadow:0 0 12px rgba(0,0,0,.6)}
+.orb small{position:absolute;bottom:-26px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--frost);direction:ltr}
+.calmrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+.calm .minibtn.on{background:var(--sky);color:#06131f;border-color:var(--sky);font-weight:600}
+.sound{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px;align-items:center}
+.sound .sub{width:100%;text-align:center}
+.grat{margin-top:14px;border-top:1px dashed var(--line2);padding-top:12px}
+.grat label{font-size:13px;color:var(--frost);display:block;margin-bottom:6px}
+.grat textarea{width:100%;min-height:72px;resize:vertical;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:12px;color:var(--text);padding:10px 12px;font:inherit;font-size:14.5px;line-height:1.6}
+.grat textarea::placeholder{color:var(--dim)}
+.grat .past{margin-top:8px;font-size:13px;color:var(--frost);border-inline-start:2px solid rgba(120,195,255,.4);padding-inline-start:10px}
+.grat .past b{color:var(--sky);font-family:var(--mono);font-size:11px;letter-spacing:.1em;display:block}
+.hadith{margin-top:12px;font-family:var(--quran);font-size:18px;line-height:1.8;text-align:center;color:var(--text)}
+.hadith .ref{display:block;font-family:var(--body)}
+/* celebration */
+#burst{position:fixed;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="dawn" aria-hidden="true"></div>
+<canvas id="burst" aria-hidden="true"></canvas>
+
+<div class="wrap" dir="rtl">
+  <header class="top">
+    <div class="row">
+      <span class="brand"><b>MOSTAFA</b>·OS</span>
+      <span class="chip" id="sync">LOCAL</span>
+      <span class="grow"></span>
+      <button class="ib" id="cipher" title="وضع الشفرة" aria-pressed="false">◐</button>
+      <button class="ib" id="prev" title="اليوم اللي قبله" aria-label="اليوم اللي قبله">›</button>
+      <button class="ib" id="next" title="اليوم اللي بعده" aria-label="اليوم اللي بعده">‹</button>
+    </div>
+    <div class="dates">
+      <div class="greet" id="greet">صباح الخير يا <span>مصطفى</span></div>
+      <div class="sub" id="dateline"></div>
+      <button class="back-today" id="today" hidden>ارجع للنهارده</button>
+    </div>
+  </header>
+  <div class="arc" id="arc" aria-hidden="true"></div>
+
+  <div class="grid">
+    <div class="col side">
+      <section class="pnl core" aria-label="تقدّم النهارده">
+        <svg viewBox="0 0 240 240" role="img" aria-label="نسبة اللي خلصته النهارده">
+          <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a3d"/><stop offset="1" stop-color="#ffdc93"/></linearGradient></defs>
+          <circle class="ring-bg" cx="120" cy="120" r="100"/>
+          <circle class="ring r-total" id="rT" cx="120" cy="120" r="100"/>
+          <circle class="ring-bg thin" cx="120" cy="120" r="84"/>
+          <circle class="ring ring-thin r-a" id="rA" cx="120" cy="120" r="84"/>
+          <circle class="ring-bg thin" cx="120" cy="120" r="74"/>
+          <circle class="ring ring-thin r-b" id="rB" cx="120" cy="120" r="74"/>
+          <circle class="ring-bg thin" cx="120" cy="120" r="64"/>
+          <circle class="ring ring-thin r-c" id="rC" cx="120" cy="120" r="64"/>
+          <text class="pct" id="pct" x="120" y="128" text-anchor="middle">0%</text>
+          <text class="pct-s" id="pctS" x="120" y="152" text-anchor="middle">0 / 0</text>
+        </svg>
+        <div class="pct-note" id="pctNote"></div>
+        <div class="legend"><span><i style="background:var(--gold2)"></i>الدخل</span><span><i style="background:var(--sky)"></i>العلم</span><span><i style="background:var(--ember)"></i>الكارير والبزنس</span></div>
+        <div class="next" id="nextp"></div>
+        <div class="streaks" id="streaks"></div>
+      </section>
+
+      <section class="pnl">
+        <div class="mission" id="mission" aria-label="المهمة"></div>
+        <div class="msg"><span class="k">TODAY'S SIGNAL</span><p id="signal"></p></div>
+      </section>
+
+      <section class="pnl" id="counters">
+        <div class="ph"><div class="glyph">∞</div><div><h2>العدّاد</h2><span class="en">DHIKR</span></div></div>
+        <div class="tabs" id="ctabs"></div>
+        <button class="tap" id="tap" type="button"><svg class="cring" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><rect class="cr-bg" x="4" y="4" width="392" height="132" rx="18"/><rect class="cr" id="cr" x="4" y="4" width="392" height="132" rx="18"/></svg><span class="num" id="tapN">0</span><span class="of" id="tapOf">/ 100</span><span class="z" id="tapZ"></span></button>
+        <div class="tline"><span>دوس على الدايرة مع كل مرة</span><button class="minibtn" id="tapReset" type="button">صفّر</button></div>
+        <details class="az" id="azM"><summary>أذكار الصباح <span class="cnt" id="azMc"></span></summary><div class="dz" id="dzM"></div></details>
+        <details class="az" id="azE"><summary>أذكار المساء <span class="cnt" id="azEc"></span></summary><div class="dz" id="dzE"></div></details>
+        <p class="note">دي أشهر الأذكار باختصار. والكاملة في كتاب "حصن المسلم".</p>
+      </section>
+
+      <section class="pnl calm" id="calm">
+        <div class="ph"><div class="glyph" style="color:var(--sky);border-color:rgba(120,195,255,.3);background:rgba(120,195,255,.08)">◯</div><div><h2>هدّي</h2><span class="en">BREATHE · دقيقتين وترجع</span></div></div>
+        <div class="breath"><div class="orb" id="orb"><span id="orbT">ابدأ</span><small id="orbC"></small></div></div>
+        <div class="calmrow"><button class="minibtn" id="bstart" type="button">نَفَس 4·7·8</button><button class="minibtn" id="bbox" type="button">مربّع 4·4·4·4</button><button class="minibtn" id="bstop" type="button" hidden>كفاية</button></div>
+        <div class="sound"><span class="sub">صوت خلفية (شغّل وسيبه وانت بتذاكر أو بتصلّي على قرآنك)</span><button class="minibtn" data-snd="rain" type="button">مطر</button><button class="minibtn" data-snd="sea" type="button">بحر</button><button class="minibtn" data-snd="wind" type="button">هوا</button><button class="minibtn" data-snd="off" type="button">سكّت</button></div>
+        <div class="hadith" id="hadith"></div>
+        <div class="grat"><label for="grat">قبل ما تنام: 3 حاجات حمدت ربنا عليها النهارده</label><textarea id="grat" placeholder="١ ...&#10;٢ ...&#10;٣ ..."></textarea><div class="past" id="gratPast"></div></div>
+      </section>
+    </div>
+
+    <div class="col" id="mods">
+      <section class="pnl" id="dustur">
+        <div class="ph"><div class="glyph">◇</div><div><h2>الدستور</h2><span class="en">THE CODE · اقراه كل يوم</span></div></div>
+        <div class="verses blur" id="verses"></div>
+        <div class="rules blur" id="rules"></div>
+        <div class="items" id="it-dustur"></div>
+      </section>
+    </div>
+  </div>
+  <div class="foot">ONE STEP A DAY · BUSINESS BEFORE 30</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+document.documentElement.setAttribute('dir','rtl');document.documentElement.setAttribute('lang','ar');
+const $=s=>document.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const LS={get(k){try{const v=localStorage.getItem('mos:'+k);return v?JSON.parse(v):null;}catch(e){return null;}},set(k,v){try{localStorage.setItem('mos:'+k,JSON.stringify(v));}catch(e){}}};
+const pad=n=>String(n).padStart(2,'0');
+const keyOf=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parseKey=k=>{const a=k.split('-').map(Number);return new Date(a[0],a[1]-1,a[2]);};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
+const weekStartKey=k=>{const d=parseKey(k);return keyOf(addDays(d,-d.getDay()));};
+const AR_DAYS=['الأحد','الاتنين','التلات','الأربع','الخميس','الجمعة','السبت'];
+
+/* ---------- prayer times: Umm al-Qura style, Riyadh ---------- */
+const LAT=24.7136,LNG=46.6753,TZ=3;
+const PT=(function(){const d2r=Math.PI/180,r2d=180/Math.PI;const sin=d=>Math.sin(d*d2r),cos=d=>Math.cos(d*d2r),tan=d=>Math.tan(d*d2r);
+const asin=x=>r2d*Math.asin(x),acos=x=>r2d*Math.acos(x),atan2=(y,x)=>r2d*Math.atan2(y,x),acot=x=>r2d*Math.atan(1/x);
+const fix=(a,b)=>{a=a-b*Math.floor(a/b);return a<0?a+b:a;};
+function julian(y,m,d){if(m<=2){y-=1;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;}
+function sun(jd){const D=jd-2451545;const g=fix(357.529+0.98560028*D,360),q=fix(280.459+0.98564736*D,360);const L=fix(q+1.915*sin(g)+0.02*sin(2*g),360);const e=23.439-0.00000036*D;const RA=fix(atan2(cos(e)*sin(L),cos(L))/15,24);return{decl:asin(sin(e)*sin(L)),eqt:q/15-RA};}
+function compute(date,ramadan){const jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-LNG/(15*24);
+const mid=t=>fix(12-sun(jd+t).eqt,24);
+const at=(a,t,ccw)=>{const s=sun(jd+t);const v=(-sin(a)-sin(s.decl)*sin(LAT))/(cos(s.decl)*cos(LAT));const T=acos(v)/15;return mid(t)+(ccw?-T:T);};
+const asr=(f,t)=>{const s=sun(jd+t);return at(-acot(f+tan(Math.abs(LAT-s.decl))),t);};
+let t={fajr:5,sunrise:6,dhuhr:12,asr:13,maghrib:18};
+for(let i=0;i<2;i++){const p={};for(const k in t)p[k]=t[k]/24;t={fajr:at(18.5,p.fajr,true),sunrise:at(0.833,p.sunrise,true),dhuhr:mid(p.dhuhr),asr:asr(1,p.asr),maghrib:at(0.833,p.maghrib)};}
+const o={};for(const k in t)o[k]=t[k]+TZ-LNG/15;o.isha=o.maghrib+(ramadan?2:1.5);return o;}
+return{compute};})();
+let hijriFmt=null,hijriMonth=null;
+try{hijriFmt=new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'});hijriMonth=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{month:'numeric'});}catch(e){}
+const isRamadan=d=>{try{return hijriMonth&&parseInt(hijriMonth.format(d),10)===9;}catch(e){return false;}};
+const hm=h=>{let m=Math.round(h*60);m=((m%1440)+1440)%1440;const H=Math.floor(m/60),M=m%60;const h12=H%12===0?12:H%12;return h12+':'+pad(M)+(H<12?' ص':' م');};
+const PNAMES={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
+
+/* ---------- definitions ---------- */
+const MODS=[
+ {id:'rooh',g:'☾',name:'الروح',en:'SOUL',items:[
+  ['p_fajr','الفجر في الجامع',{t:'fajr'}],['p_dhuhr','الظهر في وقتها',{t:'dhuhr'}],['p_asr','العصر في وقتها',{t:'asr'}],['p_maghrib','المغرب في وقتها',{t:'maghrib'}],['p_isha','العشاء في وقتها',{t:'isha'}],
+  ['adhkar_m','أذكار الصباح',{hint:'من العدّاد، بتتعلّم لوحدها لما تخلصها'}],['quran','وردك من القرآن',{hint:'ولو صفحتين، المهم كل يوم'}],['adhkar_e','أذكار المساء'],
+  ['istighfar','الاستغفار 100 مرة',{hint:'من العدّاد'}],['tasbih','التسبيح 100 مرة',{hint:'من العدّاد'}],
+  ['sadaqa','صدقة أو عمل خير، ولو صغير'],['shukr','الحمد لله على 3 نعم النهارده']]},
+ {id:'jasad',g:'△',name:'الجسد',en:'BODY',items:[
+  ['wake','صحيت بدري، ومنمتش بعد الفجر'],['train','التمرين أو الجري',{cond:'train'}],['water','8 كوبايات مية'],
+  ['no_smoke','يوم من غير سجاير'],['no_drugs','يوم نضيف من غير مخدرات'],['sleep','نمت قبل 11']]},
+ {id:'bayt',g:'♡',name:'البيت',en:'HOME',items:[
+  ['wife_kind','كلمة حلوة أو لمسة حنان لمراتي النهارده',{hint:'خيركم خيركم لأهله'}],['wife_time','نص ساعة معاها من غير موبايل'],
+  ['home_help','ساعدت في حاجة في البيت'],['no_anger','ماتعصبتش، ولو زعلت سكتّ وهديت'],
+  ['dua_home','دعيت لبيتي وذريتي',{hint:'من العدّاد: دعاء الذرية'}],['pray_together','صلينا أو قرينا حاجة مع بعض']]},
+ {id:'waqt',g:'⧖',name:'الوقت والموبايل',en:'TIME',items:[
+  ['no_phone_am','أول ساعة بعد ما أصحى من غير موبايل'],['no_social','مفيش سوشيال ميديا وقت الشغل'],['bed','الموبايل بعيد عن السرير'],
+  ['screen_ok','وقت الشاشة تحت الهدف',{auto:'screen'}],['focus_ok','4 جلسات تركيز',{auto:'focus'}]],tools:true},
+ {id:'ilm',g:'◎',name:'العلم',en:'MIND',pillar:'b',items:[
+  ['read','قريت 10 صفحات من كتاب',{hint:'book'}],['learn','اتعلمت حاجة جديدة: كورس أو فيديو أو مقال'],['english','اتمرنت على الإنجليزي 15 دقيقة']]},
+ {id:'career',g:'▣',name:'الكارير والبزنس',en:'CAREER',pillar:'c',top3:true,items:[
+  ['deep','ساعتين شغل بتركيز'],['reach','كلمت عميل أو حد جديد في المجال'],['silent','اتكلمت على قد الحاجة، ومحكيتش خططي'],['biz_step','خطوة صغيرة للبزنس بتاعي']]},
+ {id:'dakhl',g:'◈',name:'الدخل',en:'INCOME',pillar:'a',items:[
+  ['income_step','عملت خطوة تزوّد دخلي',{hint:'بيعة، أو عمولة، أو مهارة، أو فكرة دخل جديدة'}],['spend','سجلت مصاريفي، ومصرفتش على حاجة مش محتاجها']]}
+];
+const WEEK=[['w_train','4 تمرينات',{auto:'train'}],['w_jumuah','صلاة الجمعة في الجامع'],['w_kahf','سورة الكهف يوم الجمعة'],['w_sadaqa','صدقة الأسبوع'],['w_family','كلمت أهلي وأبويا'],['w_date','خرجة أو قعدة حلوة مع مراتي'],['w_inlaws','سألت على أهلها'],['w_talk','قعدة صراحة: اتكلمنا عن أسبوعنا وخططنا'],
+ ['w_new','جربت حاجة جديدة مجربتهاش قبل كده'],['w_book','خلصت فصل من الكتاب'],['w_biz','ساعتين على البزنس: بحث أو تعلم أو تجربة'],['w_save','حطيت مبلغ الادخار والاستثمار'],['w_review','راجعت الأسبوع وخططت للي جاي']];
+const MILES=[['b1','أحدد المجال أو الفكرة'],['b2','أتعلم أساسيات البزنس: بيع وتسويق وفلوس'],['b3','أوفّر رأس مال البداية'],['b4','أكلم 10 ناس في المجال وأفهم السوق'],
+ ['b5','أكتب خطة عمل بسيطة'],['b6','أجرب الفكرة على نطاق صغير'],['b7','أول عميل يدفع'],['b8','أسجل البزنس وأبدأ رسمي']];
+const VERSES=[
+ ['اسعَ','وَأَنْ لَيْسَ لِلْإِنْسَانِ إِلَّا مَا سَعَىٰ','النجم 39'],
+ ['اتقِ الله','وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا<br>وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ','الطلاق 2–3'],
+ ['توكّل على الله','وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ','الطلاق 3'],
+ ['اصبر','إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُمْ بِغَيْرِ حِسَابٍ','الزمر 10'],
+ ['اشكر واحمد','لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ','إبراهيم 7'],
+ ['بيتك','رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا','الفرقان 74']];
+const RULES=[['متحكيش كل حاجة، ومتقولش لحد إنت بتعمل إيه'],['اتكلم على قد الحاجة'],['اعتمد على نفسك'],['قاوم'],['ركّز'],['خيركم خيركم لأهله'],['Never underestimate yourself',1],['Focus',1]];
+const SIGNALS=[
+ ['q','وَأَنْ لَيْسَ لِلْإِنْسَانِ إِلَّا مَا سَعَىٰ','النجم 39'],['t','متحكيش. اشتغل في صمت، وخلّي النتيجة هي اللي تتكلم.'],
+ ['q','وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا','الطلاق 2'],['t','البزنس بتاعك قبل الـ 30 بيتبني من خطوة صغيرة النهارده.'],
+ ['q','وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ','الطلاق 3'],['t','الموبايل بيسرق وقتك ساعة ساعة. خده إنت الأول.'],
+ ['q','إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُمْ بِغَيْرِ حِسَابٍ','الزمر 10'],['t','اعتمد على نفسك. محدش هيبني حلمك بدالك.'],
+ ['q','لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ','إبراهيم 7'],['t','قاوم. كل مرة بتقاوم فيها بتبقى أقوى من اللي قبلها.'],
+ ['e','Never underestimate yourself.'],['t','الفجر في الجامع بيكسبك اليوم كله قبل ما يبدأ.'],['e','Focus. One thing at a time.'],['q','ادْعُونِي أَسْتَجِبْ لَكُمْ','غافر 60'],['q','فَاذْكُرُونِي أَذْكُرْكُمْ','البقرة 152'],['q','إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6'],['q','رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ','الفرقان 74'],['t','خيركم خيركم لأهله. البيت الهادي هو اللي بيطلع منه الراجل الناجح.'],['t','مراتك شريكة الحلم، مش جمهور ليه. اسمعها النهارده.'],['t','اقرا، واتعلم، وجرّب. اللي بيتعلم كل يوم بيكسب على المدى الطويل.']];
+const AZ_M=[
+ ['am1','آية الكرسي','سورة البقرة 255',1],['am2','قُلْ هُوَ اللَّهُ أَحَدٌ، والمعوذتين','الإخلاص والفلق والناس',3],
+ ['am3','اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ','سيد الاستغفار',1],
+ ['am4','بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ','',3],
+ ['am5','رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا','',3],
+ ['am6','حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ','',7],
+ ['am7','لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ','',10],
+ ['am8','سُبْحَانَ اللَّهِ وَبِحَمْدِهِ','',100]];
+const AZ_E=AZ_M.map(a=>['pm'+a[0].slice(2),a[1],a[2],a[3]]).concat([['pm9','أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ','',3]]);
+const TABS=[['istighfar','الاستغفار','أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ',100],['tasbih','التسبيح','سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ',100],['salawat','الصلاة على النبي','اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ',10],['dua','دعاء الذرية','رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ',7]];
+const opt=i=>i[2]||{};
+
+/* ---------- state ---------- */
+const todayKey=()=>keyOf(new Date());
+const S={uid:null,db:null,view:todayKey(),tab:'istighfar',
+ settings:Object.assign({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{}},LS.get('settings')||{}),
+ hist:LS.get('hist')||{},day:null,week:null,celebrated:LS.get('celebrated')||''};
+const blankDay=k=>({kind:'day',date:k,c:{},n:{},top:['','',''],screen:null,focus:0,grat:''});
+const blankWeek=k=>({kind:'week',start:k,c:{}});
+function loadLocal(){S.day=Object.assign(blankDay(S.view),LS.get('d-'+S.view)||{});const wk=weekStartKey(S.view);S.week=Object.assign(blankWeek(wk),LS.get('w-'+wk)||{});}
+loadLocal();
+
+/* ---------- logic ---------- */
+const isTrainDay=k=>S.settings.train.indexOf(parseKey(k).getDay())>=0;
+function autoVal(id,d){const o=findItem(id);if(!o||!opt(o).auto)return null;const a=opt(o).auto;
+ if(a==='screen')return d.screen!=null&&d.screen!==''&&+d.screen<=+S.settings.screenGoal;
+ if(a==='focus')return (d.focus||0)>=4;return null;}
+function findItem(id){for(const m of MODS)for(const i of m.items)if(i[0]===id)return i;return null;}
+function applicable(i,k){const o=opt(i);if(o.cond==='train'&&!isTrainDay(k))return false;return true;}
+function isDone(i,d){const a=autoVal(i[0],d);return a===null?!!d.c[i[0]]:a;}
+function progress(d){let tot=0,on=0;const pil={a:[0,0],b:[0,0],c:[0,0]};
+ for(const m of MODS){for(const i of m.items){if(!applicable(i,d.date))continue;tot++;const v=isDone(i,d);if(v)on++;if(m.pillar){pil[m.pillar][1]++;if(v)pil[m.pillar][0]++;}}
+  if(m.top3)(d.top||[]).forEach((t,ix)=>{if(t&&t.trim()){tot++;pil.c[1]++;if(d.c['top'+(ix+1)]){on++;pil.c[0]++;}}});}
+ tot++;if(d.c.principles)on++;
+ return{tot,on,pct:tot?Math.round(on*100/tot):0,pil};}
+function summarize(d){const p=progress(d);return{pct:p.pct,fajr:!!d.c.p_fajr,smoke:!!d.c.no_smoke,drugs:!!d.c.no_drugs,train:!!d.c.train,screen:d.screen==null||d.screen===''?null:+d.screen};}
+function streak(field,cond){let n=0;let d=new Date();const tk=keyOf(d);const h=S.hist;
+ const ok=k=>{const x=h[k];if(!x)return false;return cond?cond(x):!!x[field];};
+ if(!ok(tk))d=addDays(d,-1);
+ for(let i=0;i<1000;i++){const k=keyOf(d);if(!ok(k))break;n++;d=addDays(d,-1);}
+ return n;}
+
+/* ---------- storage ---------- */
+const timers={},chains={};let syncMode='local';
+function setSync(m){syncMode=m;const s=$('#sync');s.textContent=m==='cloud'?'SYNCED ✓':'OFFLINE';s.classList.toggle('on',m==='cloud');s.title='محفوظ على الجهاز ده';}
+function save(key,obj){LS.set(key,obj);
+ if(obj.kind==='day'){S.hist[obj.date]=summarize(obj);LS.set('hist',S.hist);}
+ if(!S.db||!S.uid)return;clearTimeout(timers[key]);
+ timers[key]=setTimeout(()=>{const body=JSON.parse(JSON.stringify(obj));
+  chains[key]=(chains[key]||Promise.resolve()).then(()=>S.db.doc('data/users/'+S.uid+'/'+key).set(body)).catch(e=>{console.warn('save failed',e&&e.code);if(e&&(e.code==='invalid_argument'||e.code==='revoked'||e.code==='not_granted'))setSync('local');});},600);}
+const saveDay=()=>save('d-'+S.day.date,S.day);
+const saveWeek=()=>save('w-'+S.week.start,S.week);
+const saveSettings=()=>save('settings',Object.assign({kind:'settings'},S.settings));
+
+/* ---------- build static UI ---------- */
+function itemRow(i,code){const o=opt(i);const r=el('div','it'+(o.auto?' auto':''));r.dataset.id=i[0];r.setAttribute('role',o.auto?'status':'checkbox');if(!o.auto)r.tabIndex=0;
+ const hint=o.hint==='book'?'<span class="hint" data-book></span>':(o.hint?'<span class="hint">'+o.hint+'</span>':'');
+ r.innerHTML='<span class="box">✓</span><span class="lbl">'+i[1]+hint+'</span><span class="code">'+code+'</span>'+(o.t?'<span class="tm" data-t="'+o.t+'"></span>':'')+(o.cond?'<span class="tm" data-cond></span>':'');return r;}
+function buildMods(){const host=$('#mods');
+ $('#it-dustur').appendChild(itemRow(['principles','قريت الدستور النهارده'],'◇·01'));
+ VERSES.forEach(v=>{$('#verses').appendChild(el('div','verse','<div class="t">'+v[0]+'</div><div class="quran">'+v[1]+'</div><div class="ref">'+v[2]+'</div>'));});
+ RULES.forEach(r=>$('#rules').appendChild(el('span','rule'+(r[1]?' en':''),r[0])));
+ MODS.forEach(m=>{const p=el('section','pnl');p.id='m-'+m.id;
+  p.appendChild(el('div','ph','<div class="glyph">'+m.g+'</div><div><h2>'+m.name+'</h2><span class="en">'+m.en+(m.pillar?' · PILLAR':'')+'</span></div><span class="cnt" data-cnt="'+m.id+'"></span>'));
+  if(m.top3){const t=el('div','top3');t.innerHTML='<div class="sub" style="font-size:12.5px">أهم 3 حاجات في شغلك النهارده</div>';
+   [1,2,3].forEach(n=>{const row=el('div','t3');row.innerHTML='<span class="n">'+n+'</span><input id="top'+n+'" data-top="'+(n-1)+'" placeholder="المهمة رقم '+n+'" maxlength="120" autocomplete="off"><div class="it" data-id="top'+n+'" role="checkbox" tabindex="0" style="padding:6px"><span class="box">✓</span></div>';t.appendChild(row);});p.appendChild(t);}
+  const list=el('div','items');m.items.forEach((i,ix)=>list.appendChild(itemRow(i,m.g+'·'+pad(ix+1))));p.appendChild(list);
+  if(m.tools){const tl=el('div','tools');tl.innerHTML=
+   '<div class="tool"><div class="tt">جلسة تركيز 25 دقيقة · <span id="fc">0</span>/4 النهارده</div><div class="timer" id="ftime">25:00</div><div class="trow"><button class="minibtn gold" id="fstart" type="button">ابدأ</button><button class="minibtn" id="freset" type="button">إلغاء</button></div></div>'+
+   '<div class="tool"><div class="tt">وقت الشاشة النهارده (من إعدادات الموبايل)</div><div class="scr"><input id="screen" type="number" min="0" max="24" step="0.5" inputmode="decimal" placeholder="0"><span class="sub">ساعة · الهدف <span id="sgoal"></span> أو أقل</span></div><div class="bars" id="bars"></div><div class="blbl" id="blbl"></div></div>';p.appendChild(tl);}
+  host.appendChild(p);});
+ // promises of Allah
+ const PROM=[
+  ['اذكرني','فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ','البقرة 152','افتكر ربنا وهو هيفتكرك. ده أصل العدّاد اللي جنبك.'],
+  ['ادعُني','وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ','غافر 60','وعد صريح. ادعي بالبزنس وبالذرية وبكل حاجة.'],
+  ['أنا قريب','وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ أُجِيبُ دَعْوَةَ الدَّاعِ إِذَا دَعَانِ','البقرة 186','مفيش وسيط. اطلب على طول.'],
+  ['استغفر','وَمَا كَانَ اللَّهُ مُعَذِّبَهُمْ وَهُمْ يَسْتَغْفِرُونَ','الأنفال 33','الاستغفار أمان. علشان كده الـ 100 مرة كل يوم.'],
+  ['استغفر فتُرزق','اسْتَغْفِرُوا رَبَّكُمْ إِنَّهُ كَانَ غَفَّارًا<br>يُرْسِلِ السَّمَاءَ عَلَيْكُمْ مِدْرَارًا<br>وَيُمْدِدْكُمْ بِأَمْوَالٍ وَبَنِينَ','نوح 10–12','الاستغفار سبب في الرزق والعيال. الاتنين اللي بتدعي بيهم.'],
+  ['اشكر','لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ','إبراهيم 7','الشكر بيزوّد. الحمد على 3 نعم كل يوم مش رفاهية.'],
+  ['اتقِ وتوكّل','وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ','الطلاق 2–3','رزقك مش محصور في مرتبك.'],
+  ['جاهد','وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا','العنكبوت 69','اللي بيحاول بجد، ربنا بيوريه الطريق.'],
+  ['اصبر وصلِّ','اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ','البقرة 153','لما تتزنق: اصبر وصلّي. دي الوصفة.'],
+  ['اطمئن','أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ','الرعد 28','القلق من المستقبل دواه الذكر.'],
+  ['يُسر','إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6','مع، مش بعد. اليسر جوه الصعوبة نفسها.'],
+  ['التمكين','وَعَدَ اللَّهُ الَّذِينَ آمَنُوا مِنْكُمْ وَعَمِلُوا الصَّالِحَاتِ لَيَسْتَخْلِفَنَّهُمْ فِي الْأَرْضِ','النور 55','وعد بالتمكين لمن آمن وعمل. اشتغل وانت مطمن.']];
+ const pr=el('section','pnl promises');pr.id='m-prom';
+ pr.appendChild(el('div','ph','<div class="glyph">☀</div><div><h2>وعود ربنا</h2><span class="en">HIS PROMISES · وعد وشرطه</span></div>'));
+ pr.appendChild(el('p','sub','كل وعد في القرآن جنبه شرط. الشرط هو اللي إنت بتعمله في القايمة، والوعد هو اللي ربنا بيعمله. اقرا واحد كل يوم.'));
+ const pg=el('div','promgrid blur');PROM.forEach((v,ix)=>{pg.appendChild(el('div','prom','<div class="pt">'+pad(ix+1)+' · '+v[0]+'</div><div class="quran">'+v[1]+'</div><div class="ref">'+v[2]+'</div><div class="pm">'+v[3]+'</div>'));});pr.appendChild(pg);
+ host.appendChild(pr);
+ // marriage guidance
+ const MV=[['الأصل','وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً','الروم 21'],['القاعدة','وَعَاشِرُوهُنَّ بِالْمَعْرُوفِ','النساء 19'],['مسؤوليتك','قُوا أَنْفُسَكُمْ وَأَهْلِيكُمْ نَارًا','التحريم 6'],
+  ['الحديث','خَيْرُكُمْ خَيْرُكُمْ لِأَهْلِهِ، وَأَنَا خَيْرُكُمْ لِأَهْلِي','رواه الترمذي'],['دعاء الذرية','رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ','آل عمران 38'],['دعاء البيت','رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ','البقرة 201']];
+ const MR=['الكلام عن المشاكل بعد ما الاتنين يهدوا، مش وقت الزعل','متعاتبش قدام حد، ومتتكلمش عنها لحد','الشكر على الحاجات الصغيرة كل يوم','قرار البيت بالشورى، والفلوس بالوضوح','الموبايل مقلوب لما تقعدوا مع بعض','صلاة وذكر مع بعض بيثبّت البيت','خطط البزنس اتكلم فيها معاها هي بس','الذرية الصالحة تبتدي ببيت فيه رحمة','ادعي لها في سجودك، وهي متعرفش'];
+ const mg=el('section','pnl');mg.innerHTML='<details class="set"><summary><div class="glyph">♡</div><div><h2 style="font-family:var(--display);font-size:19px;margin:0">توجيهات البيت والذرية</h2><span class="en" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--dim)">MARRIAGE · افتحها لما تحتاجها</span></div></summary>'+
+  '<div class="verses blur" style="margin-top:12px">'+MV.map(v=>'<div class="verse"><div class="t">'+v[0]+'</div><div class="quran" style="font-size:19px">'+v[1]+'</div><div class="ref">'+v[2]+'</div></div>').join('')+'</div>'+
+  '<div class="rules blur">'+MR.map(r=>'<span class="rule">'+r+'</span>').join('')+'</div>'+
+  '<p class="note">البنود الـ 6 بتاعة "البيت" في المهام اليومية هي التطبيق العملي لده.</p></details>';
+ host.appendChild(mg);
+ // week
+ const w=el('section','pnl');w.id='m-week';
+ w.appendChild(el('div','ph','<div class="glyph">⟳</div><div><h2>الأسبوع ده</h2><span class="en">WEEKLY</span></div><span class="cnt" data-cnt="week"></span>'));
+ w.appendChild(el('div','week7')).id='week7';const wl=el('div','items');WEEK.forEach((i,ix)=>wl.appendChild(itemRow(i,'⟳·'+pad(ix+1))));w.appendChild(wl);host.appendChild(w);
+ // business
+ const b=el('section','pnl');b.id='m-biz';
+ b.appendChild(el('div','ph','<div class="glyph">✦</div><div><h2>البزنس قبل الـ 30</h2><span class="en">THE MISSION</span></div><span class="cnt" data-cnt="biz"></span>'));
+ b.appendChild(el('div','count30')).id='count30';const tr=el('div','track','<i id="mtrack"></i>');b.appendChild(tr);
+ const ml=el('div','items ms');MILES.forEach((i,ix)=>{const r=itemRow(i,'✦·'+pad(ix+1));r.dataset.ms='1';ml.appendChild(r);});b.appendChild(ml);host.appendChild(b);
+ // settings
+ const s=el('section','pnl');s.innerHTML='<details class="set"><summary><div class="glyph">⚙</div><div><h2 style="font-family:var(--display);font-size:19px;margin:0">الإعدادات</h2><span class="en" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--dim)">SETTINGS</span></div></summary>'+
+  '<div class="field"><label for="birth">تاريخ ميلادك (علشان أحسب الأيام لحد الـ 30)</label><input id="birth" type="date"></div>'+
+  '<div class="field"><label>أيام التمرين (4 أيام)</label><div class="days" id="tdays"></div></div>'+
+  '<div class="field"><label for="book">الكتاب اللي بتقراه دلوقتي</label><input id="book" maxlength="80" placeholder="اسم الكتاب"></div>'+
+  '<div class="field"><label for="sgoalIn">هدف وقت الشاشة في اليوم (ساعات)</label><input id="sgoalIn" type="number" min="0.5" max="12" step="0.5" style="width:110px"></div>'+
+  '<p class="note">مواعيد الصلاة تقريبية، محسوبة للرياض بطريقة أم القرى. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
+ host.appendChild(s);
+ const td=$('#tdays');AR_DAYS.forEach((n,ix)=>{const bt=el('button','',n);bt.type='button';bt.dataset.d=ix;td.appendChild(bt);});
+ // counters
+ TABS.forEach(t=>{const bt=el('button','tab',t[1]);bt.type='button';bt.dataset.tab=t[0];$('#ctabs').appendChild(bt);});
+ const az=(list,host)=>list.forEach(a=>{const r=el('div','dk');r.dataset.z=a[0];r.dataset.max=a[3];r.innerHTML='<div class="z">'+a[1]+(a[2]?'<small>'+a[2]+'</small>':'')+'</div><div class="c"></div>';host.appendChild(r);});
+ az(AZ_M,$('#dzM'));az(AZ_E,$('#dzE'));}
+buildMods();
+
+/* ---------- render ---------- */
+const C2=r=>2*Math.PI*r;
+function setRing(id,r,frac){const c=$(id);const L=C2(r);c.style.strokeDasharray=L;c.style.strokeDashoffset=L*(1-Math.max(0,Math.min(1,frac)));}
+function render(){const d=S.day,k=S.view,isToday=k===todayKey();
+ const now=new Date();const hour=now.getHours();
+ $('#greet').innerHTML=(hour<12?'صباح الخير':'مساء الخير')+' يا <span>مصطفى</span>';
+ const vd=parseKey(k);
+ let line=AR_DAYS[vd.getDay()]+' '+vd.getDate()+'/'+(vd.getMonth()+1);try{if(hijriFmt)line+=' · '+hijriFmt.format(vd);}catch(e){}
+ if(!isToday)line+=' · بتعدّل يوم فات';
+ $('#dateline').textContent=line;$('#today').hidden=isToday;$('#next').disabled=isToday;
+ const times=PT.compute(vd,isRamadan(vd));
+ document.querySelectorAll('[data-t]').forEach(s=>{s.textContent=hm(times[s.dataset.t]);});
+ const train=isTrainDay(k);document.querySelectorAll('[data-cond]').forEach(s=>s.textContent=train?'يوم تمرين':'راحة');
+ document.querySelectorAll('[data-book]').forEach(s=>{s.textContent=S.settings.book?('بتقرا: '+S.settings.book):'اكتب اسم الكتاب في الإعدادات';});
+ document.querySelectorAll('.it[data-id]').forEach(r=>{const id=r.dataset.id;let on;
+  if(r.dataset.ms)on=!!S.settings.ms[id];
+  else if(id.startsWith('w_'))on=id==='w_train'?weekTrainCount()>=4:!!S.week.c[id];
+  else{const i=findItem(id);if(i){const app=applicable(i,k);r.classList.toggle('off',!app);on=app&&isDone(i,d);}else on=!!d.c[id];}
+  r.classList.toggle('done',!!on);r.setAttribute('aria-checked',on?'true':'false');});
+ [1,2,3].forEach(n=>{const inp=$('#top'+n);if(document.activeElement!==inp)inp.value=d.top[n-1]||'';});
+ const p=progress(d);$('#pct').textContent=p.pct+'%';$('#pctS').textContent=p.on+' / '+p.tot;
+ setRing('#rT',100,p.pct/100);setRing('#rA',84,p.pil.a[1]?p.pil.a[0]/p.pil.a[1]:0);setRing('#rB',74,p.pil.b[1]?p.pil.b[0]/p.pil.b[1]:0);setRing('#rC',64,p.pil.c[1]?p.pil.c[0]/p.pil.c[1]:0);
+ document.documentElement.style.setProperty('--dawn',(p.pct/100).toFixed(2));document.querySelector('.core').classList.toggle('full',p.pct===100);
+ MODS.forEach(m=>{let t=0,o=0;m.items.forEach(i=>{if(!applicable(i,k))return;t++;if(isDone(i,d))o++;});if(m.top3)d.top.forEach((x,ix)=>{if(x&&x.trim()){t++;if(d.c['top'+(ix+1)])o++;}});const c=document.querySelector('[data-cnt="'+m.id+'"]');c.textContent=o+'/'+t;c.classList.toggle('full',t>0&&o===t);});
+ const wc=WEEK.filter(i=>i[0]==='w_train'?weekTrainCount()>=4:!!S.week.c[i[0]]).length;const wcn=document.querySelector('[data-cnt="week"]');wcn.textContent=wc+'/'+WEEK.length;wcn.classList.toggle('full',wc===WEEK.length);
+ renderCalm();renderWeek7();renderBiz();renderStreaks();renderNext(times,isToday);renderArc(times,isToday);$('#pctNote').textContent=p.pct===0?'THE DAY IS UNWRITTEN':p.pct<40?'WARMING UP':p.pct<80?'IN MOTION':p.pct<100?'ALMOST THERE':'DAY COMPLETE';renderCounters();renderTools();renderSettings();
+ if(isToday&&p.pct===100&&S.celebrated!==k){S.celebrated=k;LS.set('celebrated',k);burst();}}
+function weekTrainCount(){const st=parseKey(S.week.start);let n=0;for(let i=0;i<7;i++){const k=keyOf(addDays(st,i));const h=k===S.day.date?summarize(S.day):S.hist[k];if(h&&h.train)n++;}return n;}
+function renderWeek7(){const host=$('#week7');host.innerHTML='';const st=parseKey(S.week.start);const tk=todayKey();
+ for(let i=0;i<7;i++){const dd=addDays(st,i),k=keyOf(dd);const tr=S.settings.train.indexOf(dd.getDay())>=0;const h=k===S.day.date?summarize(S.day):S.hist[k];
+  const c=el('div',(tr?'tr':'')+(h&&h.train?' ok':'')+(k===tk?' today':''),AR_DAYS[dd.getDay()].replace('ال','').slice(0,3));c.title=tr?'يوم تمرين':'راحة';host.appendChild(c);}
+ const wi=document.querySelector('.it[data-id="w_train"] .lbl');if(wi)wi.firstChild.nodeValue='4 تمرينات ('+weekTrainCount()+'/4)';}
+function renderBiz(){const ms=MILES.filter(m=>S.settings.ms[m[0]]).length;$('#mtrack').style.width=(ms*100/MILES.length)+'%';
+ const c=document.querySelector('[data-cnt="biz"]');c.textContent=ms+'/'+MILES.length;
+ const h=$('#count30');if(S.settings.birth){const b=parseKey(S.settings.birth);const t=new Date(b.getFullYear()+30,b.getMonth(),b.getDate());const days=Math.ceil((t-new Date(new Date().toDateString()))/864e5);
+  if(days>0){const y=Math.floor(days/365.25),mo=Math.floor((days-y*365.25)/30.44);h.innerHTML='<b>'+days.toLocaleString('en')+'</b><span class="sub">يوم فاضلين لحد الـ 30 · حوالي '+y+' سنة و'+mo+' شهر</span>';}
+  else h.innerHTML='<span class="sub">وصلت الـ 30. كمّل، وخلّي البزنس يكبر.</span>';}
+ else h.innerHTML='<span class="sub">حط تاريخ ميلادك في الإعدادات، وأنا أعدّلك الأيام لحد الـ 30.</span>';}
+function renderStreaks(){S.hist[S.day.date]=summarize(S.day);
+ const box=$('#streaks');const list=[['الفجر في الجامع',streak('fajr')],['يوم 80% أو أكتر',streak(null,x=>x.pct>=80)],['من غير سجاير',streak('smoke')],['يوم نضيف',streak('drugs')]];
+ box.innerHTML='';list.forEach(s=>box.appendChild(el('div','stk'+(s[1]>=3?' hot':''),'<b>'+s[1]+(s[1]>=3?' 🔥':'')+'</b><span>'+s[0]+'</span>')));}
+function renderArc(t,isToday){const host=$('#arc');const W=360,H=92;const order=['fajr','sunrise','dhuhr','asr','maghrib','isha'];const names={fajr:'FAJR',sunrise:'SUNRISE',dhuhr:'DHUHR',asr:'ASR',maghrib:'MAGHRIB',isha:'ISHA'};
+ const now=new Date();const h=now.getHours()+now.getMinutes()/60;const x=hh=>W-( (hh-3)/20*W );const y=hh=>{const f=(hh-3)/20;return 66-Math.sin(Math.PI*Math.max(0,Math.min(1,f)))*50;};
+ let d='';for(let i=0;i<=40;i++){const hh=3+i/2;d+=(i?'L':'M')+x(hh).toFixed(1)+','+y(hh).toFixed(1)+' ';}
+ let svg='<svg viewBox="0 0 '+W+' '+H+'"><path class="path" d="'+d+'"/>';
+ order.forEach(k=>{const hh=t[k];const done=isToday&&h>=hh;svg+='<circle class="dot'+(done?' done':'')+'" cx="'+x(hh).toFixed(1)+'" cy="'+y(hh).toFixed(1)+'" r="3"/><text class="lbl'+(done?' done':'')+'" x="'+x(hh).toFixed(1)+'" y="'+(y(hh)+({fajr:16,sunrise:-10,dhuhr:-10,asr:-10,maghrib:-10,isha:16}[k])).toFixed(1)+'" text-anchor="middle">'+names[k]+'</text>';});
+ if(isToday&&h>=3&&h<=23){const night=h<t.sunrise||h>t.maghrib;svg+='<circle class="sunp" cx="'+x(h).toFixed(1)+'" cy="'+y(h).toFixed(1)+'" r="6" fill="'+(night?'#cfe0ff':'#f3b94d')+'"/>';}
+ host.innerHTML=svg+'</svg>';}
+const CALM=[['إِنَّ اللَّهَ رَفِيقٌ يُحِبُّ الرِّفْقَ فِي الْأَمْرِ كُلِّهِ','متفق عليه'],['لَا تَغْضَبْ','رواه البخاري'],['تَفَاءَلُوا بِالْخَيْرِ تَجِدُوهُ','أثر مشهور'],['احْرِصْ عَلَى مَا يَنْفَعُكَ، وَاسْتَعِنْ بِاللَّهِ وَلَا تَعْجَزْ','رواه مسلم'],['عَجَبًا لِأَمْرِ الْمُؤْمِنِ، إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ','رواه مسلم'],['أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ','الرعد 28'],['وَعَسَىٰ أَنْ تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَكُمْ','البقرة 216']];
+function renderCalm(){const g=$('#grat');if(document.activeElement!==g)g.value=S.day.grat||'';
+ const d=parseKey(S.view);const doy=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);const h=CALM[doy%CALM.length];$('#hadith').innerHTML=h[0]+'<span class="ref">'+h[1]+'</span>';
+ const yk=keyOf(addDays(d,-1));const y=LS.get('d-'+yk);const pp=$('#gratPast');if(y&&y.grat&&y.grat.trim()){pp.hidden=false;pp.innerHTML='<b>YESTERDAY</b>'+y.grat.replace(/</g,'&lt;').replace(/\n/g,'<br>');}else pp.hidden=true;}
+function renderNext(t,isToday){const box=$('#nextp');if(!isToday){box.innerHTML='';return;}
+ const now=new Date();const h=now.getHours()+now.getMinutes()/60;const order=['fajr','dhuhr','asr','maghrib','isha'];
+ let nk=order.find(k=>t[k]>h),nt;if(nk)nt=t[nk];else{nk='fajr';nt=PT.compute(addDays(now,1),isRamadan(addDays(now,1))).fajr+24;}
+ const left=Math.max(0,Math.round((nt-h)*60));box.innerHTML='الصلاة الجاية: <b>'+PNAMES[nk]+'</b> <span class="mono">'+hm(nt)+'</span> · باقي <span class="mono">'+Math.floor(left/60)+':'+pad(left%60)+'</span>';}
+function cnt(id){return S.day.n[id]||0;}
+function renderCounters(){const t=TABS.find(x=>x[0]===S.tab);document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+ const n=cnt(t[0]);$('#tapN').textContent=n;$('#tapOf').textContent='/ '+t[3];$('#tapZ').textContent=t[2];$('#tap').classList.toggle('done',n>=t[3]);const cr=$('#cr');if(cr){const L=2*(392+132)-8*18+2*Math.PI*18;cr.style.strokeDasharray=L;cr.style.strokeDashoffset=L*(1-Math.min(1,n/t[3]));}
+ let dm=0,de=0;document.querySelectorAll('.dk').forEach(r=>{const v=cnt(r.dataset.z),mx=+r.dataset.max;r.querySelector('.c').textContent=Math.min(v,mx)+'/'+mx;const ok=v>=mx;r.classList.toggle('done',ok);if(ok){if(r.dataset.z[0]==='a')dm++;else de++;}});
+ $('#azMc').textContent=dm+'/'+AZ_M.length;$('#azEc').textContent=de+'/'+AZ_E.length;}
+function renderTools(){$('#fc').textContent=S.day.focus||0;const inp=$('#screen');if(document.activeElement!==inp)inp.value=S.day.screen==null?'':S.day.screen;$('#sgoal').textContent=S.settings.screenGoal;
+ const bars=$('#bars'),lb=$('#blbl');bars.innerHTML='';lb.innerHTML='';const end=parseKey(S.view);let mx=+S.settings.screenGoal*2||6;
+ const vals=[];for(let i=6;i>=0;i--){const k=keyOf(addDays(end,-i));const h=k===S.day.date?summarize(S.day):S.hist[k];vals.push([k,h&&h.screen!=null?h.screen:null]);if(h&&h.screen!=null)mx=Math.max(mx,h.screen);}
+ vals.forEach(([k,v],ix)=>{const b=el('div',v==null?'':(v<=S.settings.screenGoal?'ok':'bad')+(k===S.view?' cur':''));b.style.height=v==null?'3px':Math.max(4,v/mx*46)+'px';b.title=v==null?'مفيش تسجيل':v+' ساعة';bars.appendChild(b);lb.appendChild(el('span','',AR_DAYS[parseKey(k).getDay()].replace('ال','').slice(0,1)));});}
+function renderSettings(){const b=$('#birth');if(document.activeElement!==b)b.value=S.settings.birth||'';const bk=$('#book');if(document.activeElement!==bk)bk.value=S.settings.book||'';const sg=$('#sgoalIn');if(document.activeElement!==sg)sg.value=S.settings.screenGoal;
+ document.querySelectorAll('#tdays button').forEach(bt=>bt.classList.toggle('on',S.settings.train.indexOf(+bt.dataset.d)>=0));}
+
+/* ---------- interactions ---------- */
+function toggle(id,row){if(row.classList.contains('off')||row.classList.contains('auto'))return;
+ if(row.dataset.ms){S.settings.ms[id]=!S.settings.ms[id];saveSettings();}
+ else if(id.startsWith('w_')){if(id==='w_train')return;S.week.c[id]=!S.week.c[id];saveWeek();}
+ else{S.day.c[id]=!S.day.c[id];saveDay();}
+ row.classList.remove('pop');void row.offsetWidth;row.classList.add('pop');render();}
+document.addEventListener('click',e=>{const r=e.target.closest('.it[data-id]');if(r){toggle(r.dataset.id,r);return;}
+ const dk=e.target.closest('.dk');if(dk){const id=dk.dataset.z,mx=+dk.dataset.max;const v=cnt(id);S.day.n[id]=v>=mx?0:v+1;
+  if(id.startsWith('am')&&AZ_M.every(a=>cnt(a[0])>=a[3]))S.day.c.adhkar_m=true;
+  if(id.startsWith('pm')&&AZ_E.every(a=>cnt(a[0])>=a[3]))S.day.c.adhkar_e=true;
+  saveDay();render();return;}
+ const tb=e.target.closest('.tab');if(tb){S.tab=tb.dataset.tab;renderCounters();return;}
+ const td=e.target.closest('#tdays button');if(td){const d=+td.dataset.d;const a=S.settings.train;const ix=a.indexOf(d);if(ix>=0)a.splice(ix,1);else a.push(d);a.sort();saveSettings();render();return;}});
+document.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&e.target.matches('.it[data-id]')){e.preventDefault();toggle(e.target.dataset.id,e.target);}});
+$('#tap').addEventListener('click',()=>{const t=TABS.find(x=>x[0]===S.tab);const v=cnt(t[0])+1;S.day.n[t[0]]=v;
+ if(t[0]==='istighfar'&&v>=100)S.day.c.istighfar=true;if(t[0]==='tasbih'&&v>=100)S.day.c.tasbih=true;if(t[0]==='dua'&&v>=7)S.day.c.dua_home=true;
+ try{navigator.vibrate&&navigator.vibrate(v===t[3]?[40,60,40]:8);}catch(e){}const tp=$('#tap');tp.classList.add('bump');setTimeout(()=>tp.classList.remove('bump'),140);if(v===t[3])burst(50);saveDay();render();});
+let resetArm=0;$('#tapReset').addEventListener('click',e=>{const b=e.currentTarget;if(Date.now()-resetArm>3000){resetArm=Date.now();b.textContent='متأكد؟';setTimeout(()=>{b.textContent='صفّر';},3000);return;}
+ S.day.n[S.tab]=0;b.textContent='صفّر';resetArm=0;saveDay();render();});
+let topT=null;document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.top!=null){S.day.top[+t.dataset.top]=t.value;clearTimeout(topT);topT=setTimeout(()=>{saveDay();render();},500);}
+ if(t.id==='grat'){S.day.grat=t.value;if(t.value.trim().length>8)S.day.c.shukr=true;clearTimeout(topT);topT=setTimeout(()=>{saveDay();render();},600);}
+ if(t.id==='screen'){S.day.screen=t.value===''?null:Math.max(0,Math.min(24,+t.value));clearTimeout(topT);topT=setTimeout(()=>{saveDay();render();},500);}
+ if(t.id==='book'){S.settings.book=t.value;clearTimeout(topT);topT=setTimeout(()=>{saveSettings();render();},600);}
+ if(t.id==='sgoalIn'&&t.value){S.settings.screenGoal=Math.max(0.5,+t.value);clearTimeout(topT);topT=setTimeout(()=>{saveSettings();render();},600);}});
+$('#birth').addEventListener('change',e=>{S.settings.birth=e.target.value;saveSettings();render();});
+function go(k){S.view=k;loadLocal();subscribe();render();}
+$('#prev').addEventListener('click',()=>go(keyOf(addDays(parseKey(S.view),-1))));
+$('#next').addEventListener('click',()=>{if(S.view<todayKey())go(keyOf(addDays(parseKey(S.view),1)));});
+$('#today').addEventListener('click',()=>go(todayKey()));
+const cb=$('#cipher');const setCipher=on=>{document.body.classList.toggle('cipher',on);cb.classList.toggle('act',on);cb.setAttribute('aria-pressed',on?'true':'false');cb.title=on?'اظهر الكلام':'وضع الشفرة';};
+setCipher(LS.get('cipher')===true);cb.addEventListener('click',()=>{const on=!document.body.classList.contains('cipher');LS.set('cipher',on);setCipher(on);});
+
+/* focus timer */
+let fEnd=LS.get('focusEnd')||0,fInt=null;
+function tickFocus(){const ft=$('#ftime'),bs=$('#fstart');if(!fEnd){ft.textContent='25:00';ft.classList.remove('run');bs.textContent='ابدأ';return;}
+ const left=Math.max(0,Math.round((fEnd-Date.now())/1000));ft.textContent=pad(Math.floor(left/60))+':'+pad(left%60);ft.classList.add('run');bs.textContent='شغّالة';
+ if(left<=0){fEnd=0;LS.set('focusEnd',0);clearInterval(fInt);fInt=null;if(S.view!==todayKey())go(todayKey());S.day.focus=(S.day.focus||0)+1;saveDay();render();burst(40);try{navigator.vibrate&&navigator.vibrate([80,60,80]);}catch(e){}tickFocus();}}
+function runFocus(){if(fInt)clearInterval(fInt);fInt=setInterval(tickFocus,1000);tickFocus();}
+$('#fstart').addEventListener('click',()=>{if(fEnd)return;fEnd=Date.now()+25*60*1000;LS.set('focusEnd',fEnd);runFocus();});
+$('#freset').addEventListener('click',()=>{fEnd=0;LS.set('focusEnd',0);if(fInt){clearInterval(fInt);fInt=null;}tickFocus();});
+if(fEnd)runFocus();
+
+/* mission typing + signal */
+const MISSION='I am a serious, unstoppable, smart machine. I run, I fight, and I do what it takes for what I dreamed of.';
+(function(){const m=$('#mission');const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduce){m.textContent=MISSION;return;}m.textContent=MISSION;let i=0;const span=document.createElement('span');m.textContent='';m.appendChild(span);const cur=el('span','cur');m.appendChild(cur);
+ const iv=setInterval(()=>{i+=2;span.textContent=MISSION.slice(0,i);if(i>=MISSION.length){clearInterval(iv);}},28);})();
+(function(){const d=new Date();const doy=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);const s=SIGNALS[doy%SIGNALS.length];const p=$('#signal');
+ if(s[0]==='q'){p.innerHTML='<span class="quran">'+s[1]+'</span> <span class="ref">'+s[2]+'</span>';}else if(s[0]==='e'){p.style.direction='ltr';p.style.textAlign='left';p.style.fontFamily='var(--mono)';p.style.fontSize='15px';p.style.color='var(--gold2)';p.textContent=s[1];}else p.textContent=s[1];
+ p.classList.add('blur');})();
+
+/* breathing */
+(function(){const orb=$('#orb'),T=$('#orbT'),C=$('#orbC');let run=null,mode=null;
+ const PAT={478:[['شهيق',4,'in'],['احبس',7,'hold'],['زفير',8,'out']],box:[['شهيق',4,'in'],['احبس',4,'hold'],['زفير',4,'out'],['احبس',4,'out']]};
+ function stop(){if(run){clearTimeout(run);run=null;}orb.className='orb';T.textContent='ابدأ';C.textContent='';$('#bstop').hidden=true;$('#bstart').classList.remove('on');$('#bbox').classList.remove('on');try{document.documentElement.classList.remove('calmmode');}catch(e){}}
+ function start(m){stop();mode=m;$('#bstop').hidden=false;(m==='478'?$('#bstart'):$('#bbox')).classList.add('on');let i=0,cycles=0;
+  const step=()=>{const p=PAT[m][i%PAT[m].length];orb.className='orb '+p[2];T.textContent=p[0];let n=p[1];C.textContent=n;const tick=setInterval(()=>{n--;C.textContent=n>0?n:'';},1000);
+   run=setTimeout(()=>{clearInterval(tick);i++;if(i%PAT[m].length===0)cycles++;if(cycles>=(m==='478'?4:5)){stop();T.textContent='خلاص، ارجع';try{navigator.vibrate&&navigator.vibrate([30,40,30]);}catch(e){}return;}step();},p[1]*1000);};step();}
+ $('#bstart').addEventListener('click',()=>mode==='478'&&run?stop():start('478'));$('#bbox').addEventListener('click',()=>mode==='box'&&run?stop():start('box'));$('#bstop').addEventListener('click',stop);})();
+/* ambient sound: synthesized noise, nothing to download */
+(function(){let ctx=null,src=null,gain=null,filt=null,lfo=null,cur='off';
+ function mk(kind){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();const sr=ctx.sampleRate;const buf=ctx.createBuffer(2,sr*4,sr);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);let b0=0,b1=0,b2=0,last=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;if(kind==='rain'){d[i]=w*.6;}else{b0=.99765*b0+w*.0990460;b1=.96300*b1+w*.2965164;b2=.57000*b2+w*1.0526913;d[i]=(b0+b1+b2+w*.1848)*.11;}}}
+  src=ctx.createBufferSource();src.buffer=buf;src.loop=true;filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=kind==='rain'?2600:kind==='sea'?700:400;gain=ctx.createGain();gain.gain.value=0;
+  src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);src.start();
+  if(kind!=='rain'){lfo=ctx.createOscillator();const lg=ctx.createGain();lfo.frequency.value=kind==='sea'?0.08:0.18;lg.gain.value=kind==='sea'?.09:.05;lfo.connect(lg);lg.connect(gain.gain);lfo.start();}
+  gain.gain.linearRampToValueAtTime(kind==='rain'?.14:.18,ctx.currentTime+2.5);}
+ function off(){if(gain){try{gain.gain.linearRampToValueAtTime(0,ctx.currentTime+1.2);}catch(e){}const s0=src,l0=lfo;setTimeout(()=>{try{s0.stop();}catch(e){}try{l0&&l0.stop();}catch(e){}},1400);}src=null;lfo=null;gain=null;}
+ document.querySelectorAll('[data-snd]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.snd;document.querySelectorAll('[data-snd]').forEach(x=>x.classList.toggle('on',x===b&&k!=='off'));off();cur=k;if(k!=='off'){try{mk(k);}catch(e){console.warn(e);}}}));
+ document.addEventListener('visibilitychange',()=>{if(ctx&&document.hidden===false&&ctx.state==='suspended')ctx.resume();});})();
+/* typewriter on the dustur's first verse */
+(function(){const q=document.querySelector('#verses .verse .quran');if(!q)return;const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
+ const full=q.textContent;q.innerHTML='<span class="tw"></span>';const sp=q.firstChild;let i=0;const iv=setInterval(()=>{i++;sp.textContent=full.slice(0,i);if(i>=full.length){clearInterval(iv);setTimeout(()=>sp.classList.remove('tw'),1200);}},55);})();
+/* sky + burst */
+(function(){const c=$('#sky'),x=c.getContext('2d');let W,H,st=[];const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function size(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio;st=[];const n=Math.min(140,Math.floor(innerWidth*innerHeight/9000));for(let i=0;i<n;i++)st.push([Math.random()*W,Math.random()*H*.75,Math.random()*1.3+.3,Math.random()*6.28]);}
+ let shoot=null;function draw(t){x.clearRect(0,0,W,H);const hr=new Date().getHours();const night=hr<5||hr>=19;
+  if(night){const mx=W*.12,my=H*.12,r=28*devicePixelRatio;x.save();x.fillStyle='rgba(255,236,190,.9)';x.beginPath();x.arc(mx,my,r,0,6.28);x.fill();x.globalCompositeOperation='destination-out';x.beginPath();x.arc(mx+r*.45,my-r*.25,r*.85,0,6.28);x.fill();x.restore();}
+  if(!shoot&&Math.random()<0.004){shoot={x:Math.random()*W*.7+W*.2,y:Math.random()*H*.3,vx:-14*devicePixelRatio,vy:7*devicePixelRatio,l:40};}
+  if(shoot){x.strokeStyle='rgba(255,236,190,'+(shoot.l/40).toFixed(2)+')';x.lineWidth=1.6*devicePixelRatio;x.beginPath();x.moveTo(shoot.x,shoot.y);x.lineTo(shoot.x-shoot.vx*6,shoot.y-shoot.vy*6);x.stroke();shoot.x+=shoot.vx;shoot.y+=shoot.vy;if(--shoot.l<=0)shoot=null;}
+  for(const s of st){const a=.25+.55*(0.5+0.5*Math.sin(t/1400+s[3]));x.fillStyle='rgba(220,230,255,'+a.toFixed(2)+')';x.beginPath();x.arc(s[0],s[1],s[2]*devicePixelRatio,0,6.28);x.fill();}if(!reduce)requestAnimationFrame(draw);}
+ size();addEventListener('resize',size);requestAnimationFrame(draw);})();
+function burst(n){const c=$('#burst'),x=c.getContext('2d');if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const W=c.width=innerWidth,H=c.height=innerHeight;const ps=[];const N=n||140;for(let i=0;i<N;i++){const a=Math.random()*6.28,v=2+Math.random()*6;ps.push({x:W/2,y:H*.38,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,l:60+Math.random()*40,c:['#f3b94d','#ffdc93','#ff6a3d','#ecf1fa'][i%4]});}
+ let f=0;(function step(){x.clearRect(0,0,W,H);let alive=0;for(const p of ps){if(p.l<=0)continue;alive++;p.l--;p.vy+=.12;p.x+=p.vx;p.y+=p.vy;x.globalAlpha=Math.max(0,p.l/100);x.fillStyle=p.c;x.fillRect(p.x,p.y,3,3);}x.globalAlpha=1;if(alive&&f++<140)requestAnimationFrame(step);else x.clearRect(0,0,W,H);})();}
+
+/* ---------- cloud sync ---------- */
+let unsubs=[];
+function subscribe(){unsubs.forEach(u=>{try{u();}catch(e){}});unsubs=[];if(!S.db||!S.uid)return;const base='data/users/'+S.uid+'/';
+ const watch=(key,apply,local)=>{try{const u=S.db.doc(base+key).onSnapshot(snap=>{if(snap.metadata&&snap.metadata.hasPendingWrites)return;
+   if(snap.exists){apply(snap.data());LS.set(key,snap.data());render();}else{const l=local();if(l)save(key,l);}},err=>{console.warn('sync',err&&err.code);});unsubs.push(u);}catch(e){console.warn(e);}};
+ const dk='d-'+S.view,wk='w-'+weekStartKey(S.view);
+ watch(dk,d=>{if(S.view===d.date)S.day=Object.assign(blankDay(d.date),JSON.parse(JSON.stringify(d)));},()=>{const l=LS.get(dk);return l&&Object.keys(l.c||{}).length?S.day:null;});
+ watch(wk,d=>{S.week=Object.assign(blankWeek(d.start),JSON.parse(JSON.stringify(d)));},()=>{const l=LS.get(wk);return l&&Object.keys(l.c||{}).length?S.week:null;});
+ watch('settings',d=>{const c=JSON.parse(JSON.stringify(d));delete c.kind;S.settings=Object.assign({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{}},c);},()=>LS.get('settings')?Object.assign({kind:'settings'},S.settings):null);}
+async function connect(){return;try{if(!window.claude||typeof window.claude.use!=='function')return;const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+ if(!db||!user)return;const uid=await user.id();if(!uid)return;S.db=db;S.uid=uid;setSync('cloud');subscribe();
+ try{const q=await db.collection('data/users/'+uid).where('kind','==','day').orderBy('date','desc').limit(400).get();q.docs.forEach(s=>{const d=s.data();if(d&&d.date)S.hist[d.date]=summarize(Object.assign(blankDay(d.date),d));});LS.set('hist',S.hist);render();}catch(e){console.warn('history',e&&e.code);}
+ }catch(e){console.warn('connect',e);}}
+
+/* day rollover + clock */
+setInterval(()=>{const tk=todayKey();if(S.lastToday&&S.lastToday!==tk&&S.view===S.lastToday)go(tk);S.lastToday=tk;renderNext(PT.compute(new Date(),isRamadan(new Date())),S.view===tk);},30000);
+S.lastToday=todayKey();
+setSync('local');render();connect();
+})();
+</script>
+</body></html>
