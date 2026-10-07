@@ -211,6 +211,13 @@ details.set summary::-webkit-details-marker{display:none}
 .days{display:flex;gap:6px;flex-wrap:wrap}
 .days button{background:none;border:1px solid var(--line2);border-radius:9px;padding:5px 9px;font-size:13px;cursor:pointer;color:var(--frost)}
 .days button.on{background:rgba(255,106,61,.2);border-color:var(--ember);color:var(--text)}
+.rlist{display:grid;gap:6px}
+.rlist button{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;text-align:start;background:none;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--text);font:inherit}
+.rlist button:hover{border-color:rgba(243,185,77,.45)}
+.rlist button.on{background:rgba(94,224,176,.1);border-color:rgba(94,224,176,.45)}
+.rlist .rn{grid-row:span 2;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.rlist b{font-weight:600;font-size:14px}.rlist b small{font-weight:400;color:var(--frost);font-size:12px}
+.rlist span.rw{font-size:12px;color:var(--frost)}
 .foot{margin-top:18px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim);direction:ltr}
 
 /* cipher mode */
@@ -419,6 +426,17 @@ const MODS=[
  {id:'dakhl',g:'◈',name:'الدخل',en:'INCOME',pillar:'a',items:[
   ['income_step','عملت خطوة تزوّد دخلي',{hint:'بيعة، أو عمولة، أو مهارة، أو فكرة دخل جديدة'}],['spend','سجلت مصاريفي، ومصرفتش على حاجة مش محتاجها']]}
 ];
+const BOOKS=[
+ ['العادات الذرية','جيمس كلير','إزاي تغيّر نفسك بخطوات صغيرة كل يوم. ماشي مع فكرة الموقع بالظبط'],
+ ['الإنسان يبحث عن المعنى','فيكتور فرانكل','قصة حقيقية من معسكرات النازية عن المعنى والصبر. قصير وبيفضل معاك'],
+ ['العمل العميق','كال نيوبورت','إزاي تشتغل بتركيز في زمن المشتتات والموبايل'],
+ ['سيكولوجية المال','مورغان هاوسل','حكايات قصيرة عن الفلوس والادخار والاستثمار، سهل وممتع'],
+ ['الأب الغني والأب الفقير','روبرت كيوساكي','بيغيّر طريقة تفكيرك في الدخل والبزنس من بدري'],
+ ['كيف تكسب الأصدقاء وتؤثر في الناس','ديل كارنيجي','أساسيات التعامل مع الناس والإقناع. مفيد جدًا للشغل والعملاء'],
+ ['التفكير السريع والبطيء','دانيال كانمان','إزاي مخك بيقرر وبيغلط، وإزاي تفكر أحسن'],
+ ['صيد الخاطر','ابن الجوزي','خواطر قصيرة عن النفس والوقت والإيمان. تقرا منه صفحتين كل يوم'],
+ ['ثلاثية غرناطة','رضوى عاشور','رواية ممتعة جدًا عن آخر أيام الأندلس. قراية وتاريخ في نفس الوقت'],
+ ['الخيميائي','باولو كويلو','رواية قصيرة عن الحلم والسعي وراه. تتقري في كام قعدة']];
 const WEEK=[['w_train','4 تمرينات',{auto:'train'}],['w_jumuah','صلاة الجمعة في الجامع'],['w_kahf','سورة الكهف يوم الجمعة'],['w_sadaqa','صدقة الأسبوع'],['w_family','كلمت أهلي وأبويا'],['w_date','خرجة أو قعدة حلوة مع مراتي'],['w_inlaws','سألت على أهلها'],['w_talk','قعدة صراحة: اتكلمنا عن أسبوعنا وخططنا'],
  ['w_new','جربت حاجة جديدة مجربتهاش قبل كده'],['w_book','خلصت فصل من الكتاب'],['w_biz','ساعتين على البزنس: بحث أو تعلم أو تجربة'],['w_save','حطيت مبلغ الادخار والاستثمار'],['w_review','راجعت الأسبوع وخططت للي جاي']];
 const MILES=[['b1','أحدد المجال أو الفكرة'],['b2','أتعلم أساسيات البزنس: بيع وتسويق وفلوس'],['b3','أوفّر رأس مال البداية'],['b4','أكلم 10 ناس في المجال وأفهم السوق'],
@@ -551,9 +569,11 @@ function buildMods(){const host=$('#mods');
   '<div class="field"><label for="birth">تاريخ ميلادك (علشان أحسب الأيام لحد الـ 30)</label><input id="birth" type="date"></div>'+
   '<div class="field"><label>أيام التمرين (4 أيام)</label><div class="days" id="tdays"></div></div>'+
   '<div class="field"><label for="book">الكتاب اللي بتقراه دلوقتي</label><input id="book" maxlength="80" placeholder="اسم الكتاب"></div>'+
+  '<div class="field"><label>قايمة القراية (دوس على كتاب علشان تبدأه)</label><div class="rlist" id="rlist"></div></div>'+
   '<div class="field"><label for="sgoalIn">هدف وقت الشاشة في اليوم (ساعات)</label><input id="sgoalIn" type="number" min="0.5" max="12" step="0.5" style="width:110px"></div>'+
   '<p class="note">مواعيد الصلاة تقريبية، محسوبة للرياض بطريقة أم القرى. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
  host.appendChild(s);
+ const rl=$('#rlist');BOOKS.forEach((bk,ix)=>{const bt=el('button','','<span class="rn">'+pad(ix+1)+'</span><b>'+bk[0]+' <small>· '+bk[1]+'</small></b><span class="rw">'+bk[2]+'</span>');bt.type='button';bt.dataset.bk=ix;rl.appendChild(bt);});
  const td=$('#tdays');AR_DAYS.forEach((n,ix)=>{const bt=el('button','',n);bt.type='button';bt.dataset.d=ix;td.appendChild(bt);});
  // counters
  TABS.forEach(t=>{const bt=el('button','tab',t[1]);bt.type='button';bt.dataset.tab=t[0];$('#ctabs').appendChild(bt);});
@@ -627,7 +647,8 @@ function renderTools(){$('#fc').textContent=S.day.focus||0;const inp=$('#screen'
  const vals=[];for(let i=6;i>=0;i--){const k=keyOf(addDays(end,-i));const h=k===S.day.date?summarize(S.day):S.hist[k];vals.push([k,h&&h.screen!=null?h.screen:null]);if(h&&h.screen!=null)mx=Math.max(mx,h.screen);}
  vals.forEach(([k,v],ix)=>{const b=el('div',v==null?'':(v<=S.settings.screenGoal?'ok':'bad')+(k===S.view?' cur':''));b.style.height=v==null?'3px':Math.max(4,v/mx*46)+'px';b.title=v==null?'مفيش تسجيل':v+' ساعة';bars.appendChild(b);lb.appendChild(el('span','',AR_DAYS[parseKey(k).getDay()].replace('ال','').slice(0,1)));});}
 function renderSettings(){const b=$('#birth');if(document.activeElement!==b)b.value=S.settings.birth||'';const bk=$('#book');if(document.activeElement!==bk)bk.value=S.settings.book||'';const sg=$('#sgoalIn');if(document.activeElement!==sg)sg.value=S.settings.screenGoal;
- document.querySelectorAll('#tdays button').forEach(bt=>bt.classList.toggle('on',S.settings.train.indexOf(+bt.dataset.d)>=0));}
+ document.querySelectorAll('#tdays button').forEach(bt=>bt.classList.toggle('on',S.settings.train.indexOf(+bt.dataset.d)>=0));
+ document.querySelectorAll('#rlist button').forEach(bt=>bt.classList.toggle('on',(S.settings.book||'').trim()===BOOKS[+bt.dataset.bk][0]));}
 
 /* ---------- interactions ---------- */
 function toggle(id,row){if(row.classList.contains('off')||row.classList.contains('auto'))return;
@@ -641,6 +662,7 @@ document.addEventListener('click',e=>{const r=e.target.closest('.it[data-id]');i
   if(id.startsWith('pm')&&AZ_E.every(a=>cnt(a[0])>=a[3]))S.day.c.adhkar_e=true;
   saveDay();render();return;}
  const tb=e.target.closest('.tab');if(tb){S.tab=tb.dataset.tab;renderCounters();return;}
+ const rb=e.target.closest('#rlist button');if(rb){S.settings.book=BOOKS[+rb.dataset.bk][0];$('#book').value=S.settings.book;saveSettings();render();return;}
  const td=e.target.closest('#tdays button');if(td){const d=+td.dataset.d;const a=S.settings.train;const ix=a.indexOf(d);if(ix>=0)a.splice(ix,1);else a.push(d);a.sort();saveSettings();render();return;}});
 document.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&e.target.matches('.it[data-id]')){e.preventDefault();toggle(e.target.dataset.id,e.target);}});
 $('#tap').addEventListener('click',()=>{const t=TABS.find(x=>x[0]===S.tab);const v=cnt(t[0])+1;S.day.n[t[0]]=v;
@@ -730,7 +752,10 @@ async function connect(){return;try{if(!window.claude||typeof window.claude.use!
  }catch(e){console.warn('connect',e);}}
 
 /* day rollover + clock */
-setInterval(()=>{const tk=todayKey();if(S.lastToday&&S.lastToday!==tk&&S.view===S.lastToday)go(tk);S.lastToday=tk;renderNext(PT.compute(new Date(),isRamadan(new Date())),S.view===tk);},30000);
+function refreshClock(){const tk=todayKey();if(S.lastToday&&S.lastToday!==tk&&S.view===S.lastToday){S.lastToday=tk;go(tk);return;}S.lastToday=tk;render();}
+setInterval(refreshClock,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClock();});
+window.addEventListener('focus',refreshClock);window.addEventListener('pageshow',refreshClock);
 S.lastToday=todayKey();
 setSync('local');render();connect();
 })();
