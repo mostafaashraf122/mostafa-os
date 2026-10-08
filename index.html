@@ -1,4 +1,4 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="icon-192.png"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="manifest" href="manifest.webmanifest"><script>try{var L=JSON.parse(localStorage.getItem("mos:lock")||"null");if(L&&L.on)document.documentElement.className+=" locked";}catch(e){}</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="icon-192.png"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
 <style>
@@ -853,6 +853,23 @@ html,body{transition:background 2s}
 .ml2 button{background:none;border:none;color:var(--dim);cursor:pointer}
 .ml2 button:hover{color:var(--ember)}
 @media (max-width:420px){.mc{grid-template-columns:84px minmax(0,1fr) auto}.mc small{display:none}}
+/* lock */
+html.locked .wrap,html.locked .dock,html.locked .aifab,html.locked .aisheet,html.locked .sheet,html.locked .splash,html.locked .toasts{visibility:hidden!important}
+html.locked body{overflow:hidden}
+.lock{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;background:radial-gradient(120% 70% at 50% 110%,rgba(255,140,60,.18),transparent 60%),#070b14}
+.lock[hidden]{display:none}
+html.locked .lock{display:grid}
+.lk{width:min(100%,340px);text-align:center;display:grid;gap:14px;justify-items:center}
+.lk .lkring{width:96px;height:96px;border-radius:50%;border:6px solid #1f2b45;border-top-color:var(--gold);border-right-color:var(--gold);display:grid;place-items:center;font-size:30px;box-shadow:0 0 40px rgba(243,185,77,.15)}
+.lk h2{margin:0;font-family:var(--mono);letter-spacing:.3em;font-size:15px;color:var(--gold);direction:ltr}
+.lk p{margin:0;color:var(--frost);font-size:14px}
+.lk .bio{width:100%;padding:13px;border-radius:14px;border:none;background:var(--gold);color:#1b1305;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 6px 20px rgba(243,185,77,.3)}
+.lkpin{display:flex;gap:8px;width:100%}
+.lkpin input{flex:1;min-width:0;background:rgba(7,11,20,.7);border:1px solid var(--line2);border-radius:12px;color:var(--text);padding:11px 12px;font:inherit;font-size:16px;text-align:center;letter-spacing:.3em}
+.lkpin button{border-radius:12px;border:1px solid var(--line2);background:var(--panel);color:var(--text);padding:0 16px;cursor:pointer}
+.lk small{color:var(--ember);min-height:1.2em;font-size:12.5px}
+.lksel{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:4px 6px;font:inherit;font-size:12.5px}
+#lkSet input{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1036,6 +1053,7 @@ html,body{transition:background 2s}
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p>مقفول. افتحه بالبصمة أو Face ID</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="أو الرقم السري" aria-label="الرقم السري"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
 <script>
@@ -1252,7 +1270,7 @@ function streak(field,cond){let n=0;let d=new Date();const tk=keyOf(d);const h=S
 (function rebuildHist(){const sig=STK.map(i=>i[0]).join(',')+'|'+TK.hide.join(',')+'|v7';if(LS.get('histSig')===sig)return;
  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k||k.indexOf('mos:d-')!==0)continue;const date=k.slice(6);if(!/^\d{4}-\d\d-\d\d$/.test(date))continue;const d=Object.assign(blankDay(date),JSON.parse(localStorage.getItem(k)||'{}'));S.hist[date]=summarize(d);}LS.set('hist',S.hist);LS.set('histSig',sig);}catch(e){console.warn('hist',e);}})();
 const timers={},chains={};let syncMode='local';
-function setSync(m){syncMode=m;const s=$('#sync');s.textContent=m==='cloud'?'SYNCED ✓':'OFFLINE';s.classList.toggle('on',m==='cloud');s.title='محفوظ على الجهاز ده';}
+function setSync(m){syncMode=m;if(typeof netChip==='function'){netChip();return;}const s=$('#sync');s.textContent=m==='cloud'?'SYNCED ✓':'OFFLINE';s.classList.toggle('on',m==='cloud');s.title='محفوظ على الجهاز ده';}
 function save(key,obj){LS.set(key,obj);
  if(obj.kind==='day'){S.hist[obj.date]=summarize(obj);LS.set('hist',S.hist);}
  if(!S.db||!S.uid)return;clearTimeout(timers[key]);
@@ -1325,6 +1343,8 @@ function buildMods(){const host=$('#mods');
   '<div class="field"><label for="sgoalIn">هدف وقت الشاشة في اليوم (ساعات)</label><input id="sgoalIn" type="number" min="0.5" max="12" step="0.5" style="width:110px"></div>'+
   '<div class="field"><label>مكانك (مواعيد الصلاة بتتحسب عليه كل يوم لوحدها)</label><div class="days" id="cities"></div><div class="trow"><button class="minibtn gold" id="geoBtn" type="button">📍 حدّد مكاني تلقائيًا</button><span class="sub" id="locNow"></span></div></div>'+
   '<div class="field"><label for="revHour">حساب آخر اليوم يطلعلك الساعة كام؟ (17 لـ 23)</label><input id="revHour" type="number" min="17" max="23" step="1" style="width:110px"></div>'+
+  '<div class="field"><label>🔐 قفل التطبيق بالبصمة / Face ID (البصمة بتفضل جوه موبايلك، والتطبيق مبيشوفهاش)</label><div id="lkSet"></div></div>'+
+  '<div class="field"><label>التخزين على الموبايل</label><span class="sub" id="stNow">…</span></div>'+
   '<div class="field"><label>نسخة احتياطية (بياناتك كلها على الموبايل ده بس. اعمل نسخة كل أسبوع وخزّنها في مكان آمن زي Google Drive أو الإيميل)</label><div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="minibtn gold" id="bkOut" type="button">⬇ صدّر نسخة</button><label class="minibtn" style="cursor:pointer">⬆ استرجع نسخة<input id="bkIn" type="file" accept=".json,application/json" hidden></label><span class="sub" id="bkNow"></span></div></div>'+
   '<div class="field"><label>نزّله كتطبيق على الموبايل (بيفتح من غير نت)</label><div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="minibtn" id="instBtn" type="button" hidden>📲 سطّبه دلوقتي</button><span class="sub" id="instHint">أندرويد: من قايمة كروم ⋮ اختار "Add to Home screen". آيفون: من Safari دوس مشاركة ⬆ واختار "Add to Home Screen".</span></div></div>'+
   '<p class="note">مواعيد الصلاة بتتحسب فلكيًا لمكانك كل يوم لوحدها (أم القرى للسعودية والخليج، الهيئة المصرية لمصر والشام)، تقريبية بدقيقة أو اتنين. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
@@ -1367,7 +1387,7 @@ function buildTaskEditor(){const host=$('#mods');const sec=el('section','pnl');s
 
 function stamp(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function exportBackup(){const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('mos:')===0)data[k.slice(4)]=localStorage.getItem(k);}}catch(e){}
- delete data.lastBackup;const ai=data.ai?JSON.parse(data.ai):null;if(ai&&ai.gkey){ai.gkey='';data.ai=JSON.stringify(ai);}
+ delete data.lastBackup;delete data.lock;delete data.aiPending;const ai=data.ai?JSON.parse(data.ai):null;if(ai&&ai.gkey){ai.gkey='';data.ai=JSON.stringify(ai);}
  const blob=new Blob([JSON.stringify({app:'mostafa-os',v:1,at:new Date().toISOString(),data})],{type:'application/json'});const name='mostafa-os-backup-'+stamp()+'.json';
  const done=()=>{LS.set('lastBackup',Date.now());renderBackup();toast('⬇','النسخة اتحفظت',name);};
  try{const f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({files:[f],title:name}).then(done).catch(()=>{});return;}}catch(e){}
@@ -1375,8 +1395,9 @@ function exportBackup(){const data={};try{for(let i=0;i<localStorage.length;i++)
 function importBackup(file){const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||j.app!=='mostafa-os'||!j.data)throw 0;
   const days=Object.keys(j.data).filter(k=>k.indexOf('d-')===0).length;
   if(!confirm('أسترجع النسخة دي؟ ('+days+' يوم، من '+String(j.at||'').slice(0,10)+')\nالبيانات اللي على الموبايل دلوقتي هتتبدّل بيها.'))return;
-  const keep=LS.get('ai');Object.keys(localStorage).filter(k=>k.indexOf('mos:')===0).forEach(k=>localStorage.removeItem(k));
+  const keep=LS.get('ai');const keepLock=localStorage.getItem('mos:lock');Object.keys(localStorage).filter(k=>k.indexOf('mos:')===0).forEach(k=>localStorage.removeItem(k));
   Object.keys(j.data).forEach(k=>{try{localStorage.setItem('mos:'+k,j.data[k]);}catch(e){}});
+  if(keepLock)localStorage.setItem('mos:lock',keepLock);
   if(keep&&keep.gkey){const a=LS.get('ai')||{};a.gkey=keep.gkey;LS.set('ai',a);}
   LS.set('lastBackup',Date.now());toast('⬆','النسخة اترجعت','بحدّث الصفحة…');setTimeout(()=>location.reload(),800);}
  catch(e){toast('✕','الملف ده مش نسخة من Mostafa OS','');}};r.readAsText(file);}
@@ -2061,7 +2082,7 @@ S.lastToday=todayKey();
 const DEF_PROFILE='مصطفى أشرف سعيد، Technical Sales & Solutions Consultant في الرياض. +5 سنين في بيع وتسليم حلول تقنية للشركات والحكومة في السعودية ومصر: ERP وCRM، تطبيقات ويب وموبايل، منصات 3D تفاعلية (Unreal / Pixel Streaming)، VR للتدريب والسلامة، جولات 360 وMatterport digital twins. حاليًا Technical Sales Representative في MTC Technology (من 2024): بيدير دورة البيع كاملة من discovery وsolution design وPOC، للمناقصات والـ RFP والتفاوض، وبعدها متابعة التسليم. عملاؤه: GOSI، موانئ، وزارة التعليم، جامعة الملك سعود، جامعة نجران، مستشفيات SMC، وشركات تطوير عقاري (العجلان، أساس مكين، وكان، مهير). قبل كده مدير قسمي Software وMarketing في سحر الإبداع، وTechnical Sales Executive وبعدين WordPress Developer في Tracks Agency في القاهرة. معاه Certified Data Scientist Professional (Python، Pandas، Scikit-learn، ML، SQL، Streamlit) وبكالوريوس IT وعلوم حاسب من جامعة سيناء. هدفه المهني: دخل أعلى بالحلال وبزنس تقني خاص بيه قبل الـ 30.';
 const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-3.8-flash'},LS.get('ai')||{}),
- mem:[],chat:LS.get('aiChat')||[]};
+ mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
 const saveAI=()=>LS.set('ai',AI.cfg);
 const MOD_TIP={rooh:'الصلاة والورد هما اللي بيشيلوا اليوم. ابدأ بالجاي في ميعاده',jasad:'جسمك هو رأس مالك. نوم ومية وتمرين قبل أي حاجة',bayt:'البيت الهادي وقود. 10 دقايق حلوين مع مراتك بيفرقوا',waqt:'الموبايل بيسرق اليوم. جلسة تركيز 25 دقيقة دلوقتي',ilm:'10 صفحات بس. الكتاب اللي بتقراه أهم من كورس جديد',career:'الدخل الكبير جاي من البيع. كلّم عميل واحد النهارده',dakhl:'خطوة دخل واحدة كل يوم: follow-up، عرض سعر، أو مهارة'};
@@ -2240,7 +2261,8 @@ function chatHTML(){if(!AI.chat.length)return '<div class="aiempty"><b>أهلً�
 function renderChat(scroll){const box=$('#aiMsgs');if(!box)return;box.innerHTML=chatHTML();if(scroll!==false)box.scrollTop=box.scrollHeight;}
 function openChat(prefill){const sh=$('#aiSheet');sh.hidden=false;renderChat();const ta=$('#aiIn');if(prefill){ta.value='';send(prefill);}else setTimeout(()=>{try{ta.focus({preventScroll:true});}catch(e){}},250);}
 function closeChat(){$('#aiSheet').hidden=true;}
-async function send(text){text=String(text||'').trim();if(!text)return;if(AI.busy){toast('✺','استنى المرشد يخلّص الرد','');return;}
+async function send(text){text=String(text||'').trim();if(!text)return;
+ if(!navigator.onLine){AI.chat.push({role:'user',content:text,queued:1,local:1});AI.chat.push({role:'assistant',content:'⏳ مفيش نت دلوقتي. حفظت سؤالك على الموبايل، وهبعته لوحدي أول ما النت يرجع.',queued:1,local:1});AI.pending.push(text);LS.set('aiPending',AI.pending);$('#aiSheet').hidden=false;renderChat();return;}if(AI.busy){toast('✺','استنى المرشد يخلّص الرد','');return;}
  const sh=$('#aiSheet');if(sh.hidden){sh.hidden=false;}
  AI.chat.push({role:'user',content:text});const ans={role:'assistant',content:''};AI.chat.push(ans);AI.busy='chat';AI.stopped=false;updSend();
  renderChat();const box=$('#aiMsgs');const node=box.lastElementChild;node.innerHTML='<span class="aidots"><i></i><i></i><i></i></span>';
@@ -2276,12 +2298,65 @@ function buildCoach(){
  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&matchMedia('(hover:hover)').matches){e.preventDefault();$('#aiSend').click();}});
  $('#aiSend').addEventListener('click',()=>{if(AI.busy==='chat'){AI.stopped=true;try{AI.ctl&&AI.ctl.abort();}catch(e){}return;}const v=ta.value;ta.value='';grow();send(v);});
  window.addEventListener('online',()=>{aiSig='';renderCoach();});
+ setTimeout(flushPending,3500);
  renderCoach();
  // the coach starts every day on its own: one plan per day, quietly, once the page settles
  setTimeout(()=>{const c=LS.get('aiBrief');if(AI.cfg.auto&&navigator.onLine&&!(c&&c.date===todayKey()))makeBrief(true);},2500);}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildTaskEditor();renderBackup();booted=true;RB.firstRender=true;
-setSync('local');render();connect();
+/* ---------- lock: Face ID / fingerprint via the phone's own authenticator, PIN as backup ---------- */
+const LK=Object.assign({on:false,cred:'',salt:'',pin:'',after:1},LS.get('lock')||{});
+const saveLock=()=>LS.set('lock',LK);
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0));};
+const rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+async function pinHash(pin,salt){const d=new TextEncoder().encode(salt+'|'+pin);let h=await crypto.subtle.digest('SHA-256',d);for(let i=0;i<20000;i++)h=await crypto.subtle.digest('SHA-256',h);return b64(h);}
+async function bioAvailable(){try{return !!(window.PublicKeyCredential&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());}catch(e){return false;}}
+async function bioCreate(){const c=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'Mostafa OS'},user:{id:rnd(16),name:'Mostafa OS',displayName:'Mostafa OS'},
+ pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000,attestation:'none'}});
+ return b64(c.rawId);}
+async function bioCheck(){if(!LK.cred)return false;const a=await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(LK.cred),transports:['internal','hybrid']}],userVerification:'required',timeout:60000}});
+ return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
+let lkFails=0,lkWait=0,hiddenAt=0;
+function showLock(){if(!LK.on)return;document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
+ $('#lkBio').hidden=!LK.cred;if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
+function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;}
+async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الرقم السري.';}
+ catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الرقم السري.';}}
+async function tryPin(){const v=$('#lkPin').value.trim();if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
+ if(await pinHash(v,LK.salt)===LK.pin){unlock();return;}lkFails++;$('#lkPin').value='';
+ if(lkFails>=5){lkWait=Date.now()+30000;lkFails=0;$('#lkMsg').textContent='غلط 5 مرات. استنى 30 ثانية.';}else $('#lkMsg').textContent='الرقم غلط';}
+function renderLockSet(){const box=$('#lkSet');if(!box)return;
+ box.innerHTML=LK.on?'<div class="sub" style="color:var(--mint)">✓ القفل شغال'+(LK.cred?' بالبصمة / Face ID، والرقم السري احتياطي':' بالرقم السري')+'</div>'+
+  '<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px"><label class="sub">يقفل لوحده بعد <select id="lkAfter" class="lksel"><option value="0">ما أقفل الصفحة على طول</option><option value="1">دقيقة</option><option value="5">5 دقايق</option><option value="15">ربع ساعة</option></select></label>'+
+  '<button class="minibtn" id="lkNow" type="button">🔒 اقفل دلوقتي</button><button class="minibtn" id="lkOff" type="button">شيل القفل</button></div>'
+ :'<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input id="lkNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="رقم سري احتياطي (4 أرقام أو أكتر)" style="flex:1;min-width:180px"><button class="minibtn gold" id="lkOn" type="button">🔐 فعّل القفل</button></div>';
+ if(LK.on){const s=$('#lkAfter');s.value=String(LK.after);s.onchange=()=>{LK.after=+s.value;saveLock();};
+  $('#lkNow').onclick=()=>showLock();
+  $('#lkOff').onclick=async()=>{const p=prompt('اكتب الرقم السري علشان تشيل القفل');if(p==null)return;if(await pinHash(p.trim(),LK.salt)!==LK.pin){toast('✕','الرقم غلط','');return;}
+   LK.on=false;LK.cred='';LK.pin='';saveLock();renderLockSet();toast('🔓','القفل اتشال','');};}
+ else $('#lkOn').onclick=async()=>{const p=$('#lkNew').value.trim();if(!/^\d{4,8}$/.test(p)){toast('✕','الرقم السري لازم 4 لـ 8 أرقام','');$('#lkNew').focus();return;}
+  LK.salt=b64(rnd(16));LK.pin=await pinHash(p,LK.salt);LK.cred='';
+  if(await bioAvailable()){try{LK.cred=await bioCreate();}catch(e){toast('⚠','البصمة متفعلتش','هيتقفل بالرقم السري بس. تقدر تجرّب تاني بعدين');}}
+  else toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','هيتقفل بالرقم السري');
+  LK.on=true;saveLock();renderLockSet();toast('🔐','القفل اتفعّل',LK.cred?'المرة الجاية هيفتح بالبصمة / Face ID':'بالرقم السري');};}
+function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkGo').addEventListener('click',tryPin);
+ $('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
+ document.addEventListener('visibilitychange',()=>{if(!LK.on)return;if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
+ renderLockSet();if(LK.on)showLock();}
+
+/* ---------- offline first: the phone is the server; the network is only for the coach ---------- */
+function netChip(){const s=$('#sync');if(!s)return;const on=navigator.onLine;s.textContent=on?'ONLINE':'OFFLINE';s.classList.toggle('on',on);
+ s.title=on?'متصل. بياناتك محفوظة على الموبايل':'من غير نت. كل حاجة شغالة ومحفوظة على الموبايل، والمرشد هيرجع لما النت يرجع';}
+window.addEventListener('online',()=>{netChip();toast('📶','رجع النت','المرشد شغال تاني'+(AI.pending.length?' · ببعت أسئلتك اللي استنت':''));flushPending();
+ const c=LS.get('aiBrief');if(AI.cfg.auto&&!(c&&c.date===todayKey()))setTimeout(()=>makeBrief(true),1500);});
+window.addEventListener('offline',()=>{netChip();toast('📴','النت فصل','كمّل عادي. كل حاجة بتتسجل على الموبايل');});
+async function flushPending(){if(!navigator.onLine||!AI.pending.length||AI.busy)return;const q=AI.pending.shift();LS.set('aiPending',AI.pending);
+ const ix=AI.chat.findIndex(m=>m.queued&&m.content===q);if(ix>=0)AI.chat.splice(ix,2);await send(q);if(AI.pending.length)setTimeout(flushPending,1500);}
+async function persistStorage(){try{if(navigator.storage&&navigator.storage.persist){const already=await navigator.storage.persisted();const ok=already||await navigator.storage.persist();const n=$('#stNow');
+  if(n){let used='';try{const e=await navigator.storage.estimate();used=' · مستخدم '+(e.usage/1048576).toFixed(1)+' ميجا';}catch(x){}n.textContent=(ok?'✓ التخزين دائم: المتصفح مش هيمسح بياناتك لوحده':'التخزين عادي. سطّب التطبيق على الشاشة الرئيسية علشان يبقى دائم')+used;n.style.color=ok?'var(--mint)':'var(--frost)';}}}catch(e){}}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildTaskEditor();renderBackup();initLock();persistStorage();booted=true;RB.firstRender=true;
+setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
 </script>
