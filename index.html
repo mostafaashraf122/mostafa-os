@@ -717,6 +717,94 @@ html,body{transition:background 2s}
 @keyframes fz{to{transform:translate(var(--dx),-120px) scale(1.2);opacity:0}}
 /* sound button */
 #snd.act{color:var(--mint);border-color:rgba(94,224,176,.45)}
+/* ================= AI COACH ================= */
+:root{--ai:#b9a4ff;--ai2:#e2d8ff}
+.pnl.aic{border-color:rgba(185,164,255,.32);background:radial-gradient(120% 80% at 100% 0%,rgba(185,164,255,.10),transparent 60%),linear-gradient(180deg,rgba(18,27,47,.92),rgba(12,19,34,.94))}
+.aic .glyph{color:var(--ai);border-color:rgba(185,164,255,.4);background:rgba(185,164,255,.1)}
+.aic .src{margin-inline-start:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;padding:3px 8px;border-radius:20px;border:1px solid rgba(185,164,255,.35);color:var(--ai);white-space:nowrap}
+.aic .src.loc{border-color:var(--line2);color:var(--frost)}
+.aibrief{display:grid;gap:10px}
+.aihl{font-family:var(--display);font-size:18px;line-height:1.45;color:var(--ai2)}
+.aitop{display:grid;gap:6px;margin:0;padding:0;list-style:none;counter-reset:t}
+.aitop li{counter-increment:t;display:flex;gap:10px;align-items:flex-start;background:rgba(7,11,20,.45);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:14.5px}
+.aitop li::before{content:counter(t);font-family:var(--mono);font-size:12px;color:#140d2b;background:var(--ai);border-radius:7px;min-width:20px;height:20px;display:grid;place-items:center;margin-top:2px}
+.airow{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.6}
+.airow .k{flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:3px 7px;border-radius:7px;margin-top:2px;border:1px solid}
+.airow .k.m{color:var(--gold2);border-color:rgba(243,185,77,.4)}
+.airow .k.g{color:var(--sky);border-color:rgba(120,195,255,.4)}
+.airow .k.s{color:var(--mint);border-color:rgba(94,224,176,.4)}
+.airow .k.w{color:var(--ember);border-color:rgba(255,106,61,.45)}
+.aibtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.minibtn.ai{background:var(--ai);border-color:var(--ai);color:#140d2b;font-weight:600;box-shadow:0 4px 14px rgba(185,164,255,.28)}
+.aiload{display:flex;align-items:center;gap:10px;color:var(--frost);font-size:13.5px;padding:8px 0}
+.aidots{display:inline-flex;gap:4px}.aidots i{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:aid 1s infinite ease-in-out}
+.aidots i:nth-child(2){animation-delay:.15s}.aidots i:nth-child(3){animation-delay:.3s}
+@keyframes aid{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.ains{margin-top:14px;border-top:1px dashed rgba(147,165,198,.16);padding-top:12px}
+.ains .rsub{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--dim);margin-bottom:8px}
+.insl{display:grid;gap:7px}
+.ins{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.55;padding:8px 10px;border-radius:12px;background:rgba(7,11,20,.4);border:1px solid var(--line)}
+.ins .ii{flex:0 0 22px;text-align:center;font-size:15px}
+.ins b{color:var(--text);font-weight:600}
+.ins small{display:block;color:var(--frost);font-size:12.5px}
+.ins.good{border-color:rgba(94,224,176,.3)}.ins.warn{border-color:rgba(255,106,61,.35)}
+.aiask{display:flex;gap:8px;margin-top:12px}
+.aiask input{flex:1;min-width:0;background:rgba(7,11,20,.6);border:1px solid rgba(185,164,255,.35);border-radius:12px;color:var(--text);padding:10px 12px;font:inherit;font-size:14.5px}
+.aiask input:focus{outline:none;border-color:var(--ai)}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.qchips button{background:rgba(185,164,255,.07);border:1px solid rgba(185,164,255,.25);border-radius:20px;padding:5px 11px;font-size:12.5px;color:var(--ai2);cursor:pointer;transition:background .2s,border-color .2s}
+.qchips button:hover{background:rgba(185,164,255,.16);border-color:var(--ai)}
+.aiset textarea,.aiset select{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;font-size:13.5px;width:100%}
+.aiset textarea{min-height:110px;resize:vertical;line-height:1.6}
+.aiset .two{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.aiset .two input{width:100%}
+.aiset .tg{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--frost);cursor:pointer}
+.aiset .tg input{accent-color:var(--ai);width:18px;height:18px}
+.memlist{display:grid;gap:5px}
+.memlist div{display:flex;gap:8px;align-items:center;font-size:13px;background:rgba(7,11,20,.4);border:1px solid var(--line);border-radius:10px;padding:5px 8px}
+.memlist div span{flex:1}
+.memlist button{background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px}
+.memlist button:hover{color:var(--ember)}
+/* floating button */
+.aifab{position:fixed;z-index:31;left:max(14px,calc(50% - 560px));bottom:calc(env(safe-area-inset-bottom,0px) + 84px);width:54px;height:54px;border-radius:18px;border:1px solid rgba(185,164,255,.6);
+  background:radial-gradient(circle at 30% 25%,#d9ccff,#8f74f0 60%,#5b45b8);color:#140d2b;font-size:22px;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 30px rgba(110,80,220,.45),0 0 0 4px rgba(185,164,255,.08)}
+.aifab:hover{transform:translateY(-2px)}
+.aifab .pulse{position:absolute;inset:-4px;border-radius:20px;border:2px solid rgba(185,164,255,.5);animation:aip 2.4s ease-out infinite;pointer-events:none}
+@keyframes aip{0%{opacity:.9;transform:scale(.92)}100%{opacity:0;transform:scale(1.25)}}
+/* chat sheet */
+.aisheet{position:fixed;inset:0;z-index:55;display:flex;align-items:flex-end;justify-content:center}
+.aisheet[hidden]{display:none}
+.aisheet .bg{position:absolute;inset:0;background:rgba(3,6,12,.72);backdrop-filter:blur(4px);animation:fadein .3s ease}
+.aicard{position:relative;width:100%;max-width:680px;height:min(92vh,92dvh);display:flex;flex-direction:column;background:linear-gradient(180deg,#151a33,#0b1222);border:1px solid rgba(185,164,255,.35);border-bottom:none;border-radius:24px 24px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.6);animation:aiup .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes aiup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.aihead{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.aihead .av{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#d9ccff,#8f74f0 60%,#5b45b8);color:#140d2b;font-size:18px}
+.aihead h3{margin:0;font-family:var(--display);font-size:18px;line-height:1.2}
+.aihead small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);direction:ltr;text-align:right}
+.aihead .ib{margin-inline-start:auto}
+.aimsgs{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:10px;overscroll-behavior:contain}
+.msg2{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.7;word-wrap:break-word;overflow-wrap:anywhere}
+.msg2.u{align-self:flex-start;background:rgba(185,164,255,.16);border:1px solid rgba(185,164,255,.3);border-start-start-radius:5px}
+.msg2.a{align-self:flex-end;background:rgba(17,26,45,.95);border:1px solid var(--line2);border-start-end-radius:5px}
+.msg2.err{border-color:rgba(255,106,61,.5);color:#ffc7b5}
+.msg2 p{margin:0 0 6px}.msg2 p:last-child{margin:0}
+.msg2 ul,.msg2 ol{margin:4px 0 6px;padding-inline-start:20px}
+.msg2 li{margin:2px 0}
+.msg2 h4{margin:6px 0 4px;font-family:var(--display);font-size:15.5px;color:var(--ai2)}
+.msg2 b{color:var(--gold2)}
+.msg2 .mem{display:block;margin-top:6px;font-size:11.5px;color:var(--mint)}
+.aiempty{margin:auto;text-align:center;color:var(--frost);font-size:14px;max-width:340px;padding:20px 0}
+.aiempty b{display:block;font-family:var(--display);font-size:20px;color:var(--ai2);margin-bottom:6px}
+.aifoot{padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 12px);border-top:1px solid var(--line)}
+.aifoot .qchips{margin:0 0 8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.aifoot .qchips::-webkit-scrollbar{display:none}
+.aifoot .qchips button{white-space:nowrap}
+.aiin{display:flex;gap:8px;align-items:flex-end}
+.aiin textarea{flex:1;min-width:0;resize:none;max-height:120px;min-height:44px;background:rgba(7,11,20,.7);border:1px solid rgba(185,164,255,.35);border-radius:14px;color:var(--text);padding:10px 12px;font:inherit;font-size:15px;line-height:1.5}
+.aiin textarea:focus{outline:none;border-color:var(--ai)}
+.aiin button{flex:0 0 44px;height:44px;border-radius:14px;border:none;background:var(--ai);color:#140d2b;font-size:18px;cursor:pointer;font-weight:700}
+.aiin button:disabled{opacity:.4;cursor:default}
+@media (max-width:420px){.aiset .two{grid-template-columns:1fr 1fr}.aifab{bottom:calc(env(safe-area-inset-bottom,0px) + 82px);width:50px;height:50px}}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -812,6 +900,21 @@ html,body{transition:background 2s}
     </div>
 
     <div class="col" id="mods">
+      <section class="pnl aic" id="coach">
+        <div class="ph"><div class="glyph">✺</div><div><h2>المرشد الذكي</h2><span class="en">AI COACH · مستشارك المهني، وبياناتك على موبايلك</span></div><span class="src loc" id="aiSrc">LOCAL</span></div>
+        <div id="aiBrief"></div>
+        <div class="aiask"><input id="aiQ" type="text" maxlength="600" placeholder="اسأل المرشد… شغل، بيع، دخل، مهارات، بزنس" autocomplete="off" enterkeyhint="send"><button class="minibtn ai" id="aiGo" type="button">اسأل</button></div>
+        <div class="qchips" id="aiChips"></div>
+        <div class="ains"><div class="rsub">INSIGHTS · اللي المرشد شايفه في بياناتك</div><div class="insl" id="aiIns"></div></div>
+        <details class="set aiset" style="margin-top:14px"><summary><div class="glyph" style="width:30px;height:30px;font-size:14px">⚙</div><div><b style="font-size:14px">إعدادات المرشد</b><span class="en" style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);display:block">PROFILE · PRIVACY</span></div></summary>
+          <div class="field"><label for="aiProfile">خلفيتك المهنية من الـ CV (ده بس اللي المرشد يعرفه عنك. عدّله براحتك)</label><textarea id="aiProfile" maxlength="2500"></textarea></div>
+          <div class="field"><label class="tg"><input type="checkbox" id="aiAuto"> اعمل خطة النهارده لوحدك أول ما أفتح الموقع</label></div>
+          <details style="margin-top:10px"><summary class="sub" style="cursor:pointer;font-size:12.5px">متقدّم: مفتاح Gemini (اختياري)</summary>
+            <div class="field"><label for="aiKey">لو حطيت مفتاح Gemini المجاني من aistudio.google.com المرشد هيبقى أذكى وأسرع. لو سبته فاضي هيشتغل ببلاش من غير أي حاجة.</label><input id="aiKey" type="password" autocomplete="off" placeholder="اختياري · AIza..." dir="ltr"></div></details>
+          <div class="trow" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="minibtn" id="aiClear" type="button">امسح المحادثة</button></div>
+          <p class="note">🔒 الخصوصية: بيانات الموبايل (مهامك، صلاتك، صحتك، مودك، بيتك، فلوسك، تاريخك) مبتطلعش من موبايلك خالص. المرشد اللي على النت بيعرف خلفيتك المهنية اللي فوق بس، والسؤال اللي إنت بتكتبه بإيدك. أي حاجة عليها 🔒 بتتحسب على موبايلك ومبتتبعتش لحد: الـ INSIGHTS، وأهم 3 حاجات، ومراجعة الأسبوع، وحساب اليوم. المرشد شغال ببلاش من غير حساب، عن طريق خدمة مجانية اسمها Pollinations، علشان كده متكتبش له باسوردات أو أرقام حسابات. نصايح الفلوس للتفكير والتخطيط، مش استشارة مالية مرخّصة.</p>
+        </details>
+      </section>
       <section class="pnl report" id="report">
         <div class="ph"><div class="glyph" style="color:var(--sky);border-color:rgba(120,195,255,.3);background:rgba(120,195,255,.08)">▤</div><div><h2>التقرير</h2><span class="en">LIVE REPORT · بيتحدّث مع كل علامة</span></div>
           <div class="seg" id="rseg"><button type="button" data-r="today" class="on">النهارده</button><button type="button" data-r="7">7 أيام</button><button type="button" data-r="30">30 يوم</button></div></div>
@@ -879,6 +982,11 @@ html,body{transition:background 2s}
   <button type="button" data-go="#counters">∞<span>العدّاد</span></button>
   <button type="button" class="rev" id="dockRev">◑<span>الحساب</span><i class="badge" id="dockBadge" hidden>0</i></button>
 </nav>
+<button class="aifab" id="aiFab" type="button" aria-label="افتح المرشد الذكي" title="المرشد الذكي">✺<span class="pulse" aria-hidden="true"></span></button>
+<div class="aisheet" id="aiSheet" hidden role="dialog" aria-modal="true" aria-label="المرشد الذكي"><div class="bg" id="aiBg"></div>
+ <div class="aicard"><div class="aihead"><div class="av">✺</div><div><h3>المرشد</h3><small>AI COACH · FREE · ONLINE</small></div><button class="ib" id="aiClose" type="button" aria-label="اقفل">✕</button></div>
+ <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
+ <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
@@ -1583,7 +1691,7 @@ function openReview(which){which=which||'today';RB.rev=which;const tk=todayKey()
   g.list.forEach((it,ix)=>{h+='<div class="mrow" style="animation-delay:'+(ix*40)+'ms" data-mid="'+it.id+'"><span class="x">✕</span><span class="l blur">'+it.label+'</span>'+(which==='today'?(it.auto?'<span class="a">بيتحسب لوحده</span>':'<button type="button" data-done="'+it.id+'">عملتها ✓</button>'):'')+'</div>';});h+='</div>';});
  if(which==='today'){const wd=new Date().getDay();if(wd===5||wd===6){const wm=WEEK.filter(i=>i[0]!=='w_train'&&!S.week.c[i[0]]);if(wm.length){h+='<div class="mgroup"><h4><span>⟳</span>الأسبوع خلاص بيخلص · لسه ناقص</h4>';wm.forEach(i=>{h+='<div class="mrow" data-mid="'+i[0]+'"><span class="x">✕</span><span class="l blur">'+i[1]+'</span><button type="button" data-done="'+i[0]+'">عملتها ✓</button></div>';});h+='</div>';}}}
  h+='<div class="sclose"><div class="quran blur">'+(p.pct>=80?'لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ':'إِنَّ مَعَ الْعُسْرِ يُسْرًا')+'</div><div class="ref">'+(p.pct>=80?'إبراهيم 7':'الشرح 6')+'</div><p class="sub" style="margin:8px 0 0">'+MOTI[Math.floor(Math.random()*MOTI.length)]+'</p></div>'+
-  '<div class="sbtns">'+(which==='yday'?'<button class="minibtn" type="button" data-act="goy">افتح امبارح وعدّل</button>':'')+'<button class="minibtn gold" type="button" data-act="close">'+(which==='today'&&nmiss?'تمام، هكمّل':'تمام')+'</button>'+
+  '<div class="sbtns">'+'<button class="minibtn ai" type="button" data-act="ai">🔒 المرشد يحاسبني</button>'+(which==='yday'?'<button class="minibtn" type="button" data-act="goy">افتح امبارح وعدّل</button>':'')+'<button class="minibtn gold" type="button" data-act="close">'+(which==='today'&&nmiss?'تمام، هكمّل':'تمام')+'</button>'+
   (('Notification' in window)&&Notification.permission==='default'?'<button class="minibtn" type="button" data-act="notif">فعّل تنبيه آخر اليوم</button>':'')+'</div>';
  const card=$('#sheetCard');card.innerHTML=h;const sh=$('#sheet');sh.hidden=false;sh.classList.remove('closing');
  requestAnimationFrame(()=>requestAnimationFrame(()=>{const sr=$('#srr');if(sr)sr.style.strokeDashoffset=L*(1-p.pct/100);}));}
@@ -1597,6 +1705,7 @@ $('#sheetCard').addEventListener('click',e=>{const t=e.target;
   setTimeout(()=>{if(RB.rev==='today'&&!$('#sheet').hidden){const keep=$('#sheetCard').scrollTop;openReview('today');$('#sheetCard').scrollTop=keep;}},480);return;}
  const a=t.closest('[data-act]');if(!a)return;const act=a.dataset.act;
  if(act==='close'){LS.set('reviewed',todayKey());closeReview();}
+ if(act==='ai'){closeReview();setTimeout(()=>sendLocal(6),360);}
  if(act==='goy'){closeReview();go(keyOf(addDays(new Date(),-1)));window.scrollTo({top:0,behavior:'smooth'});}
  if(act==='notif'){try{Notification.requestPermission().then(r=>{if(r==='granted')toast('◑','تمام، هفكّرك','الساعة '+(S.settings.revHour||21)+' طول ما الصفحة مفتوحة');a.remove();});}catch(er){}}});
 $('#dockRev').addEventListener('click',()=>openReview('today'));
@@ -1746,7 +1855,7 @@ function renderMood(){const v=S.day.mood||0;document.querySelectorAll('#mood but
  $('#moodk').textContent=v?('النهارده: '+MOODS[v-1][1]+(v<=2?' · خد نفس، وافتح "هدّي" فوق':' · كمّل كده')):'إنت حاسس بإيه النهارده؟';
  const l=$('#moodline');l.innerHTML='';const end=parseKey(S.view);for(let i=13;i>=0;i--){const k=keyOf(addDays(end,-i));const h=histOf(k);const mv=h&&h.mood?h.mood:0;l.appendChild(el('span','',mv?MOODS[mv-1][0]:'·')).title=k;}}
 
-function renderBoost(p,isToday){if(!booted)return;if(RB.mn==null)renderMentor();renderReport(p,isToday);renderRizq();renderLevel();renderStory();renderHifz();renderQuest();renderGarden();renderMood();renderBadges();checkAutoReview(isToday);}
+function renderBoost(p,isToday){if(!booted)return;if(RB.mn==null)renderMentor();renderReport(p,isToday);renderRizq();renderLevel();renderStory();renderHifz();renderQuest();renderGarden();renderMood();renderBadges();renderCoach();checkAutoReview(isToday);}
 
 /* reveal on scroll + spotlight */
 function setupFX(){if(REDUCE||!('IntersectionObserver' in window))return;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
@@ -1773,7 +1882,230 @@ setInterval(refreshClock,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClock();});
 window.addEventListener('focus',refreshClock);window.addEventListener('pageshow',refreshClock);
 S.lastToday=todayKey();
-buildReport();buildHifz();buildMentor();booted=true;RB.firstRender=true;
+/* ================= AI COACH · المرشد =================
+   Two brains: a local engine that reads your history on the phone (works offline),
+   and a free, keyless online model (Pollinations) for planning and chat. Optional Gemini key = smarter. */
+const DEF_PROFILE='مصطفى أشرف سعيد، Technical Sales & Solutions Consultant في الرياض. +5 سنين في بيع وتسليم حلول تقنية للشركات والحكومة في السعودية ومصر: ERP وCRM، تطبيقات ويب وموبايل، منصات 3D تفاعلية (Unreal / Pixel Streaming)، VR للتدريب والسلامة، جولات 360 وMatterport digital twins. حاليًا Technical Sales Representative في MTC Technology (من 2024): بيدير دورة البيع كاملة من discovery وsolution design وPOC، للمناقصات والـ RFP والتفاوض، وبعدها متابعة التسليم. عملاؤه: GOSI، موانئ، وزارة التعليم، جامعة الملك سعود، جامعة نجران، مستشفيات SMC، وشركات تطوير عقاري (العجلان، أساس مكين، وكان، مهير). قبل كده مدير قسمي Software وMarketing في سحر الإبداع، وTechnical Sales Executive وبعدين WordPress Developer في Tracks Agency في القاهرة. معاه Certified Data Scientist Professional (Python، Pandas، Scikit-learn، ML، SQL، Streamlit) وبكالوريوس IT وعلوم حاسب من جامعة سيناء. هدفه المهني: دخل أعلى بالحلال وبزنس تقني خاص بيه قبل الـ 30.';
+const AI={busy:false,ctl:null,brief:null,
+ cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-3.8-flash'},LS.get('ai')||{}),
+ mem:[],chat:LS.get('aiChat')||[]};
+delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
+const saveAI=()=>LS.set('ai',AI.cfg);
+const MOD_TIP={rooh:'الصلاة والورد هما اللي بيشيلوا اليوم. ابدأ بالجاي في ميعاده',jasad:'جسمك هو رأس مالك. نوم ومية وتمرين قبل أي حاجة',bayt:'البيت الهادي وقود. 10 دقايق حلوين مع مراتك بيفرقوا',waqt:'الموبايل بيسرق اليوم. جلسة تركيز 25 دقيقة دلوقتي',ilm:'10 صفحات بس. الكتاب اللي بتقراه أهم من كورس جديد',career:'الدخل الكبير جاي من البيع. كلّم عميل واحد النهارده',dakhl:'خطوة دخل واحدة كل يوم: follow-up، عرض سعر، أو مهارة'};
+const SENS=['no_smoke','no_drugs'];
+const MONEY_MOVES=[
+ 'ابعت follow-up لأقدم 3 عروض أسعار مفتوحة عندك. أغلب الصفقات بتقفل في المتابعة التالتة مش الأولى.',
+ 'اكتب case study من صفحة واحدة عن مشروع VR أو 3D سلّمته (المشكلة، الحل، النتيجة بالأرقام) واستخدمه في كل عرض جاي.',
+ 'اعرض على عميل حالي حاجة تكمّل اللي اشتراه: 360 tour بعد الـ 3D، أو CRM بعد الموقع. البيع لعميل قديم أسهل 5 مرات من عميل جديد.',
+ 'احسب صافي ثروتك النهارده: كل اللي تملكه ناقص كل اللي عليك. اللي مبيتقاسش مبيتحسّنش.',
+ 'ادفع لنفسك الأول: حوّل نسبة ثابتة (ولو 10%) أول ما المرتب أو العمولة تنزل، قبل أي مصروف.',
+ 'ابني صندوق طوارئ يكفي 3 لـ 6 شهور مصاريف. ده اللي هيخليك تسيب الوظيفة وتبدأ البزنس وانت مطمّن.',
+ 'اكتب قايمة بـ 20 مطوّر عقاري أو جامعة أو مستشفى ممكن يحتاجوا VR أو digital twin، وابدأ بـ 3 النهارده على LinkedIn.',
+ 'حدد سعر استشارة مستقلة بالساعة في VR/3D للعقارات، علشان يبقى عندك عرض جاهز لو حد سألك برّه شغلك (من غير تعارض مع شركتك).',
+ 'راجع اشتراكاتك ومصاريفك الثابتة الشهر ده. كل 100 ريال بتوفّرها شهريًا = 1200 في السنة تبدأ بيها.',
+ 'اطلب من عميل راضي recommendation على LinkedIn أو تعريف بعميل تاني. الإحالة أرخص طريقة تجيب بيها بيعة.',
+ 'استخدم شهادة الداتا ساينس: اعمل dashboard بسيط لـ pipeline بتاعك (Streamlit) واعرف نسبة التحويل في كل مرحلة.',
+ 'فكّر في منتج صغير من خبرتك: باقة "جولة 360 + صفحة هبوط" بسعر ثابت للمشاريع العقارية الصغيرة. ده ممكن يبقى أول بزنس.',
+ 'قبل أي شراء فوق 500 ريال استنى 48 ساعة. أغلب الرغبات بتروح، والفلوس بتفضل.',
+ 'اتعلم التفاوض على العمولة والزيادة: جهّز ورقة بإنجازاتك بالأرقام (العملاء، قيمة الصفقات) قبل أي كلام مع الإدارة.',
+ 'وزّع الدخل: ضروريات، ادخار واستثمار، صدقة، ومتعة. الصدقة بركة في الرزق ومش خسارة.',
+ 'اتعلّم عن الاستثمار الحلال (صناديق أسهم متوافقة مع الشريعة، صكوك، عقار) قبل ما تحط ريال. اسأل مستشار مرخّص قبل القرار.',
+ 'شارك في مناقصة أو RFP صغيرة جديدة الأسبوع ده. خبرتك في B2G نادرة، استغلها.',
+ 'اكتب بوست واحد على LinkedIn عن درس اتعلمته في بيع الحكومة. السمعة دي هي اللي هتجيبلك عملاء البزنس بعدين.'];
+const GROWTH_MOVES=[
+ 'اقرا 10 صفحات من الكتاب قبل ما تمسك الموبايل بالليل.',
+ 'اتمرن على الإنجليزي 15 دقيقة: احكي بصوت عالي عن مشروع عملته كأنك بتعمل pitch.',
+ 'اتفرج على فيديو واحد عن التفاوض أو closing وطبّق منه حاجة بكرة.',
+ 'اكتب 3 حاجات اتعلمتها الأسبوع ده من العملاء. دي مادة البزنس بتاعك.',
+ 'اتعلم أداة AI جديدة تسرّع شغلك في كتابة العروض أو الـ RFP.',
+ 'صحّي بدري 30 دقيقة واشتغل فيهم على أهم حاجة قبل ما حد يكلمك.',
+ 'نام قبل 11. التركيز بكرة بيتصنع النهارده بالليل.',
+ 'اسأل حد سابقك بـ 5 سنين في المجال سؤال واحد عن أكبر غلطة عملها.',
+ 'راجع أهدافك الكبيرة 5 دقايق: البزنس، البيت، الروح. إيه الخطوة الجاية في كل واحد؟',
+ 'ابعد عن السوشيال ساعة كاملة وقت الشغل. سجّل قد إيه خلّصت.',
+ 'اتكلم أقل واسمع أكتر في أي اجتماع النهارده. العميل اللي بيتكلم بيشتري.',
+ 'اعمل حاجة جديدة مجربتهاش قبل كده، ولو صغيرة. المخ بيكبر بالجديد.'];
+const SOUL_MOVES=['الفجر في الجامع، وبعده دعاء: اللهم إني أسألك علمًا نافعًا ورزقًا طيبًا وعملًا متقبلًا.','استغفر 100 مرة. الاستغفار باب الرزق: يُمْدِدْكُمْ بِأَمْوَالٍ وَبَنِينَ.','صدقة صغيرة النهارده ولو بريال. ما نقص مال من صدقة.','صفحتين قرآن بعد صلاة، وراجع آخر سورة حفظتها.','احمد ربنا على 3 نعم واكتبهم قبل ما تنام.','ادعي لمراتك وأهلك بالاسم في السجود.'];
+const pick=(arr,salt)=>{const d=new Date();const n=d.getFullYear()*400+d.getMonth()*31+d.getDate()+(salt||0);return arr[n%arr.length];};
+
+/* ---------- local brain: patterns in your own history ---------- */
+function lastDays(n){const out=[];const now=parseKey(todayKey());for(let i=0;i<n;i++){const k=keyOf(addDays(now,-i));const raw=k===S.day.date?S.day:LS.get('d-'+k);if(!raw)continue;const d=Object.assign(blankDay(k),raw);const p=progress(d);if(p.on===0&&i>0)continue;out.push({k,d,p,h:summarize(d)});}return out;}
+function modRates(days){const r={};MODS.forEach(m=>{let t=0,o=0;days.forEach(x=>{m.items.forEach(i=>{if(!applicable(i,x.k))return;t++;if(isDone(i,x.d))o++;});});r[m.id]={name:m.name,g:m.g,rate:t?o/t:0,t};});return r;}
+function missedItems(days,n){const c={};days.forEach(x=>{MODS.forEach(m=>m.items.forEach(i=>{if(!applicable(i,x.k)||opt(i).auto)return;if(!isDone(i,x.d)){c[i[0]]=c[i[0]]||{id:i[0],label:i[1],mod:m.id,n:0};c[i[0]].n++;}}));});
+ return Object.values(c).sort((a,b)=>b.n-a.n).slice(0,n);}
+function localInsights(){const out=[];const all=lastDays(21);const d7=all.filter(x=>(parseKey(todayKey())-parseKey(x.k))/864e5<7);const prev=all.filter(x=>{const g=(parseKey(todayKey())-parseKey(x.k))/864e5;return g>=7&&g<14;});
+ const avg=a=>a.length?Math.round(a.reduce((s,x)=>s+x.p.pct,0)/a.length):0;
+ if(all.length<3){out.push({i:'◌',c:'',t:'لسه بتعرّف عليك',s:'علّم مهامك 3 أيام وهبدأ أطلعلك أنماط من بياناتك: إيه اللي بيرفع يومك، وإيه اللي بيوقعه.'});}
+ const a7=avg(d7),ap=avg(prev);
+ if(d7.length>=3&&prev.length>=3){const df=a7-ap;out.push({i:df>=0?'↗':'↘',c:df>=5?'good':df<=-5?'warn':'',t:'متوسطك آخر 7 أيام '+a7+'% '+(df>=0?'(+':'(')+df+' عن الأسبوع اللي قبله)',s:df>=5?'إنت طالع. متغيّرش اللي شغال.':df<=-5?'الأسبوع ده نازل شوية. ركّز على أقل 2 بنود بس لحد ما ترجع.':'ثابت. خطوة صغيرة زيادة كل يوم هتفرق.'});}
+ if(d7.length>=3){const r=modRates(d7);const arr=Object.entries(r).filter(e=>e[1].t>0).sort((a,b)=>a[1].rate-b[1].rate);if(arr.length){const w=arr[0],b=arr[arr.length-1];
+  out.push({i:w[1].g,c:'warn',t:'أضعف حتة عندك: '+w[1].name+' ('+Math.round(w[1].rate*100)+'%)',s:MOD_TIP[w[0]]||''});
+  if(b[1].rate>=.6)out.push({i:b[1].g,c:'good',t:'أقوى حتة: '+b[1].name+' ('+Math.round(b[1].rate*100)+'%)',s:'دي عادة اتبنت. استخدمها كمرساة: اربط بيها البند الضعيف.'});}
+  const mi=missedItems(d7,3).filter(x=>AI.cfg.sens||!SENS.includes(x.id));if(mi.length&&mi[0].n>=3)out.push({i:'✕',c:'',t:'أكتر حاجات بتفوتك',s:mi.map(x=>x.label+' ('+x.n+'×)').join(' · ')});}
+ const f1=all.filter(x=>x.h.fajr),f0=all.filter(x=>!x.h.fajr);if(f1.length>=2&&f0.length>=2){const g=avg(f1)-avg(f0);if(g>=8)out.push({i:'☾',c:'good',t:'أيام الفجر في الجامع يومك بيبقى أعلى بـ '+g+'%',s:'الفجر مش بند، ده المفتاح بتاع اليوم كله. ده من بياناتك إنت.'});}
+ const m1=all.filter(x=>x.h.mood>=4),m0=all.filter(x=>x.h.mood&&x.h.mood<=2);if(m1.length>=2&&m0.length>=2){const g=avg(m1)-avg(m0);if(Math.abs(g)>=10)out.push({i:'☺',c:'',t:'مودك وإنجازك ماشيين مع بعض (فرق '+Math.abs(g)+'%)',s:'في الأيام التقيلة متستناش المود. اعمل أصغر بند، والمود بييجي بعده.'});}
+ const sc=d7.filter(x=>x.h.screen!=null);if(sc.length>=3){const av=sc.reduce((s,x)=>s+x.h.screen,0)/sc.length;const goal=+S.settings.screenGoal||3;out.push({i:'⧖',c:av>goal?'warn':'good',t:'وقت الشاشة متوسط '+av.toFixed(1)+' ساعة (الهدف '+goal+')',s:av>goal?'الفرق '+(av-goal).toFixed(1)+' ساعة يوميًا = '+Math.round((av-goal)*30)+' ساعة في الشهر. كفاية تتعلم مهارة كاملة.':'ممتاز. الوقت ده بيروح في بناء نفسك.'});}
+ const inc=d7.filter(x=>x.d.c.income_step).length;if(d7.length>=3)out.push({i:'◈',c:inc>=4?'good':'warn',t:'خطوات الدخل: '+inc+' من آخر '+d7.length+' أيام',s:inc>=4?'كده الفلوس بتتحرك. كمّل.':'الدخل مبيزيدش بالصدفة. خطوة دخل واحدة كل يوم حتى لو مكالمة.'});
+ const ms=MILES.filter(m=>S.settings.ms[m[0]]).length;if(S.settings.birth){const b=parseKey(S.settings.birth);const t=new Date(b.getFullYear()+30,b.getMonth(),b.getDate());const days=Math.ceil((t-parseKey(todayKey()))/864e5);
+  if(days>0){const left=MILES.length-ms;const per=left?Math.floor(days/left):0;const nx=MILES.find(m=>!S.settings.ms[m[0]]);out.push({i:'✦',c:left&&per<45?'warn':'',t:'البزنس: '+ms+'/'+MILES.length+' مراحل · فاضل '+days+' يوم على الـ 30',s:left?'محتاج تخلص مرحلة كل '+per+' يوم تقريبًا. الجاية: '+nx[1]+'.':'خلصت كل المراحل. ما شاء الله!'});}}
+ else out.push({i:'✦',c:'',t:'البزنس: '+ms+'/'+MILES.length+' مراحل',s:'حط تاريخ ميلادك في الإعدادات علشان أحسبلك سرعة الإنجاز المطلوبة لحد الـ 30.'});
+ const fs=streak('fajr');if(fs>=2)out.push({i:'🔥',c:'good',t:'سلسلة الفجر: '+fs+' يوم',s:'متكسرهاش. نام بدري النهارده.'});
+ return out.slice(0,7);}
+function localBrief(){const d=S.day;const miss=missingFor(d);const pri=[];const order=['career','dakhl','ilm','rooh','bayt','jasad','waqt'];
+ (d.top||[]).forEach(t=>{if(t&&t.trim()&&pri.length<3)pri.push(strip(t));});
+ const r7=modRates(lastDays(7));const weak=Object.entries(r7).filter(e=>e[1].t>0).sort((a,b)=>a[1].rate-b[1].rate).map(e=>e[0]);
+ const seq=[...new Set(['career','dakhl'].concat(weak,order))];
+ for(const id of seq){if(pri.length>=3)break;const g=miss.find(x=>x.id===id);if(!g)continue;const it=g.list.find(x=>!x.auto&&!SENS.includes(x.id)&&!/^top/.test(x.id));if(it&&!pri.includes(strip(it.label)))pri.push(strip(it.label));}
+ const p=progress(d);const h=new Date().getHours();
+ const hl=p.pct>=80?'يومك قوي. خلّص الباقي بهدوء واقفل اليوم بحمد.':h<12?'صباح الخير يا مصطفى. 3 حاجات بس النهارده، والباقي بركة.':h<18?'لسه في وقت كتير. ركّز على الـ 3 دول وسيب الباقي.':'آخر اليوم. اختار حاجتين وخلّصهم قبل ما تنام.';
+ const ins=localInsights().find(x=>x.c==='warn');
+ return{headline:hl,top3:pri.slice(0,3),money:pick(MONEY_MOVES),growth:pick(GROWTH_MOVES,3),soul:pick(SOUL_MOVES,5),watch:ins?ins.t+'. '+ins.s:'',src:'local'};}
+
+/* ---------- context sent to the model ---------- */
+function sysPrompt(){return 'إنت "المرشد": مدرب ومستشار مهني لمصطفى في التطوير والنمو وزيادة الدخل بالحلال، جوه تطبيقه Mostafa OS.\n\n'+
+ 'خلفيته المهنية (دي كل اللي تعرفه عنه):\n'+AI.cfg.profile+'\n\n'+
+ 'مهم: إنت مش شايف أي بيانات من التطبيق أو الموبايل بتاعه (مهام، صحة، بيت، فلوس شخصية). متفترضش حاجة عن حياته الشخصية، واعتمد على خلفيته المهنية واللي بيقوله في المحادثة بس.\n\n'+
+ 'أسلوبك:\n- اتكلم عامية مصرية، زي أخ كبير ناجح في البيزنس: دافي بس صريح، من غير مدح فاضي ولا كلام عام.\n- العملة ريال سعودي، والسوق السعودي هو الأساس. متخترعش أرقام أو أسعار مش متأكد منها، وقول "تقريبًا" لما تقدّر.\n- اختصر: من 4 لـ 10 سطور ونقاط قصيرة، إلا لو طلب تفصيل.\n- اختم دايمًا بسطر "خطوتك دلوقتي:" فيه حاجة واحدة يقدر يعملها في أقل من 30 دقيقة.\n'+
+ '- في الفلوس: اديله أطر تفكير وأفكار دخل حلال مبنية على مهاراته (بيع B2G، VR/3D، CRM/ERP، داتا ساينس). متقولش اشتري سهم أو عملة معينة، ومتقترحش حاجة فيها ربا. لما الكلام يبقى استثمار قوله إنك مش مستشار مالي مرخّص.\n'+
+ '- لو احتاجت معلومة علشان تنصحه صح (زي أرقام أو ظروف)، اسأله الأول ومتخمّنش.\n- لو بان إنه في ضيق نفسي شديد: اهتم بيه بهدوء، وانصحه يكلم حد يثق فيه أو متخصص.';}
+
+/* ---------- transport ---------- */
+async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;const to=setTimeout(()=>ctl.abort(),opts.timeout||90000);
+ const sys=sysPrompt();let full='';
+ const pump=async(res,pickText)=>{const rd=res.body.getReader();const dec=new TextDecoder();let buf='';
+  while(true){const {done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let ix;
+   while((ix=buf.indexOf('\n'))>=0){const line=buf.slice(0,ix).trim();buf=buf.slice(ix+1);if(!line.startsWith('data:'))continue;const data=line.slice(5).trim();if(!data||data==='[DONE]')continue;
+    try{const t=pickText(JSON.parse(data));if(t){full+=t;onText&&onText(full);}}catch(e){}}}};
+ try{
+  if(AI.cfg.gkey){
+   const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
+   const body={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||1500,temperature:.8}};
+   if(opts.json)body.generationConfig.responseMimeType='application/json';
+   const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(AI.cfg.gmodel||'gemini-3.8-flash')+':streamGenerateContent?alt=sse',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI.cfg.gkey},body:JSON.stringify(body)});
+   if(!res.ok)throw httpErr(res.status,'gemini');
+   await pump(res,j=>{const p=j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts;return p?p.filter(x=>!x.thought).map(x=>x.text||'').join(''):'';});
+  }else{
+   const body={model:'openai',stream:true,reasoning_effort:'low',messages:[{role:'system',content:sys}].concat(messages)};
+   if(opts.json)body.response_format={type:'json_object'};
+   let res;for(let a=0;a<3;a++){res=await fetch('https://text.pollinations.ai/openai',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(res.ok)break;if(res.status===429||res.status>=500){await new Promise(r=>setTimeout(r,3500*(a+1)));continue;}break;}
+   if(!res.ok)throw httpErr(res.status,'free');
+   await pump(res,j=>{const c=j.choices&&j.choices[0];return c&&c.delta&&typeof c.delta.content==='string'?c.delta.content:'';});
+  }
+ }catch(e){clearTimeout(to);if(e&&e.name==='AbortError')throw new Error(AI.stopped?'stopped':'الرد اتأخر قوي. جرّب تاني.');if(e instanceof TypeError)throw new Error(navigator.onLine?'مش قادر أوصل لخدمة الذكاء دلوقتي. جرّب كمان شوية.':'مفيش نت دلوقتي. التحليلات المحلية شغالة، والمرشد هيرجع أول ما النت يرجع.');throw e;}
+ clearTimeout(to);AI.ctl=null;if(!full.trim())throw new Error('الرد رجع فاضي. جرّب تاني.');return full;}
+function httpErr(s,p){if(p==='gemini'&&(s===400||s===401||s===403))return new Error('مفتاح Gemini مش شغال. شيله من الإعدادات والمرشد هيرجع للمجاني.');
+ if(p==='gemini'&&s===404)return new Error('موديل Gemini مش موجود. شيل المفتاح أو جرّب بعدين.');
+ if(s===429)return new Error('الخدمة المجانية زحمة دلوقتي. استنى دقيقة وجرّب تاني.');return new Error('حصلت مشكلة ('+s+'). جرّب تاني.');}
+
+/* ---------- rendering helpers ---------- */
+function mdLite(t){const lines=esc(t).split('\n');let h='',list=null;const close=()=>{if(list){h+='</'+list+'>';list=null;}};
+ const inl=s=>s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/__(.+?)__/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<b>$1</b>');
+ lines.forEach(l=>{const s=l.trim();let m;
+  if(!s){close();return;}
+  if((m=s.match(/^#{1,4}\s+(.*)$/))){close();h+='<h4>'+inl(m[1])+'</h4>';return;}
+  if((m=s.match(/^[-*•·]\s+(.*)$/))){if(list!=='ul'){close();h+='<ul>';list='ul';}h+='<li>'+inl(m[1])+'</li>';return;}
+  if((m=s.match(/^[0-9٠-٩]+[.)\-]\s+(.*)$/))){if(list!=='ol'){close();h+='<ol>';list='ol';}h+='<li>'+inl(m[1])+'</li>';return;}
+  close();h+='<p>'+inl(s)+'</p>';});close();return h;}
+function takeMem(t){const clean=String(t).replace(/\[\[[^\]]*\]\]/g,'').replace(/\[\[[^\]]*$/,'').trim();return{clean,got:[]};}
+
+/* ---------- daily brief ---------- */
+const BRIEF_ASK=()=>'النهارده '+AR_DAYS[new Date().getDay()]+'. من خلفيتي المهنية بس، اديني دفعة لليوم. رد بـ JSON بس من غير أي كلام قبله أو بعده، بالشكل ده بالظبط:\n{"headline":"جملة واحدة قوية تشحنني النهارده","money":"خطوة محددة النهارده تزوّد دخلي أو مبيعاتي، مبنية على شغلي","growth":"خطوة تطوير مهني أو مهارة النهارده","soul":"تذكير قصير للتوازن والبركة في الرزق"}\nكل قيمة جملة قصيرة عملية بالعامية المصرية.';
+function parseJSON(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<=a)return null;try{return JSON.parse(t.slice(a,b+1));}catch(e){return null;}}
+function renderBrief(){const box=$('#aiBrief');if(!box)return;const tk=todayKey();let b=AI.brief;
+ if(!b||b.date!==tk){const c=LS.get('aiBrief');b=c&&c.date===tk?c:null;AI.brief=b;}
+ const loc=localBrief();const src=b?Object.assign({},loc,{headline:b.headline||loc.headline,money:b.money||loc.money,growth:b.growth||loc.growth,soul:b.soul||loc.soul}):loc;const isAI=!!b;
+ const s=$('#aiSrc');s.textContent=isAI?(AI.cfg.gkey?'GEMINI':'AI')+' · '+(b.at||''):'LOCAL';s.classList.toggle('loc',!isAI);
+ if(AI.busy==='brief'){box.innerHTML='<div class="aiload"><span class="aidots"><i></i><i></i><i></i></span>المرشد بيجهّزلك دفعة النهارده…</div>';return;}
+ const t3=(src.top3||[]).filter(Boolean).slice(0,3);
+ box.innerHTML='<div class="aibrief">'+(src.headline?'<div class="aihl">'+esc(src.headline)+'</div>':'')+
+  (t3.length?'<div class="sub" style="font-size:11.5px">🔒 أهم 3 حاجات · اتحسبت على موبايلك</div><ol class="aitop">'+t3.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':'')+
+  (src.money?'<div class="airow"><span class="k m">MONEY</span><span>'+esc(src.money)+'</span></div>':'')+
+  (src.growth?'<div class="airow"><span class="k g">GROW</span><span>'+esc(src.growth)+'</span></div>':'')+
+  (src.soul?'<div class="airow"><span class="k s">SOUL</span><span>'+esc(src.soul)+'</span></div>':'')+
+  (src.watch?'<div class="airow"><span class="k w">WATCH</span><span>🔒 '+esc(src.watch)+'</span></div>':'')+
+  '<div class="aibtns"><button class="minibtn ai" type="button" data-ai="brief">'+(isAI?'↻ دفعة جديدة':'✺ دفعة من المرشد')+'</button>'+(t3.length?'<button class="minibtn" type="button" data-ai="usetop">حطهم في أهم 3 ✓</button>':'')+'<button class="minibtn" type="button" data-ai="chat">افتح المحادثة</button></div>'+
+  (b&&b.err?'<p class="note" style="color:#ffb9a3">'+esc(b.err)+'</p>':'')+'</div>';}
+async function makeBrief(silent){if(AI.busy)return;if(!navigator.onLine){if(!silent)toast('✺','مفيش نت','الخطة المحلية شغالة لحد ما النت يرجع');return;}
+ AI.busy='brief';renderBrief();
+ try{const t=await aiStream([{role:'user',content:BRIEF_ASK()}],null,{json:true,max:900});const j=parseJSON(takeMem(t).clean);
+  if(!j||!(j.headline||j.money))throw new Error('الرد مكانش مظبوط. جرّب تاني.');
+  const n=new Date();AI.brief={date:todayKey(),at:(n.getHours()%12||12)+':'+pad(n.getMinutes()),headline:String(j.headline||''),money:String(j.money||''),growth:String(j.growth||''),soul:String(j.soul||'')};
+  LS.set('aiBrief',AI.brief);if(!silent)toast('✺','دفعة النهارده جاهزة','من المرشد');}
+ catch(e){if(!silent)toast('✺','المرشد مقدرش يرد دلوقتي',e.message);}
+ AI.busy=false;renderBrief();}
+function useTop(){const src=localBrief();const t3=(src.top3||[]).slice(0,3);if(!t3.length)return;
+ if(S.view!==todayKey())go(todayKey());const had=(S.day.top||[]).some(x=>x&&x.trim());
+ if(had&&!confirm('عندك مهام مكتوبة في "أهم 3". أبدّلهم بخطة المرشد؟'))return;
+ S.day.top=[0,1,2].map(i=>(t3[i]||'').slice(0,120));[1,2,3].forEach(n=>{S.day.c['top'+n]=false;const inp=$('#top'+n);if(inp)inp.value=S.day.top[n-1];});
+ saveDay();render();toast('✓','حطيت خطة المرشد في أهم 3','في كارت الكارير والبزنس');}
+
+/* ---------- chat ---------- */
+const QUICK=[
+ ['🔒 خطة النهارده',null,'plan'],
+ ['◈ أزوّد دخلي','بناءً على خبرتي ومهاراتي، اديني 3 أفكار حلال أزوّد بيها دخلي في الـ 90 يوم الجايين، مع أول خطوة لكل واحدة. اسألني عن أي رقم محتاجه.'],
+ ['▣ جهّزني لعميل','عندي مكالمة أو اجتماع مع عميل. جهّزني: أسئلة discovery أسألها، أكتر 3 اعتراضات متوقعة وأرد عليها إزاي، وإزاي أقفل بخطوة جاية واضحة. اسألني الأول العميل مين ومحتاج إيه.'],
+ ['✦ البزنس قبل 30','اديني فكرتين بزنس تقني مناسبين لخبرتي في VR/3D والبيع للحكومة والعقارات في السعودية، وخطة 90 يوم واقعية أبدأ بيها وأنا لسه في وظيفتي.'],
+ ['🔒 راجع أسبوعي',null,'week'],
+ ['💰 نظّم فلوسي','علّمني إطار بسيط أنظم بيه فلوسي: ميزانية، نسبة ادخار، صندوق طوارئ، وأبدأ أتعلم الاستثمار الحلال إزاي. اسألني عن الأرقام اللي محتاجها.'],
+ ['🔒 حاسبني على اليوم',null,'day'],
+ ['◎ أتعلم إيه','إيه أهم مهارة أتعلمها الشهر ده تزوّد دخلي كبياع تقني أو تقربني من البزنس؟ اديني خطة 30 يوم ليها بمصادر مجانية.'],
+ ['🎯 RFP ومناقصة','ساعدني أكتب رد قوي على RFP أو مناقصة حكومية: الهيكل، إزاي أبرز القيمة والـ ROI، وأكتر الأخطاء اللي بتخسّر.'],
+ ['☁ أنا مضايق','أنا مضايق ومش قادر النهارده. ساعدني أفوق وأرجع خطوة خطوة.']];
+const LOCAL_NOTE='\n\n🔒 اتحسب على موبايلك من بياناتك، ومبيتبعتش لأي حد.';
+function localAnswer(kind){const p=progress(S.day);
+ if(kind==='plan'){const b=localBrief();return '**خطة النهارده**\n'+b.headline+'\n'+(b.top3.length?b.top3.map((x,i)=>(i+1)+'. '+x).join('\n'):'- اكتب أهم 3 حاجات في كارت الكارير وأنا أرتّبهم لك.')+'\n\n**فلوس:** '+b.money+'\n**تطوير:** '+b.growth+'\n**روح:** '+b.soul+(b.watch?'\n**خلي بالك:** '+b.watch:'')+LOCAL_NOTE;}
+ if(kind==='week'){const ins=localInsights();return '**مراجعة الأسبوع**\n'+ins.map(x=>'- **'+x.t+'**'+(x.s?': '+x.s:'')).join('\n')+'\n\nمتوسط آخر 7 أيام: **'+avgDays(7)+'%** · آخر 30 يوم: **'+avgDays(30)+'%**\n\nخطوتك دلوقتي: اختار أضعف حتة فوق وحط فيها بند واحد ثابت كل يوم الأسبوع الجاي.'+LOCAL_NOTE;}
+ const miss=missingFor(S.day);const n=miss.reduce((a,g)=>a+g.list.length,0);
+ const verdict=p.pct>=80?'يوم قوي. الحمد لله.':p.pct>=50?'يوم كويس، بس إنت أقوى من كده.':p.pct>0?'اليوم كان تقيل. مش مشكلة، المهم بكرة.':'لسه مبدأتش. أصغر بند دلوقتي أحسن من ولا حاجة.';
+ return '**حساب اليوم**\nخلّصت **'+p.on+'** من **'+p.tot+'** ('+p.pct+'%). '+verdict+'\n'+(n?'\n**لسه ناقص:**\n'+miss.map(g=>'- '+g.name+': '+g.list.slice(0,4).map(x=>strip(x.label)).join('، ')+(g.list.length>4?' …':'')).join('\n'):'\nمفيش حاجة ناقصة. ما شاء الله.')+'\n\nخطوتك دلوقتي: '+(n?'اختار حاجتين من اللي ناقص وخلّصهم قبل ما تنام.':'احمد ربنا ونام بدري.')+LOCAL_NOTE;}
+function sendLocal(i){const q=QUICK[i];const sh=$('#aiSheet');sh.hidden=false;AI.chat.push({role:'user',content:q[0].replace('🔒 ',''),local:1});AI.chat.push({role:'assistant',content:localAnswer(q[2]),local:1});renderChat();}
+function chatHTML(){if(!AI.chat.length)return '<div class="aiempty"><b>أهلًا يا مصطفى</b>أنا عارف خلفيتك المهنية بس، ومش شايف بيانات موبايلك. اسألني عن البيع والعملاء والدخل والمهارات والبزنس. الأزرار اللي عليها 🔒 بتتحسب على موبايلك ومبتتبعتش لحد.</div>';
+ return AI.chat.map(m=>'<div class="msg2 '+(m.role==='user'?'u':'a')+(m.err?' err':'')+'">'+(m.role==='user'?esc(m.content).replace(/\n/g,'<br>'):mdLite(m.content))+(m.mem&&m.mem.length?'<span class="mem">✓ المرشد افتكر: '+esc(m.mem.join(' · '))+'</span>':'')+'</div>').join('');}
+function renderChat(scroll){const box=$('#aiMsgs');if(!box)return;box.innerHTML=chatHTML();if(scroll!==false)box.scrollTop=box.scrollHeight;}
+function openChat(prefill){const sh=$('#aiSheet');sh.hidden=false;renderChat();const ta=$('#aiIn');if(prefill){ta.value='';send(prefill);}else setTimeout(()=>{try{ta.focus({preventScroll:true});}catch(e){}},250);}
+function closeChat(){$('#aiSheet').hidden=true;}
+async function send(text){text=String(text||'').trim();if(!text)return;if(AI.busy){toast('✺','استنى المرشد يخلّص الرد','');return;}
+ const sh=$('#aiSheet');if(sh.hidden){sh.hidden=false;}
+ AI.chat.push({role:'user',content:text});const ans={role:'assistant',content:''};AI.chat.push(ans);AI.busy='chat';AI.stopped=false;updSend();
+ renderChat();const box=$('#aiMsgs');const node=box.lastElementChild;node.innerHTML='<span class="aidots"><i></i><i></i><i></i></span>';
+ const hist=AI.chat.slice(0,-1).filter(m=>!m.err&&!m.local).slice(-12).map(m=>({role:m.role,content:m.content}));
+ try{const full=await aiStream(hist,t=>{const c=t.replace(/\[\[[^\]]*\]?\]?$/,'');node.innerHTML=mdLite(c);const nearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<160;if(nearBottom)box.scrollTop=box.scrollHeight;});
+  const r=takeMem(full);ans.content=r.clean;}
+ catch(e){if(e.message==='stopped'){ans.content=(node.textContent||'').trim()||'وقفت.';}else{ans.content=e.message;ans.err=true;}}
+ AI.busy=false;if(AI.chat.length>40)AI.chat=AI.chat.slice(-40);LS.set('aiChat',AI.chat.filter(m=>!m.err&&!m.local));renderChat(false);box.scrollTop=box.scrollHeight;updSend();}
+function updSend(){const b=$('#aiSend');if(!b)return;b.textContent=AI.busy==='chat'?'■':'↑';b.title=AI.busy==='chat'?'وقّف':'ابعت';}
+
+/* ---------- panel + settings ---------- */
+function renderInsights(){const box=$('#aiIns');if(!box)return;box.innerHTML=localInsights().map(x=>'<div class="ins '+x.c+'"><span class="ii">'+x.i+'</span><div><b>'+esc(x.t)+'</b>'+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</div></div>').join('');}
+function renderAIMem(){}
+let aiSig='';
+function renderCoach(){if(!$('#coach'))return;const sig=todayKey()+'|'+JSON.stringify(S.hist[todayKey()]||{})+'|'+S.view+'|'+(AI.brief&&AI.brief.at);if(sig===aiSig)return;aiSig=sig;renderBrief();renderInsights();}
+function buildCoach(){
+ $('#aiChips').innerHTML=QUICK.slice(0,7).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
+ $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
+ const P=$('#aiProfile');P.value=AI.cfg.profile;P.addEventListener('change',()=>{AI.cfg.profile=P.value.trim()||DEF_PROFILE;saveAI();toast('✓','المرشد حفظ الكلام عنك','');});
+ [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.trim();saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
+ const au=$('#aiAuto');au.checked=!!AI.cfg.auto;au.addEventListener('change',()=>{AI.cfg.auto=au.checked;saveAI();});
+ $('#aiClear').addEventListener('click',()=>{if(!confirm('أمسح المحادثة كلها؟'))return;AI.chat=[];LS.set('aiChat',[]);renderChat();toast('✓','المحادثة اتمسحت','');});
+ const ask=()=>{const q=$('#aiQ');const v=q.value.trim();if(!v){openChat();return;}q.value='';openChat(v);};
+ $('#aiGo').addEventListener('click',ask);$('#aiQ').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();ask();}});
+ const chips=e=>{const b=e.target.closest('[data-q]');if(!b)return;const q=QUICK[+b.dataset.q];if(q[2])sendLocal(+b.dataset.q);else openChat(q[1]);};
+ $('#aiChips').addEventListener('click',chips);$('#aiQuick').addEventListener('click',chips);
+ $('#aiBrief').addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;if(a==='brief')makeBrief(false);if(a==='usetop')useTop();if(a==='chat')openChat();});
+ $('#aiFab').addEventListener('click',()=>openChat());
+ $('#aiClose').addEventListener('click',closeChat);$('#aiBg').addEventListener('click',closeChat);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#aiSheet').hidden)closeChat();});
+ const ta=$('#aiIn');const grow=()=>{ta.style.height='auto';ta.style.height=Math.min(120,ta.scrollHeight)+'px';};
+ ta.addEventListener('input',grow);
+ ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&matchMedia('(hover:hover)').matches){e.preventDefault();$('#aiSend').click();}});
+ $('#aiSend').addEventListener('click',()=>{if(AI.busy==='chat'){AI.stopped=true;try{AI.ctl&&AI.ctl.abort();}catch(e){}return;}const v=ta.value;ta.value='';grow();send(v);});
+ window.addEventListener('online',()=>{aiSig='';renderCoach();});
+ renderCoach();
+ // the coach starts every day on its own: one plan per day, quietly, once the page settles
+ setTimeout(()=>{const c=LS.get('aiBrief');if(AI.cfg.auto&&navigator.onLine&&!(c&&c.date===todayKey()))makeBrief(true);},2500);}
+
+buildReport();buildHifz();buildMentor();buildCoach();booted=true;RB.firstRender=true;
 setSync('local');render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
