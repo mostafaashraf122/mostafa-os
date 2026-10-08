@@ -2281,9 +2281,10 @@ S.lastToday=todayKey();
    and a free, keyless online model (Pollinations) for planning and chat. Optional Gemini key = smarter. */
 const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYTEQ Technologies بالرياض من سبتمبر 2026 (في فترة التجربة أول 3 شهور، والعمولة نسبة على كل بيعة بتتصرف كل ربع سنة). خبرة +5 سنين في بيع الحلول التقنية للشركات (ERP وCRM وتطبيقات وحلول رقمية)، وإدارة حسابات العملاء، والعروض والتفاوض، وقبل كده أدار فرق سوفتوير وماركتنج واشتغل WordPress Developer. معاه Certified Data Scientist Professional (Python، ML، SQL) وبكالوريوس IT. هدفه: يتطور كإنسان، ويقرب من ربنا، ويزوّد دخله بالحلال، ويبني بزنس خاص بيه قبل الـ 30.';
 const AI={busy:false,ctl:null,brief:null,
- cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-3.8-flash'},LS.get('ai')||{}),
+ cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-flash-latest'},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
+if(AI.cfg.gmodel==='gemini-3.8-flash')AI.cfg.gmodel='gemini-flash-latest';
 if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
 try{localStorage.removeItem('mos:aiBrief');}catch(e){}
 const saveAI=()=>LS.set('ai',AI.cfg);
@@ -2337,30 +2338,40 @@ function sysPrompt(){return 'إنت "المرشد": مدرب ومستشار مه
  '- لو احتاجت معلومة علشان تنصحه صح (زي أرقام أو ظروف)، اسأله الأول ومتخمّنش.\n- لو بان إنه في ضيق نفسي شديد: اهتم بيه بهدوء، وانصحه يكلم حد يثق فيه أو متخصص.';}
 
 /* ---------- transport ---------- */
-async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;const to=setTimeout(()=>ctl.abort(),opts.timeout||90000);
- const sys=sysPrompt();let full='';
+async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;
+ const total=setTimeout(()=>ctl.abort(),opts.timeout||60000);
+ /* stall guard: if no bytes arrive for 18s (connect or mid-stream) abort instead of hanging forever */
+ let stall=null;const kick=ms=>{clearTimeout(stall);stall=setTimeout(()=>{AI.stalled=true;ctl.abort();},ms||18000);};
+ const sys=sysPrompt();let full='';AI.stalled=false;
  const pump=async(res,pickText)=>{const rd=res.body.getReader();const dec=new TextDecoder();let buf='';
-  while(true){const {done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let ix;
+  while(true){kick();const {done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let ix;
    while((ix=buf.indexOf('\n'))>=0){const line=buf.slice(0,ix).trim();buf=buf.slice(ix+1);if(!line.startsWith('data:'))continue;const data=line.slice(5).trim();if(!data||data==='[DONE]')continue;
     try{const t=pickText(JSON.parse(data));if(t){full+=t;onText&&onText(full);}}catch(e){}}}};
- try{
-  if(AI.cfg.gkey){
-   const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
-   const body={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||1500,temperature:.8}};
-   if(opts.json)body.generationConfig.responseMimeType='application/json';
-   const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(AI.cfg.gmodel||'gemini-3.8-flash')+':streamGenerateContent?alt=sse',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI.cfg.gkey},body:JSON.stringify(body)});
-   if(!res.ok)throw httpErr(res.status,'gemini');
-   await pump(res,j=>{const p=j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts;return p?p.filter(x=>!x.thought).map(x=>x.text||'').join(''):'';});
-  }else{
-   const body={model:'openai',stream:true,reasoning_effort:'low',messages:[{role:'system',content:sys}].concat(messages)};
-   if(opts.json)body.response_format={type:'json_object'};
-   let res;for(let a=0;a<3;a++){res=await fetch('https://text.pollinations.ai/openai',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(res.ok)break;if(res.status===429||res.status>=500){await new Promise(r=>setTimeout(r,3500*(a+1)));continue;}break;}
-   if(!res.ok)throw httpErr(res.status,'free');
-   await pump(res,j=>{const c=j.choices&&j.choices[0];return c&&c.delta&&typeof c.delta.content==='string'?c.delta.content:'';});
-  }
- }catch(e){clearTimeout(to);if(e&&e.name==='AbortError')throw new Error(AI.stopped?'stopped':'الرد اتأخر قوي. جرّب تاني.');if(e instanceof TypeError)throw new Error(navigator.onLine?'مش قادر أوصل لخدمة الذكاء دلوقتي. جرّب كمان شوية.':'مفيش نت دلوقتي. التحليلات المحلية شغالة، والمرشد هيرجع أول ما النت يرجع.');throw e;}
- clearTimeout(to);AI.ctl=null;if(!full.trim())throw new Error('الرد رجع فاضي. جرّب تاني.');return full;}
+ const gemini=async()=>{
+  const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
+  const body={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||2048,temperature:.7,thinkingConfig:{thinkingBudget:0}}};
+  if(opts.json)body.generationConfig.responseMimeType='application/json';
+  const models=[...new Set([AI.cfg.gmodel,'gemini-flash-latest','gemini-2.5-flash'].filter(Boolean))];let res,last=0;
+  for(const m of models){kick(20000);
+   res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':streamGenerateContent?alt=sse',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI.cfg.gkey},body:JSON.stringify(body)});
+   if(res.status===400&&body.generationConfig.thinkingConfig){delete body.generationConfig.thinkingConfig;res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':streamGenerateContent?alt=sse',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI.cfg.gkey},body:JSON.stringify(body)});}
+   if(res.ok){if(AI.cfg.gmodel!==m){AI.cfg.gmodel=m;saveAI();}break;}last=res.status;if(res.status!==404)break;}
+  if(!res.ok)throw httpErr(last||res.status,'gemini');
+  await pump(res,j=>{const p=j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts;return p?p.filter(x=>!x.thought).map(x=>x.text||'').join(''):'';});};
+ const free=async()=>{
+  const body={model:'openai',stream:true,messages:[{role:'system',content:sys}].concat(messages)};
+  if(opts.json)body.response_format={type:'json_object'};
+  kick(20000);const res=await fetch('https://text.pollinations.ai/openai',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok)throw httpErr(res.status,'free');
+  await pump(res,j=>{const c=j.choices&&j.choices[0];return c&&c.delta&&typeof c.delta.content==='string'?c.delta.content:'';});};
+ const done=()=>{clearTimeout(total);clearTimeout(stall);AI.ctl=null;};
+ try{if(AI.cfg.gkey)await gemini();else await free();}
+ catch(e){done();
+  if(e&&e.name==='AbortError'){if(AI.stopped)throw new Error('stopped');
+   if(full.trim())return full;
+   throw new Error(AI.cfg.gkey?'Gemini اتأخر في الرد. جرّب تاني.':'الخدمة المجانية واقعة أو بطيئة جدًا دلوقتي. حط مفتاح Gemini المجاني من الإعدادات (aistudio.google.com) والمرشد هيبقى أسرع وأذكى بكتير.');}
+  if(e instanceof TypeError)throw new Error(navigator.onLine?'مش قادر أوصل لخدمة الذكاء دلوقتي. جرّب كمان شوية.':'مفيش نت دلوقتي. التحليلات المحلية شغالة، والمرشد هيرجع أول ما النت يرجع.');throw e;}
+ done();if(!full.trim())throw new Error('الرد رجع فاضي. جرّب تاني.');return full;}
 function httpErr(s,p){if(p==='gemini'&&(s===400||s===401||s===403))return new Error('مفتاح Gemini مش شغال. شيله من الإعدادات والمرشد هيرجع للمجاني.');
  if(p==='gemini'&&s===404)return new Error('موديل Gemini مش موجود. شيل المفتاح أو جرّب بعدين.');
  if(s===429)return new Error('الخدمة المجانية زحمة دلوقتي. استنى دقيقة وجرّب تاني.');return new Error('حصلت مشكلة ('+s+'). جرّب تاني.');}
