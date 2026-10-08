@@ -926,6 +926,7 @@ html.locked .lock{display:grid}
 /* pages + dock */
 .dock button.on{color:var(--gold);background:rgba(243,185,77,.12)}
 .dock button[data-pg]{min-width:52px}
+@media (max-width:370px){.dock{max-width:calc(100vw - 12px)}.dock button,.dock button[data-pg]{min-width:0;padding:6px 6px}.dock button span{font-size:9.5px}}
 @media (min-width:900px){html[data-page="money"] .grid,html[data-page="coach"] .grid,html[data-page="soul"] .grid,html[data-page="more"] .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .col:empty,.col:not(:has(.pnl:not([hidden]))){display:none}
 @media (min-width:900px){.grid:has(.col:not(:has(.pnl:not([hidden])))){grid-template-columns:minmax(0,760px);justify-content:center}}
@@ -1477,7 +1478,7 @@ buildMods();
 /* ---------- task editor + backup (all on this phone) ---------- */
 function buildTaskEditor(){const host=$('#mods');const sec=el('section','pnl');sec.id='m-edit';
  const groups=MODS_DEF.concat([{id:'week',name:'الأسبوع ده',g:'⟳',items:WEEK_DEF}]);
- const row=(id,label,isCustom,hidden,st)=>'<div class="erow'+(hidden?' off':'')+'" data-eid="'+id+'"'+(isCustom?' data-custom="1"':'')+'><input value="'+esc(strip(label))+'" maxlength="90" aria-label="اسم البند">'+
+ const row=(id,label,isCustom,hidden,st)=>'<div class="erow'+(hidden?' off':'')+'" data-eid="'+id+'"'+(isCustom?' data-custom="1"':'')+'><input value="'+esc(isCustom?label:strip(label))+'" maxlength="90" aria-label="اسم البند">'+
   (isCustom?'<label class="est" title="عداد أيام متواصلة"><input type="checkbox"'+(st?' checked':'')+'>🔥</label><button type="button" class="edel" title="امسح البند">✕</button>':'<button type="button" class="ehide" title="'+(hidden?'رجّعه':'خبّيه')+'">'+(hidden?'↺':'✕')+'</button>')+'</div>';
  let h='<details class="set"><summary><div class="glyph">✎</div><div><h2 style="font-family:var(--display);font-size:19px;margin:0">عدّل مهامك</h2><span class="en" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--dim)">YOUR TASKS · محفوظة على موبايلك بس</span></div></summary>'+
   '<p class="note">غيّر اسم أي بند، أو خبّيه ✕، أو ضيف بنود جديدة. البنود اللي بتضيفها هنا بتتحفظ على موبايلك بس ومش بتظهر في كود الموقع العام، فحط فيها أي حاجة خاصة. علّم 🔥 على البند لو عايز عداد أيام متواصلة ليه.</p>';
@@ -1491,7 +1492,7 @@ function buildTaskEditor(){const host=$('#mods');const sec=el('section','pnl');s
   const hb=t.closest('.ehide');if(hb){const r=hb.closest('.erow');r.classList.toggle('off');hb.textContent=r.classList.contains('off')?'↺':'✕';return;}
   const db=t.closest('.edel');if(db){db.closest('.erow').remove();return;}
   const ab=t.closest('.eadd button');if(ab){const box=ab.closest('.eadd');const inp=box.querySelector('input');const v=inp.value.trim();if(!v)return;
-   const id='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);box.insertAdjacentHTML('beforebegin',row(id,v,true,false,false));inp.value='';return;}});
+   const id=(box.closest('.egrp').dataset.gid==='week'?'w_u':'u')+Date.now().toString(36)+Math.random().toString(36).slice(2,5);box.insertAdjacentHTML('beforebegin',row(id,v,true,false,false));inp.value='';return;}});
  sec.querySelectorAll('.eadd input').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.nextElementSibling.click();}}));
  $('#eSave').addEventListener('click',()=>{const nt={ren:{},hide:[],add:{}};
   sec.querySelectorAll('.egrp').forEach(g=>{const gid=g.dataset.gid;const defs=(gid==='week'?WEEK_DEF:MODS_DEF.find(m=>m.id===gid).items);
@@ -1529,9 +1530,9 @@ const monKey=d=>d.slice(0,7);
 const fmt=n=>Math.round(n).toLocaleString('en');
 const AR_MON=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 function monSum(mk){const ar=(MN.arch||{})[mk];let i=ar?ar.i:0,o=ar?ar.o:0;const cats=ar?Object.assign({},ar.cats):{};MN.list.forEach(x=>{if(monKey(x.d)!==mk)return;if(x.t==='in')i+=x.a;else{o+=x.a;cats[x.c]=(cats[x.c]||0)+x.a;}});return{i,o,net:i-o,rate:i>0?Math.round((i-o)*100/i):null,cats};}
-function budget(mk){const s=monSum(mk);const sl=MN.list.filter(x=>x.t==='in'&&x.c==='مرتب'&&monKey(x.d)===mk).reduce((a,x)=>a+x.a,0);
+function budget(mk){const s=monSum(mk);const sl=MN.list.filter(x=>x.t==='in'&&x.c==='مرتب'&&monKey(x.d)===mk).reduce((a,x)=>a+x.a,0)+(((MN.arch||{})[mk]||{}).sal||0);
  const sal=Math.max(+MN.plan.sal||0,sl),extra=s.i-sl,inc=sal+extra;const fx=MN.plan.fixed||[];const fixed=fx.reduce((a,f)=>a+f.a,0);const paid=(MN.paid[mk]||[]).filter(id=>fx.some(f=>f.id===id));
- const save=+MN.goal||0;let saved=0;try{SV.goals.forEach(g=>g.moves.forEach(m=>{if(monKey(m.d)===mk)saved+=m.a;}));}catch(e){}
+ const save=+MN.goal||0;let saved=0;try{SV.goals.forEach(g=>g.moves.forEach(m=>{if(!m.carry&&monKey(m.d)===mk)saved+=m.a;}));}catch(e){}
  const left=inc-fixed-save-s.o;const cur=monKey(todayKey());let days=0;if(mk===cur){const t=parseKey(todayKey());days=new Date(t.getFullYear(),t.getMonth()+1,0).getDate()-t.getDate()+1;}
  return{inc,sal,extra,fixed,fx,paid,save,saved,varOut:s.o,left,days,rate:inc>0?Math.round((inc-fixed-s.o)*100/inc):null};}
 function shiftMon(mk,n){const a=mk.split('-').map(Number);const d=new Date(a[0],a[1]-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1);}
@@ -1746,7 +1747,7 @@ function tickFocus(){const ft=$('#ftime'),bs=$('#fstart');if(!fEnd){ft.textConte
 function runFocus(){if(fInt)clearInterval(fInt);fInt=setInterval(tickFocus,1000);tickFocus();}
 $('#fstart').addEventListener('click',()=>{if(fEnd)return;fEnd=Date.now()+25*60*1000;LS.set('focusEnd',fEnd);runFocus();});
 $('#freset').addEventListener('click',()=>{fEnd=0;LS.set('focusEnd',0);if(fInt){clearInterval(fInt);fInt=null;}tickFocus();});
-if(fEnd)runFocus();
+if(fEnd)setTimeout(runFocus,0);
 
 /* =================== stories + hifz data =================== */
 const STORIES=[
@@ -1931,7 +1932,7 @@ function countUp(node,to,suf){suf=suf||'';const from=+(node.dataset.v||0);node.d
 function avgDays(n){let s=0,c=0;const now=new Date();for(let i=0;i<n;i++){const h=histOf(keyOf(addDays(now,-i)));if(h){s+=h.pct;c++;}}return c?Math.round(s/c):0;}
 
 /* toast + sparks */
-function toast(icon,title,sub,xp){const box=$('#toasts');const t=el('div','toast','<span class="ti">'+icon+'</span><div><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</div>'+(xp?'<span class="xp">'+xp+'</span>':''));
+function toast(icon,title,sub,xp){const box=$('#toasts');const E=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const t=el('div','toast','<span class="ti">'+E(icon)+'</span><div><b>'+E(title)+'</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'</div>'+(xp?'<span class="xp">'+xp+'</span>':''));
  box.appendChild(t);while(box.children.length>3)box.firstChild.remove();setTimeout(()=>{t.classList.add('bye');setTimeout(()=>t.remove(),400);},2600);}
 function sparks(x,y,n,colors){if(REDUCE)return;colors=colors||['#f3b94d','#ffdc93','#ff6a3d','#5ee0b0'];for(let i=0;i<(n||14);i++){const s=el('i','spark');const a=Math.random()*6.28,r=40+Math.random()*70;
  s.style.left=x+'px';s.style.top=y+'px';s.style.background=colors[i%colors.length];s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r-20+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),850);}}
@@ -2449,15 +2450,15 @@ async function bioCreate(){const c=await navigator.credentials.create({publicKey
  return b64(c.rawId);}
 async function bioCheck(){if(!LK.cred)return false;const a=await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(LK.cred),transports:['internal','hybrid']}],userVerification:'required',timeout:60000}});
  return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
-let lkFails=0,lkWait=0,hiddenAt=0;
+let lkFails=+(LK.fails||0),lkWait=+(LK.wait||0),hiddenAt=0;
 function showLock(){if(!LK.on)return;document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
  $('#lkBio').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!LK.pin;}if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
-function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;}
+function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;if(LK.fails||LK.wait||LK.lockouts){LK.fails=0;LK.wait=0;LK.lockouts=0;saveLock();}}
 async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الرقم السري.';}
  catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الرقم السري.';}}
 async function tryPin(){const v=$('#lkPin').value.trim();if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
  if(await pinHash(v,LK.salt)===LK.pin){unlock();return;}lkFails++;$('#lkPin').value='';
- if(lkFails>=5){lkWait=Date.now()+30000;lkFails=0;$('#lkMsg').textContent='غلط 5 مرات. استنى 30 ثانية.';}else $('#lkMsg').textContent='الرقم غلط';}
+ LK.fails=lkFails;saveLock();if(lkFails>=5){lkWait=Date.now()+30000*Math.max(1,(LK.lockouts=(LK.lockouts||0)+1));lkFails=0;LK.fails=0;LK.wait=lkWait;saveLock();$('#lkMsg').textContent='غلط 5 مرات. استنى 30 ثانية.';}else $('#lkMsg').textContent='الرقم غلط';}
 function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkGo').addEventListener('click',tryPin);
  $('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
  document.addEventListener('visibilitychange',()=>{if(!LK.on)return;if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
@@ -2524,7 +2525,7 @@ function renderSave(){if(!$('#savings'))return;const tot=SV.goals.reduce((s,g)=>
  $('#svTot').textContent=fmt(tot)+' ر.س';
  const R=24,L=2*Math.PI*R;
  $('#svGoals').innerHTML=SV.goals.length?SV.goals.map(g=>{const s=gSaved(g),f=Math.max(0,Math.min(1,s/g.target));const last=g.moves.slice(-1)[0];
-  return '<div class="svg'+(f>=1?' done':'')+'" data-g="'+g.id+'"><div class="svh"><svg viewBox="0 0 60 60" class="svr"><circle cx="30" cy="30" r="'+R+'" class="b"/><circle cx="30" cy="30" r="'+R+'" class="f" style="stroke-dasharray:'+L+';stroke-dashoffset:'+(L*(1-f)).toFixed(1)+'"/><text x="30" y="35" text-anchor="middle">'+g.ic+'</text></svg>'+
+  return '<div class="svg'+(f>=1?' done':'')+'" data-g="'+g.id+'"><div class="svh"><svg viewBox="0 0 60 60" class="svr"><circle cx="30" cy="30" r="'+R+'" class="b"/><circle cx="30" cy="30" r="'+R+'" class="f" style="stroke-dasharray:'+L+';stroke-dashoffset:'+(L*(1-f)).toFixed(1)+'"/><text x="30" y="35" text-anchor="middle">'+esc(g.ic)+'</text></svg>'+
    '<div class="svt"><b>'+esc(g.n)+'</b><span><em>'+fmt(s)+'</em> من '+fmt(g.target)+' ريال · '+Math.round(f*100)+'%</span>'+(f>=1?'<small style="color:var(--mint)">✓ وصلت الهدف. الحمد لله</small>':'<small>'+(needPace(g)||('فاضل '+fmt(g.target-s)+' ريال'))+'</small>')+'</div><button type="button" class="svx" data-gdel="'+g.id+'" aria-label="امسح الهدف">✕</button></div>'+
    '<div class="svbar"><i style="width:'+(f*100).toFixed(1)+'%"></i></div>'+
    '<div class="svact"><input type="number" inputmode="decimal" min="0" placeholder="المبلغ" aria-label="المبلغ"><button type="button" class="minibtn gold" data-mv="in">+ حوّشت</button><button type="button" class="minibtn" data-mv="out">− سحبت</button></div>'+
@@ -2726,10 +2727,10 @@ function buildLessons(){const sec=el('section','pnl lessons');sec.id='lessons';
  let filt='';const all=()=>{$('#lAll').innerHTML=LESSONS.map((l,i)=>[l,i]).filter(x=>!filt||x[0][0]===filt).map(x=>lessonCard(x)).join('');};
  sec.addEventListener('click',e=>{const t=e.target;
   const f=t.closest('[data-lf]');if(f){filt=f.dataset.lf;$('#lFilt').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===f));all();return;}
-  const d=t.closest('[data-ldone]');if(d){const i=+d.dataset.ldone;if(LSTATE.done[i])delete LSTATE.done[i];else{LSTATE.done[i]=todayKey();sparks(e.clientX,e.clientY,12,['#f3b94d','#5ee0b0']);toast('📚','برافو. العلم بالتطبيق',LESSONS[i][1]);}saveL();renderLessons();if(sec.querySelector('details').open)all();return;}
+  const d=t.closest('[data-ldone]');if(d){const i=+d.dataset.ldone;if(LSTATE.done[i])delete LSTATE.done[i];else{LSTATE.done[i]=todayKey();sparks(e.clientX,e.clientY,12,['#f3b94d','#5ee0b0']);toast('📚','برافو. العلم بالتطبيق',LESSONS[i][1]);}saveL();renderLessons();if(sec.querySelector('details.svnew').open)all();return;}
   const a=t.closest('[data-lask]');if(a){const l=LESSONS[+a.dataset.lask];openChat('الدرس ده: "'+l[1]+'" ('+l[4]+'). الفكرة: '+l[2]+'\nاشرحهولي أكتر بمثال عملي، وقولي أطبّقه إزاي في شغلي الحالي كـ Sales Account Manager وحياتي، في 3 خطوات.');return;}
   const hr=t.closest('[data-hadnext]');if(hr){loadHadith(true);return;}});
- sec.querySelector('details').addEventListener('toggle',e=>{if(e.target.open)all();});
+ sec.querySelector('details.svnew').addEventListener('toggle',e=>{if(e.target.open)all();});
  renderLessons();loadHadith(false);}
 function renderLessons(){if(!$('#lToday'))return;$('#lToday').innerHTML=lessonsOfDay().map(x=>lessonCard(x)).join('');$('#lCnt').textContent=Object.keys(LSTATE.done).length+'/'+LESSONS.length;}
 /* hadith of the day from HadeethEnc (authentic, with explanation). cached for offline */
@@ -2738,7 +2739,7 @@ async function loadHadith(next){const box=$('#hadD');if(!box)return;const tk=tod
  if(!navigator.onLine){if(c)renderHadith(c,true);else box.innerHTML='<div class="sub">حديث اليوم هيتجاب أول ما النت يرجع.</div>';return;}
  box.innerHTML='<div class="aiload"><span class="aidots"><i></i><i></i><i></i></span>بجيب حديث اليوم…</div>';
  try{const pg=((dayN()+(next?Math.floor(Math.random()*900)+1:0))%1000)+1;
-  const l=await fetch('https://hadeethenc.com/api/v1/hadeeths/list/?language=ar&category_id=5&page='+pg+'&per_page=1').then(r=>r.json());const id=l&&l.data&&l.data[0]&&l.data[0].id;if(!id)throw 0;
+  const L1=p2=>fetch('https://hadeethenc.com/api/v1/hadeeths/list/?language=ar&category_id=5&page='+p2+'&per_page=1').then(r=>r.json());let l=await L1(pg);if(!(l&&l.data&&l.data[0])){const last=+(l&&l.meta&&(l.meta.last_page||l.meta.total_items))||100;l=await L1((pg%last)+1);}const id=l&&l.data&&l.data[0]&&l.data[0].id;if(!id)throw 0;
   const h=await fetch('https://hadeethenc.com/api/v1/hadeeths/one/?language=ar&id='+encodeURIComponent(id)).then(r=>r.json());
   c={date:tk,id,text:String(h.hadeeth||''),attr:String(h.attribution||''),grade:String(h.grade||''),expl:String(h.explanation||''),hints:(h.hints||[]).map(String).slice(0,4)};LS.set('hadith',c);renderHadith(c);}
  catch(e){if(c)renderHadith(c,true);else box.innerHTML='<div class="sub">مقدرتش أجيب حديث اليوم دلوقتي. جرّب كمان شوية.</div>';}}
@@ -2823,7 +2824,8 @@ function renderLockSet(){const box=$('#lkSet');if(!box)return;
   '<details style="margin-top:8px"><summary class="sub" style="cursor:pointer">رقم سري احتياطي (اختياري)</summary><input id="lkNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="4 لـ 8 أرقام" style="margin-top:6px;width:100%"></details>';
  $('#lkOn').onclick=enableLock;}
 async function enableLock(){const pinIn=$('#lkNew');const p=pinIn?pinIn.value.trim():'';if(p&&!/^\d{4,8}$/.test(p)){toast('✕','الرقم السري لازم 4 لـ 8 أرقام','');return false;}
- const bio=await bioAvailable();if(!bio&&!p){toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','اكتب رقم سري احتياطي وفعّل');const d=$('#lkSet details');if(d)d.open=true;return false;}
+ const bio=await bioAvailable();if(bio&&!p&&!LS.get('lockWarned')){LS.set('lockWarned',1);if(!confirm('هيفتح ببصمتك أو Face ID، ولو مشتغلوش بباسورد الموبايل.\n\nمهم: لو مفتاح القفل اتمسح من الموبايل، مش هتعرف تفتح التطبيق. علشان كده اعمل نسخة احتياطية من الإعدادات كل فترة.\n\nتكمّل؟'))return false;}
+ if(!bio&&!p){toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','اكتب رقم سري احتياطي وفعّل');const d=$('#lkSet details');if(d)d.open=true;return false;}
  LK.salt=b64(rnd(16));LK.pin=p?await pinHash(p,LK.salt):'';LK.cred='';
  if(bio){try{LK.cred=await bioCreate();}catch(e){if(!p){toast('⚠','البصمة متفعلتش','جرّب تاني');return false;}}}
  LK.on=true;saveLock();renderLockSet();toast('🔐','القفل اتفعّل','من دلوقتي هيفتح بالبصمة أو Face ID لوحده');return true;}
@@ -2839,12 +2841,13 @@ function tables(){const t={};
  t['masareef.csv']=toCSV([['التاريخ','النوع','التصنيف','المبلغ','ملاحظة']].concat(MN.list.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>[x.d,x.t==='in'?'دخل':'مصروف',x.c,x.a,x.n||''])));
  t['tahwish.csv']=toCSV([['الهدف','التاريخ','المبلغ','المطلوب']].concat([].concat(...SV.goals.map(g=>g.moves.map(m=>[g.n,m.d,m.a,g.target])))));
  const ks=Object.keys(S.hist).sort();t['ayami.csv']=toCSV([['التاريخ','النسبة %','خلصت','من','الفجر في الجامع','المود','وقت الشاشة']].concat(ks.map(k=>{const h=S.hist[k];return [k,h.pct,h.on,h.tot,h.fajr?'✓':'',h.mood||'',h.screen==null?'':h.screen];})));
- const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('mos:')===0&&k!=='mos:lock')data[k.slice(4)]=localStorage.getItem(k);}
+ const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('mos:')===0&&['mos:lock','mos:aiPending','mos:lastBackup'].indexOf(k)<0)data[k.slice(4)]=localStorage.getItem(k);}
+ try{if(data.ai){const a=JSON.parse(data.ai);a.gkey='';data.ai=JSON.stringify(a);}}catch(e){}
  t['mostafa-os-data.json']=JSON.stringify({app:'mostafa-os',v:1,at:new Date().toISOString(),data});return t;}
 let fsTimer=0;function schedMirror(){if(!LS.get('fsOn'))return;clearTimeout(fsTimer);fsTimer=setTimeout(mirrorNow,4000);}
 async function mirrorNow(){if(!LS.get('fsOn'))return;if(!FS.ok&&!(await fsInit()))return;try{const t=tables();for(const n in t)await fsWrite(n,t[n]);FS.last=Date.now();renderStore();}catch(e){FS.err=String(e&&e.name||e);}}
 {const _set=LS.set;LS.set=function(k,v){_set.call(LS,k,v);if(k!=='fsOn')schedMirror();};}
-async function shareTables(){const t=tables();const files=Object.entries(t).map(([n,c])=>new File([c],n,{type:n.endsWith('.csv')?'text/csv':'application/json'}));
+async function shareTables(){const t=tables();const files=Object.entries(t).filter(([n])=>n.endsWith('.csv')).map(([n,c])=>new File([c],n,{type:n.endsWith('.csv')?'text/csv':'application/json'}));
  try{if(navigator.canShare&&navigator.canShare({files})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){await navigator.share({files,title:'Mostafa OS · جداولي'});return;}}catch(e){if(e&&e.name==='AbortError')return;}
  files.forEach((f,i)=>setTimeout(()=>{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);},i*400));}
 async function grantStorage(){let persisted=false;try{if(navigator.storage&&navigator.storage.persist)persisted=await navigator.storage.persist();}catch(e){}
@@ -2871,13 +2874,13 @@ function openCleanup(manual){const pl=cleanPlan();const sh=$('#cleanSheet');
  if(!pl.total&&!manual)return;sh.hidden=false;}
 async function runCleanup(arch){const pl=cleanPlan();
  if(arch){const data={};pl.days.concat(pl.weeks).forEach(k=>data[k.slice(4)]=localStorage.getItem(k));const blob=new Blob([JSON.stringify({app:'mostafa-os',archive:true,before:pl.cut,at:new Date().toISOString(),data,money:pl.money,savings:SV.goals.map(g=>({n:g.n,moves:g.moves.filter(m=>m.d<pl.cut)}))})],{type:'application/json'});
-  const name='mostafa-os-archive-'+pl.cut.slice(0,4)+'.json';try{const f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})&&/Android|iPhone|iPad/i.test(navigator.userAgent))await navigator.share({files:[f],title:name});else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1500);}}catch(e){if(e&&e.name==='AbortError')return;}}
+  const name='mostafa-os-archive-'+pl.cut.slice(0,4)+'.json';try{const f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})&&/Android|iPhone|iPad/i.test(navigator.userAgent))await navigator.share({files:[f],title:name});else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1500);}}catch(e){toast('⚠','الأرشيف متحفظش','مسحتش حاجة. جرّب تاني');return;}}
  pl.days.forEach(k=>{const date=k.slice(6);try{if(!S.hist[date])S.hist[date]=summarize(Object.assign(blankDay(date),JSON.parse(localStorage.getItem(k)||'{}')));}catch(e){}localStorage.removeItem(k);});
  pl.weeks.forEach(k=>localStorage.removeItem(k));LS.set('hist',S.hist);
- MN.arch=MN.arch||{};pl.money.forEach(x=>{const mk=monKey(x.d);const a=MN.arch[mk]=MN.arch[mk]||{i:0,o:0,cats:{}};if(x.t==='in')a.i+=x.a;else{a.o+=x.a;a.cats[x.c]=(a.cats[x.c]||0)+x.a;}});
+ MN.arch=MN.arch||{};pl.money.forEach(x=>{const mk=monKey(x.d);const a=MN.arch[mk]=MN.arch[mk]||{i:0,o:0,cats:{}};if(x.t==='in'){a.i+=x.a;if(x.c==='مرتب')a.sal=(a.sal||0)+x.a;}else{a.o+=x.a;a.cats[x.c]=(a.cats[x.c]||0)+x.a;}});
  MN.list=MN.list.filter(x=>x.d>=pl.cut);saveMoney();
  SV.goals.forEach(g=>{const old=g.moves.filter(m=>m.d<pl.cut);if(!old.length)return;const sum=old.reduce((s,m)=>s+m.a,0);g.moves=[{a:sum,d:pl.cut,carry:1}].concat(g.moves.filter(m=>m.d>=pl.cut));});saveSV();
- AI.chat=AI.chat.slice(-10);LS.set('aiChat',AI.chat.filter(m=>!m.err&&!m.local));LS.set('lastClean',new Date().getFullYear());
+ LS.set('lastClean',new Date().getFullYear());
  $('#cleanSheet').hidden=true;render();renderMoney();renderSave();renderStore();toast('🧹','اتنضّف '+pl.total+' عنصر قديم','الملخصات المهمة لسه موجودة');}
 
 /* ---------- first open: ask once for the lock + phone storage ---------- */
