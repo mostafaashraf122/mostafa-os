@@ -988,6 +988,13 @@ html.locked .lock{display:grid}
 .stp{display:grid;gap:4px;padding:12px;border:1px solid var(--line2);border-radius:14px;background:rgba(7,11,20,.4);margin-top:8px}.stp b{font-size:15px}.stp span{font-size:13px;color:var(--frost)}.stp button{justify-self:start;margin-top:4px}
 .stp.done{color:var(--mint);border-color:rgba(94,224,176,.4)}
 #cleanBody ul{margin:4px 0;padding-inline-start:20px;font-size:14px}#cleanBody p{margin:4px 0}
+/* phone header: scrolls away so it never covers the prayer arc or content */
+@media (max-width:899px){.top{position:relative!important;top:auto!important}}
+.arc{margin-top:16px!important}
+.greet{font-family:var(--body)!important;letter-spacing:0!important}
+/* AI chat button, stacked above the quick-add button */
+.aifab.chatfab{bottom:calc(env(safe-area-inset-bottom,0px) + 150px);width:48px;height:48px;font-size:20px;border-radius:16px}
+@media (max-width:420px){.aifab.chatfab{bottom:calc(env(safe-area-inset-bottom,0px) + 142px);width:46px;height:46px}}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1165,6 +1172,7 @@ html.locked .lock{display:grid}
   <button type="button" data-go="#counters">∞<span>العدّاد</span></button>
   <button type="button" class="rev" id="dockRev">◑<span>الحساب</span><i class="badge" id="dockBadge" hidden>0</i></button>
 </nav>
+<button class="aifab chatfab" id="aiChatFab" type="button" aria-label="كلّم المرشد الذكي" title="المرشد الذكي">✺</button>
 <button class="aifab" id="aiFab" type="button" aria-label="افتح المرشد الذكي" title="المرشد الذكي">✺<span class="pulse" aria-hidden="true"></span></button>
 <div class="aisheet" id="aiSheet" hidden role="dialog" aria-modal="true" aria-label="المرشد الذكي"><div class="bg" id="aiBg"></div>
  <div class="aicard"><div class="aihead"><div class="av">✺</div><div><h3>المرشد</h3><small>AI COACH · FREE · ONLINE</small></div><button class="ib" id="aiClose" type="button" aria-label="اقفل">✕</button></div>
@@ -2576,6 +2584,7 @@ function saveQuick(){const a=parseFloat($('#qA').value);if(!(a>0)){$('#qA').focu
  $('#qA').value='';$('#qN').value='';renderMoney();renderCoach();if(navigator.vibrate&&msgs.some(m=>m[0]==='bad'||m[0]==='warn'))try{navigator.vibrate([60,40,60]);}catch(x){}}
 function buildQuick(){const fab=$('#aiFab');fab.innerHTML='＋<span class="pulse" aria-hidden="true"></span>';fab.setAttribute('aria-label','سجّل مصروف');fab.title='سجّل مصروف';fab.classList.add('qfab');
  fab.addEventListener('click',openQuick);
+ $('#aiChatFab').addEventListener('click',()=>openChat());
  document.body.insertAdjacentHTML('beforeend','<div class="aisheet" id="qSheet" hidden role="dialog" aria-modal="true" aria-label="سجّل مصروف"><div class="bg" id="qBg"></div><div class="aicard qcard"><div class="aihead"><div class="av" style="background:radial-gradient(circle at 30% 25%,#ffe3a6,#f3b94d 60%,#b9801f)">◈</div><div><h3>سجّل مصروف</h3><small>SPENDING ASSISTANT · 🔒 ON THIS PHONE</small></div><button class="ib" id="qClose" type="button" aria-label="اقفل">✕</button></div>'+
   '<div class="qbody"><input id="qA" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" aria-label="المبلغ"><div class="sub" id="qHint" style="text-align:center"></div><div class="qcats" id="qCats"></div><input id="qN" maxlength="60" placeholder="على إيه؟ (اختياري)"><button class="minibtn gold" id="qSave" type="button" style="width:100%;padding:12px;font-size:16px">سجّل ✓</button><div id="qMsg"></div></div></div></div>');
  $('#qBg').addEventListener('click',closeQuick);$('#qClose').addEventListener('click',closeQuick);$('#qSave').addEventListener('click',saveQuick);
