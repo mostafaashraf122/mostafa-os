@@ -2239,48 +2239,16 @@ S.lastToday=todayKey();
 /* ================= AI COACH · المرشد =================
    Two brains: a local engine that reads your history on the phone (works offline),
    and a free, keyless online model (Pollinations) for planning and chat. Optional Gemini key = smarter. */
-const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYTEQ Technologies بالرياض من سبتمبر 2026 (في فترة التجربة أول 3 شهور، والعمولة نسبة على كل بيعة بتتصرف كل ربع سنة). خلفيته: +5 سنين بيع وتسليم حلول تقنية للشركات والحكومة في السعودية ومصر: ERP وCRM، تطبيقات ويب وموبايل، منصات 3D تفاعلية، VR و360 وdigital twins. قبل كده Technical Sales في MTC Technology مع عملاء زي GOSI وموانئ ووزارة التعليم وجامعة الملك سعود وشركات تطوير عقاري، ومدير قسمي Software وMarketing، وWordPress Developer. معاه Certified Data Scientist Professional (Python، ML، SQL) وبكالوريوس IT. هدفه: يتطور كإنسان، ويقرب من ربنا، ويزوّد دخله بالحلال، ويبني بزنس تقني خاص بيه قبل الـ 30.';
+const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYTEQ Technologies بالرياض من سبتمبر 2026 (في فترة التجربة أول 3 شهور، والعمولة نسبة على كل بيعة بتتصرف كل ربع سنة). خبرة +5 سنين في بيع الحلول التقنية للشركات (ERP وCRM وتطبيقات وحلول رقمية)، وإدارة حسابات العملاء، والعروض والتفاوض، وقبل كده أدار فرق سوفتوير وماركتنج واشتغل WordPress Developer. معاه Certified Data Scientist Professional (Python، ML، SQL) وبكالوريوس IT. هدفه: يتطور كإنسان، ويقرب من ربنا، ويزوّد دخله بالحلال، ويبني بزنس خاص بيه قبل الـ 30.';
 const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-3.8-flash'},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
-if(!AI.cfg.profV){if(/^مصطفى أشرف سعيد، Technical Sales/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=2;try{LS.set('ai',AI.cfg);}catch(e){}}
+if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
+try{localStorage.removeItem('mos:aiBrief');}catch(e){}
 const saveAI=()=>LS.set('ai',AI.cfg);
 const MOD_TIP={rooh:'الصلاة والورد هما اللي بيشيلوا اليوم. ابدأ بالجاي في ميعاده',jasad:'جسمك هو رأس مالك. نوم ومية وتمرين قبل أي حاجة',bayt:'البيت الهادي وقود. 10 دقايق حلوين مع مراتك بيفرقوا',waqt:'الموبايل بيسرق اليوم. جلسة تركيز 25 دقيقة دلوقتي',ilm:'10 صفحات بس. الكتاب اللي بتقراه أهم من كورس جديد',career:'الدخل الكبير جاي من البيع. كلّم عميل واحد النهارده',dakhl:'خطوة دخل واحدة كل يوم: follow-up، عرض سعر، أو مهارة'};
 const SENS=STK.map(i=>i[0]);
-const MONEY_MOVES=[
- 'ابعت follow-up لأقدم 3 عروض أسعار مفتوحة عندك. أغلب الصفقات بتقفل في المتابعة التالتة مش الأولى.',
- 'اكتب case study من صفحة واحدة عن مشروع VR أو 3D سلّمته (المشكلة، الحل، النتيجة بالأرقام) واستخدمه في كل عرض جاي.',
- 'اعرض على عميل حالي حاجة تكمّل اللي اشتراه: 360 tour بعد الـ 3D، أو CRM بعد الموقع. البيع لعميل قديم أسهل 5 مرات من عميل جديد.',
- 'احسب صافي ثروتك النهارده: كل اللي تملكه ناقص كل اللي عليك. اللي مبيتقاسش مبيتحسّنش.',
- 'ادفع لنفسك الأول: حوّل نسبة ثابتة (ولو 10%) أول ما المرتب أو العمولة تنزل، قبل أي مصروف.',
- 'ابني صندوق طوارئ يكفي 3 لـ 6 شهور مصاريف. ده اللي هيخليك تسيب الوظيفة وتبدأ البزنس وانت مطمّن.',
- 'اكتب قايمة بـ 20 مطوّر عقاري أو جامعة أو مستشفى ممكن يحتاجوا VR أو digital twin، وابدأ بـ 3 النهارده على LinkedIn.',
- 'حدد سعر استشارة مستقلة بالساعة في VR/3D للعقارات، علشان يبقى عندك عرض جاهز لو حد سألك برّه شغلك (من غير تعارض مع شركتك).',
- 'راجع اشتراكاتك ومصاريفك الثابتة الشهر ده. كل 100 ريال بتوفّرها شهريًا = 1200 في السنة تبدأ بيها.',
- 'اطلب من عميل راضي recommendation على LinkedIn أو تعريف بعميل تاني. الإحالة أرخص طريقة تجيب بيها بيعة.',
- 'استخدم شهادة الداتا ساينس: اعمل dashboard بسيط لـ pipeline بتاعك (Streamlit) واعرف نسبة التحويل في كل مرحلة.',
- 'فكّر في منتج صغير من خبرتك: باقة "جولة 360 + صفحة هبوط" بسعر ثابت للمشاريع العقارية الصغيرة. ده ممكن يبقى أول بزنس.',
- 'قبل أي شراء فوق 500 ريال استنى 48 ساعة. أغلب الرغبات بتروح، والفلوس بتفضل.',
- 'اتعلم التفاوض على العمولة والزيادة: جهّز ورقة بإنجازاتك بالأرقام (العملاء، قيمة الصفقات) قبل أي كلام مع الإدارة.',
- 'وزّع الدخل: ضروريات، ادخار واستثمار، صدقة، ومتعة. الصدقة بركة في الرزق ومش خسارة.',
- 'اتعلّم عن الاستثمار الحلال (صناديق أسهم متوافقة مع الشريعة، صكوك، عقار) قبل ما تحط ريال. اسأل مستشار مرخّص قبل القرار.',
- 'شارك في مناقصة أو RFP صغيرة جديدة الأسبوع ده. خبرتك في B2G نادرة، استغلها.',
- 'اكتب بوست واحد على LinkedIn عن درس اتعلمته في بيع الحكومة. السمعة دي هي اللي هتجيبلك عملاء البزنس بعدين.'];
-const GROWTH_MOVES=[
- 'اقرا 10 صفحات من الكتاب قبل ما تمسك الموبايل بالليل.',
- 'اتمرن على الإنجليزي 15 دقيقة: احكي بصوت عالي عن مشروع عملته كأنك بتعمل pitch.',
- 'اتفرج على فيديو واحد عن التفاوض أو closing وطبّق منه حاجة بكرة.',
- 'اكتب 3 حاجات اتعلمتها الأسبوع ده من العملاء. دي مادة البزنس بتاعك.',
- 'اتعلم أداة AI جديدة تسرّع شغلك في كتابة العروض أو الـ RFP.',
- 'صحّي بدري 30 دقيقة واشتغل فيهم على أهم حاجة قبل ما حد يكلمك.',
- 'نام قبل 11. التركيز بكرة بيتصنع النهارده بالليل.',
- 'اسأل حد سابقك بـ 5 سنين في المجال سؤال واحد عن أكبر غلطة عملها.',
- 'راجع أهدافك الكبيرة 5 دقايق: البزنس، البيت، الروح. إيه الخطوة الجاية في كل واحد؟',
- 'ابعد عن السوشيال ساعة كاملة وقت الشغل. سجّل قد إيه خلّصت.',
- 'اتكلم أقل واسمع أكتر في أي اجتماع النهارده. العميل اللي بيتكلم بيشتري.',
- 'اعمل حاجة جديدة مجربتهاش قبل كده، ولو صغيرة. المخ بيكبر بالجديد.'];
-const SOUL_MOVES=['الفجر في الجامع، وبعده دعاء: اللهم إني أسألك علمًا نافعًا ورزقًا طيبًا وعملًا متقبلًا.','استغفر 100 مرة. الاستغفار باب الرزق: يُمْدِدْكُمْ بِأَمْوَالٍ وَبَنِينَ.','صدقة صغيرة النهارده ولو بريال. ما نقص مال من صدقة.','صفحتين قرآن بعد صلاة، وراجع آخر سورة حفظتها.','احمد ربنا على 3 نعم واكتبهم قبل ما تنام.','ادعي لمراتك وأهلك بالاسم في السجود.'];
 const pick=(arr,salt)=>{const d=new Date();const n=d.getFullYear()*400+d.getMonth()*31+d.getDate()+(salt||0);return arr[n%arr.length];};
 
 /* ---------- local brain: patterns in your own history ---------- */
@@ -2324,7 +2292,7 @@ function sysPrompt(){return 'إنت "المرشد": مدرب ومستشار مه
  'خلفيته المهنية (دي كل اللي تعرفه عنه):\n'+AI.cfg.profile+'\n\n'+
  'مهم: إنت مش شايف أي بيانات من التطبيق أو الموبايل بتاعه (مهام، صحة، بيت، فلوس شخصية). متفترضش حاجة عن حياته الشخصية، واعتمد على خلفيته المهنية واللي بيقوله في المحادثة بس.\n\n'+
  'أسلوبك:\n- اتكلم عامية مصرية، زي أخ كبير ناجح في البيزنس: دافي بس صريح، من غير مدح فاضي ولا كلام عام.\n- العملة ريال سعودي، والسوق السعودي هو الأساس. متخترعش أرقام أو أسعار مش متأكد منها، وقول "تقريبًا" لما تقدّر.\n- اختصر: من 4 لـ 10 سطور ونقاط قصيرة، إلا لو طلب تفصيل.\n- اختم دايمًا بسطر "خطوتك دلوقتي:" فيه حاجة واحدة يقدر يعملها في أقل من 30 دقيقة.\n'+
- '- في الفلوس: اديله أطر تفكير وأفكار دخل حلال مبنية على مهاراته (بيع B2G، VR/3D، CRM/ERP، داتا ساينس). متقولش اشتري سهم أو عملة معينة، ومتقترحش حاجة فيها ربا. لما الكلام يبقى استثمار قوله إنك مش مستشار مالي مرخّص.\n'+
+ '- في الفلوس: اديله أطر تفكير وأفكار دخل حلال مبنية على مهاراته (بيع الحلول التقنية، إدارة الحسابات، التفاوض، داتا ساينس). متقولش اشتري سهم أو عملة معينة، ومتقترحش حاجة فيها ربا. لما الكلام يبقى استثمار قوله إنك مش مستشار مالي مرخّص.\n'+
  '- نصايحك لازم تكون من مبادئ معروفة وقوية (كتب، قرآن، سنة، خبرة مثبتة). متألّفش خطوات غريبة أو مش منطقية، ومتخترعش حاجات عن عملاء أو شركات معينة. لو مش متأكد قول ده.\n- دروس النهارده في التطبيق: '+lessonsOfDay().map(x=>x[0][1]+' ('+x[0][4]+')').join('، ')+'. اربط كلامك بيها لما ينفع.\n'+
  '- لو احتاجت معلومة علشان تنصحه صح (زي أرقام أو ظروف)، اسأله الأول ومتخمّنش.\n- لو بان إنه في ضيق نفسي شديد: اهتم بيه بهدوء، وانصحه يكلم حد يثق فيه أو متخصص.';}
 
@@ -2379,10 +2347,10 @@ function renderBrief(){const box=$('#aiBrief');if(!box)return;const tk=todayKey(
  const t3=(src.top3||[]).filter(Boolean).slice(0,3);
  box.innerHTML='<div class="aibrief">'+(src.headline?'<div class="aihl">'+esc(src.headline)+'</div>':'')+
   (t3.length?'<div class="sub" style="font-size:11.5px">🔒 أهم 3 حاجات · اتحسبت على موبايلك</div><ol class="aitop">'+t3.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':'')+
-  (src.money?'<div class="airow"><span class="k m">WORK</span><span>'+esc(src.money)+'</span></div>':'')+
-  (src.growth?'<div class="airow"><span class="k g">GROW</span><span>'+esc(src.growth)+'</span></div>':'')+
-  (src.soul?'<div class="airow"><span class="k s">SOUL</span><span>'+esc(src.soul)+'</span></div>':'')+
-  (src.watch?'<div class="airow"><span class="k w">WATCH</span><span>🔒 '+esc(src.watch)+'</span></div>':'')+
+  (src.money?'<div class="airow"><span class="k m">شغلك</span><span>'+esc(src.money)+'</span></div>':'')+
+  (src.growth?'<div class="airow"><span class="k g">تطويرك</span><span>'+esc(src.growth)+'</span></div>':'')+
+  (src.soul?'<div class="airow"><span class="k s">روحك</span><span>'+esc(src.soul)+'</span></div>':'')+
+  (src.watch?'<div class="airow"><span class="k w">خلي بالك</span><span>🔒 '+esc(src.watch)+'</span></div>':'')+
   '<div class="aibtns"><button class="minibtn ai" type="button" data-ai="lessons">📚 دروس اليوم بالتفصيل</button>'+(t3.length?'<button class="minibtn" type="button" data-ai="usetop">حطهم في أهم 3 ✓</button>':'')+'<button class="minibtn" type="button" data-ai="chat">افتح المحادثة</button></div>'+
   (b&&b.err?'<p class="note" style="color:#ffb9a3">'+esc(b.err)+'</p>':'')+'</div>';}
 async function makeBrief(silent){return;/* replaced by the lesson library */if(AI.busy)return;if(!navigator.onLine){if(!silent)toast('✺','مفيش نت','الخطة المحلية شغالة لحد ما النت يرجع');return;}
@@ -2404,7 +2372,7 @@ const QUICK=[
  ['🔒 خطة النهارده',null,'plan'],
  ['◈ أزوّد دخلي','بناءً على خبرتي ومهاراتي، اديني 3 أفكار حلال أزوّد بيها دخلي في الـ 90 يوم الجايين، مع أول خطوة لكل واحدة. اسألني عن أي رقم محتاجه.'],
  ['▣ جهّزني لعميل','عندي مكالمة أو اجتماع مع عميل. جهّزني: أسئلة discovery أسألها، أكتر 3 اعتراضات متوقعة وأرد عليها إزاي، وإزاي أقفل بخطوة جاية واضحة. اسألني الأول العميل مين ومحتاج إيه.'],
- ['✦ البزنس قبل 30','اديني فكرتين بزنس تقني مناسبين لخبرتي في VR/3D والبيع للحكومة والعقارات في السعودية، وخطة 90 يوم واقعية أبدأ بيها وأنا لسه في وظيفتي.'],
+ ['✦ البزنس قبل 30','اديني فكرتين بزنس مناسبين لخبرتي في بيع الحلول التقنية وإدارة حسابات العملاء في السعودية، وخطة 90 يوم واقعية أبدأ بيها وأنا لسه في وظيفتي.'],
  ['🔒 راجع أسبوعي',null,'week'],
  ['🔒 صرفت كام؟','صرفت كام الشهر ده'],
  ['🔒 حوّشت كام؟','حوشت كام الشهر ده'],
@@ -2759,7 +2727,7 @@ function buildLessons(){const sec=el('section','pnl lessons');sec.id='lessons';
  sec.addEventListener('click',e=>{const t=e.target;
   const f=t.closest('[data-lf]');if(f){filt=f.dataset.lf;$('#lFilt').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===f));all();return;}
   const d=t.closest('[data-ldone]');if(d){const i=+d.dataset.ldone;if(LSTATE.done[i])delete LSTATE.done[i];else{LSTATE.done[i]=todayKey();sparks(e.clientX,e.clientY,12,['#f3b94d','#5ee0b0']);toast('📚','برافو. العلم بالتطبيق',LESSONS[i][1]);}saveL();renderLessons();if(sec.querySelector('details').open)all();return;}
-  const a=t.closest('[data-lask]');if(a){const l=LESSONS[+a.dataset.lask];openChat('الدرس ده: "'+l[1]+'" ('+l[4]+'). الفكرة: '+l[2]+'\nاشرحهولي أكتر بمثال عملي، وقولي أطبّقه إزاي في شغلي كـ Sales Account Manager وحياتي، في 3 خطوات.');return;}
+  const a=t.closest('[data-lask]');if(a){const l=LESSONS[+a.dataset.lask];openChat('الدرس ده: "'+l[1]+'" ('+l[4]+'). الفكرة: '+l[2]+'\nاشرحهولي أكتر بمثال عملي، وقولي أطبّقه إزاي في شغلي الحالي كـ Sales Account Manager وحياتي، في 3 خطوات.');return;}
   const hr=t.closest('[data-hadnext]');if(hr){loadHadith(true);return;}});
  sec.querySelector('details').addEventListener('toggle',e=>{if(e.target.open)all();});
  renderLessons();loadHadith(false);}
