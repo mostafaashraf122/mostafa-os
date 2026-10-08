@@ -399,6 +399,88 @@ body.cipher .greet span{filter:blur(5px)}
 .ddots button.said{background:var(--mint);border-color:var(--mint)}
 .ddots button.cur{width:22px;border-radius:6px;border-color:var(--gold)}
 
+/* stories */
+.story{background:radial-gradient(120% 90% at 0% 0%,rgba(255,106,61,.10),rgba(13,20,36,.95) 55%);border-color:rgba(255,106,61,.25)}
+.sbook{position:relative;background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:18px 5px 18px 5px;padding:16px 18px 14px;overflow:hidden}
+.sbook::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--ember),var(--gold))}
+.sbook.flip{animation:flip .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes flip{from{opacity:0;transform:perspective(900px) rotateY(-14deg) translateX(20px)}}
+.sbook .sk{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--ember);direction:ltr;text-align:right;display:flex;justify-content:space-between}
+.sbook h3{font-family:var(--display);font-size:21px;margin:4px 0 8px}
+.sbook .src{font-size:12px;color:var(--frost);margin-bottom:8px}
+.sbook p{margin:0 0 10px;font-size:15.5px;line-height:1.85}
+.sbook p span{opacity:0;animation:parain .6s ease forwards}
+@keyframes parain{to{opacity:1}}
+.sbook .ibra{background:rgba(243,185,77,.08);border:1px solid rgba(243,185,77,.3);border-radius:12px;padding:10px 12px;margin-top:10px}
+.sbook .ibra b{color:var(--gold);font-family:var(--display);display:block;font-size:13px;letter-spacing:.02em;margin-bottom:3px}
+.sbook .ayah{font-family:var(--quran);font-size:19px;line-height:1.9;margin-top:8px;color:var(--text)}
+.srow{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.srow .nav{display:flex;gap:6px}
+.readbtn{background:var(--gold);color:#1b1305;border:none;border-radius:12px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer;transition:transform .15s}
+.readbtn:active{transform:scale(.95)}
+.readbtn.on{background:rgba(94,224,176,.15);color:var(--mint);border:1px solid rgba(94,224,176,.45)}
+.snext{font-size:12.5px;color:var(--frost)}
+.sdots{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+.sdots i{width:12px;height:6px;border-radius:3px;background:var(--line2);transition:all .3s;cursor:pointer}
+.sdots i.read{background:var(--mint)} .sdots i.cur{background:var(--gold);width:22px} .sdots i.lock{opacity:.3;cursor:default}
+
+/* hifz */
+.hifz{background:radial-gradient(120% 90% at 100% 0%,rgba(243,185,77,.10),rgba(13,20,36,.95) 55%)}
+.hhead{display:flex;gap:14px;align-items:center}
+.hhead svg{width:110px;height:110px;flex:none}
+.hhead .hr-bg{fill:none;stroke:var(--line);stroke-width:9}
+.hhead .hr{fill:none;stroke:url(#hg);stroke-width:9;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50px 50px;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px rgba(243,185,77,.5))}
+.hhead .hr2{fill:none;stroke:var(--ember);stroke-width:4;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50px 50px;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1);opacity:.8}
+.hhead .ht{font-family:var(--mono);font-size:19px;font-weight:600;fill:var(--text)}
+.hhead .hs{font-family:var(--mono);font-size:7.5px;fill:var(--frost);letter-spacing:.1em}
+.hstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:1;min-width:0}
+.hst{background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:12px;padding:8px 10px;text-align:center}
+.hst b{display:block;font-family:var(--mono);font-size:20px;color:var(--gold);direction:ltr;line-height:1.2}
+.hst span{font-size:11.5px;color:var(--frost)}
+.hnow{margin-top:10px;font-size:13.5px;color:var(--frost);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hnow b{color:var(--text)}
+.hnow .hmini{height:5px;flex:1;min-width:80px;background:var(--line);border-radius:4px;overflow:hidden}
+.hnow .hmini i{display:block;height:100%;background:linear-gradient(90deg,var(--ember),var(--gold));transition:width .8s}
+.hjuz{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0 8px}
+.hjuz button{background:none;border:1px solid var(--line2);border-radius:20px;padding:3px 11px;font-size:12.5px;cursor:pointer;color:var(--frost)}
+.hjuz button.on{background:var(--gold);border-color:var(--gold);color:#1b1305;font-weight:600}
+.hjuz button small{font-family:var(--mono);font-size:10px;margin-inline-start:4px;opacity:.8}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
+.hs0,.hs1,.hs2{display:flex;align-items:center;gap:6px;background:rgba(7,11,20,.45);border:1px solid var(--line);border-radius:10px;padding:6px 8px;cursor:pointer;user-select:none;font-size:13px;transition:all .25s;min-width:0;animation:chipin .35s both}
+.hgrid [class^=hs] .no{font-family:var(--mono);font-size:10px;color:var(--dim);direction:ltr;min-width:18px}
+.hgrid [class^=hs] .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hgrid [class^=hs] .ay{font-family:var(--mono);font-size:10px;color:var(--dim);direction:ltr}
+.hs1{border-color:rgba(255,106,61,.5);background:rgba(255,106,61,.12)}
+.hs1 .nm::after{content:" · بحفظ";font-size:10.5px;color:var(--ember)}
+.hs2{border-color:rgba(94,224,176,.45);background:rgba(94,224,176,.12)}
+.hs2 .nm{color:#c9f7e6}.hs2 .ay{color:var(--mint)}
+.hs2 .nm::before{content:"✓ ";color:var(--mint)}
+.hjuzbar{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:2px;margin-top:12px;direction:rtl}
+.hjuzbar i{height:14px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.hjuzbar i b{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--ember),var(--gold));transition:width .9s}
+.hjuzbar i.full b{background:var(--mint)}
+.hjl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--dim);direction:rtl;margin-top:3px}
+
+/* mentors */
+.mentor{background:radial-gradient(120% 90% at 50% 100%,rgba(120,195,255,.10),rgba(13,20,36,.95) 55%);border-color:rgba(120,195,255,.25)}
+.mcard{background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:5px 18px 5px 18px;padding:16px 18px 14px;position:relative;overflow:hidden}
+.mcard::after{content:"❞";position:absolute;inset-inline-end:10px;top:-14px;font-size:84px;color:rgba(120,195,255,.10);font-family:serif;pointer-events:none}
+.mcard.flip{animation:flip .55s cubic-bezier(.2,.8,.2,1)}
+.mwho{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.mwho .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:16px;color:#06131f;background:linear-gradient(135deg,var(--sky),var(--mint));flex:none}
+.mwho b{display:block;font-size:15px}
+.mwho small{display:block;font-size:12px;color:var(--frost)}
+.mwho .tag{margin-inline-start:auto;font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--sky);border:1px solid rgba(120,195,255,.35);border-radius:20px;padding:2px 8px;direction:ltr}
+.mq{font-family:var(--display);font-size:19px;line-height:1.6;margin:4px 0 10px}
+.mq.en{font-family:var(--mono);direction:ltr;text-align:left;font-size:15px;color:var(--gold2)}
+.mhow{border-top:1px dashed var(--line2);padding-top:8px;font-size:14px;color:var(--frost)}
+.mhow b{color:var(--sky);font-family:var(--display);font-size:12.5px;display:block;margin-bottom:2px}
+.mrow2{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}
+.mrow2 .nav{display:flex;gap:6px}
+.mfilt{display:flex;gap:5px;flex-wrap:wrap}
+.mfilt button{background:none;border:1px solid var(--line2);border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--frost)}
+.mfilt button.on{background:var(--sky);border-color:var(--sky);color:#06131f;font-weight:600}
+
 /* toast + sparks */
 .toasts{position:fixed;top:calc(env(safe-area-inset-top,0px) + 70px);left:50%;transform:translateX(-50%);z-index:40;display:grid;gap:8px;pointer-events:none;width:min(92vw,360px)}
 .toast{background:linear-gradient(90deg,rgba(17,26,45,.97),rgba(13,20,36,.97));border:1px solid rgba(243,185,77,.45);border-radius:14px;padding:9px 14px;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 20px rgba(243,185,77,.15);display:flex;align-items:center;gap:10px;animation:tin .45s cubic-bezier(.2,1.3,.4,1) both}
@@ -456,9 +538,118 @@ body.cipher .greet span{filter:blur(5px)}
 .sbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .sbtns .minibtn{padding:8px 14px;font-size:14px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+/* =================== THEME POLISH · v3 =================== */
+:root{--r:22px 8px 22px 8px}
+body{font-size:15.5px}
+.wrap{padding-inline:14px}
+@media (min-width:900px){.wrap{padding-inline:22px}.grid{gap:18px}.col{gap:18px}}
+/* aurora */
+.aurora{position:fixed;inset:-20% -10% auto;height:70vh;z-index:0;pointer-events:none;filter:blur(70px);opacity:.55;
+ background:radial-gradient(40% 50% at 20% 30%,rgba(243,185,77,.22),transparent 70%),radial-gradient(35% 45% at 80% 20%,rgba(120,195,255,.16),transparent 70%),radial-gradient(30% 40% at 55% 70%,rgba(94,224,176,.12),transparent 70%);
+ animation:aur 26s ease-in-out infinite alternate}
+@keyframes aur{to{transform:translate3d(4%,6%,0) scale(1.08)}}
+/* header */
+.top{margin:0 -14px 16px;padding:12px 16px 12px;border-bottom:1px solid rgba(243,185,77,.14);background:linear-gradient(180deg,rgba(7,11,20,.97),rgba(7,11,20,.80))}
+@media (min-width:900px){.top{margin:0 -22px 18px;padding-inline:22px;border-radius:0 0 22px 22px;border-inline:1px solid var(--line)}}
+.brand{font-size:12.5px;letter-spacing:.28em}
+.chip{background:rgba(7,11,20,.5)}
+.ib{border-radius:12px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.ib:hover{border-color:var(--gold);transform:translateY(-1px)}
+.greet{font-size:24px}
+.greet::after{width:64px}
+/* panels: glass + gradient hairline */
+.pnl{border-radius:var(--r);padding:18px;background:linear-gradient(180deg,rgba(18,27,47,.86),rgba(12,19,34,.90));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+ border:1px solid transparent;background-clip:padding-box;box-shadow:0 10px 30px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.04)}
+.pnl::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;z-index:0;
+ background:linear-gradient(160deg,rgba(243,185,77,.38),rgba(147,165,198,.10) 40%,rgba(120,195,255,.16) 100%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.pnl.core::before{background:linear-gradient(160deg,rgba(243,185,77,.7),rgba(255,106,61,.25) 50%,rgba(243,185,77,.3))}
+.pnl > *{position:relative;z-index:1}
+.pnl:hover{transform:translateY(-1px);box-shadow:0 16px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.05)}
+.pnl{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .3s}
+/* module accents */
+.rizq::before{background:linear-gradient(160deg,rgba(94,224,176,.55),rgba(94,224,176,.08) 50%,rgba(94,224,176,.25))}
+.calm::before,.report::before,.mentor::before{background:linear-gradient(160deg,rgba(120,195,255,.5),rgba(120,195,255,.08) 50%,rgba(120,195,255,.22))}
+.story::before{background:linear-gradient(160deg,rgba(255,106,61,.55),rgba(255,106,61,.08) 50%,rgba(243,185,77,.25))}
+.promises::before,.hifz::before{background:linear-gradient(160deg,rgba(243,185,77,.6),rgba(243,185,77,.08) 50%,rgba(243,185,77,.3))}
+.ph{margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed rgba(147,165,198,.14)}
+.ph h2{font-size:20px;letter-spacing:-.01em}
+.ph .en{margin-top:2px}
+.glyph{width:38px;height:38px;font-size:18px;transform:rotate(-6deg);box-shadow:0 0 18px rgba(243,185,77,.14),inset 0 0 12px rgba(243,185,77,.08);transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
+.pnl:hover .glyph{transform:rotate(0) scale(1.06)}
+#m-jasad .glyph{color:var(--ember);border-color:rgba(255,106,61,.3);background:rgba(255,106,61,.08)}
+#m-bayt .glyph{color:#ff8fb1;border-color:rgba(255,143,177,.3);background:rgba(255,143,177,.08)}
+#m-waqt .glyph{color:var(--sky);border-color:rgba(120,195,255,.3);background:rgba(120,195,255,.08)}
+#m-ilm .glyph{color:var(--sky);border-color:rgba(120,195,255,.3);background:rgba(120,195,255,.08)}
+#m-career .glyph{color:var(--ember);border-color:rgba(255,106,61,.3);background:rgba(255,106,61,.08)}
+#m-dakhl .glyph{color:var(--gold2)}
+#m-week .glyph{color:var(--mint);border-color:rgba(94,224,176,.3);background:rgba(94,224,176,.08)}
+#m-biz .glyph{color:var(--gold);box-shadow:0 0 22px rgba(243,185,77,.3)}
+/* items */
+.items{gap:7px}
+.it{padding:9px 12px;border-radius:13px;background:rgba(7,11,20,.42);border:1px solid rgba(147,165,198,.06)}
+.it:hover{background:rgba(17,26,45,.75);border-color:rgba(243,185,77,.3);transform:translateX(-2px)}
+.it{transition:background .2s,border-color .2s,transform .2s}
+.it .box{width:25px;height:25px;border-radius:8px 3px 8px 3px}
+.it.done{background:linear-gradient(90deg,rgba(243,185,77,.16),rgba(243,185,77,.05));border-color:rgba(243,185,77,.3)}
+.it .tm{background:rgba(7,11,20,.5);border:1px solid var(--line);border-radius:8px;padding:2px 7px;font-size:11.5px}
+.it.done .tm{color:var(--gold2);border-color:rgba(243,185,77,.3)}
+.t3 input,.grat textarea,.field input,.scr input{background:rgba(7,11,20,.62);border-color:rgba(147,165,198,.18);transition:border-color .2s,box-shadow .2s}
+.t3 input:focus,.grat textarea:focus,.field input:focus,.scr input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(243,185,77,.14)}
+.minibtn{border-radius:10px;transition:all .2s}
+.minibtn:hover{transform:translateY(-1px)}
+.minibtn.gold{box-shadow:0 4px 14px rgba(243,185,77,.3)}
+/* core */
+.core{padding-top:22px}
+.pct{font-size:48px;font-weight:600}
+.streaks{gap:9px}
+.stk{border-radius:14px 5px 14px 5px;transition:transform .25s,border-color .25s}
+.stk:hover{transform:translateY(-2px);border-color:rgba(243,185,77,.4)}
+.stk.hot{box-shadow:0 0 22px rgba(255,106,61,.12)}
+.next{background:rgba(7,11,20,.4);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+/* counters */
+.tap{border-radius:20px;box-shadow:inset 0 0 40px rgba(243,185,77,.06)}
+.tap .num{font-size:50px;text-shadow:0 0 24px rgba(243,185,77,.45)}
+.tab{transition:all .2s}.tab:hover{border-color:var(--gold);color:var(--text)}
+/* report */
+.kpi{border-radius:16px 5px 16px 5px;background:linear-gradient(180deg,rgba(7,11,20,.6),rgba(7,11,20,.4));transition:transform .25s}
+.kpi:hover{transform:translateY(-2px)}
+.kpi b{font-size:26px;text-shadow:0 0 18px color-mix(in srgb,var(--c,var(--gold)) 45%,transparent)}
+.mbar{border-radius:12px}
+.seg{background:rgba(7,11,20,.7)}
+/* dock */
+.dock{gap:2px;padding:6px 8px;border-radius:22px;background:rgba(10,16,30,.82);border:1px solid rgba(243,185,77,.22);box-shadow:0 14px 44px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03) inset}
+.dock button{padding:6px 11px;border-radius:15px}
+.dock button.rev{background:rgba(243,185,77,.08)}
+/* story / mentor / hifz cards */
+.sbook,.mcard,.dcard{box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 20px rgba(0,0,0,.2)}
+.sbook h3{font-size:22px}
+.readbtn,.saybtn{box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.hst{border-radius:14px 5px 14px 5px}
+.hgrid [class^=hs]{border-radius:11px}
+.hs2{box-shadow:0 0 14px rgba(94,224,176,.1)}
+/* dustur */
+.verse{padding-block:4px;border-inline-start-width:3px}
+.rule{transition:all .2s}.rule:hover{border-color:var(--gold);color:var(--gold2)}
+/* promises */
+.prom{transition:transform .25s,border-color .25s}.prom:hover{transform:translateY(-2px);border-color:rgba(243,185,77,.4)}
+/* footer */
+.foot{margin-top:28px;opacity:.8}
+.foot::before{content:"";display:block;width:60px;height:1px;margin:0 auto 12px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+/* week7 */
+.week7 div{border-radius:10px;transition:all .2s}
+/* toast */
+.toast{border-radius:16px 6px 16px 6px}
+/* selection + scrollbar */
+::selection{background:rgba(243,185,77,.35)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:10px;border:2px solid var(--ink)}::-webkit-scrollbar-track{background:transparent}
+/* phone tweaks */
+@media (max-width:600px){.pnl{padding:15px 14px}.ph h2{font-size:18.5px}.kpi b{font-size:22px}.greet{font-size:22px}.wrap{padding-bottom:110px}}
+@media (prefers-reduced-motion:reduce){.aurora{animation:none}.pnl:hover{transform:none}}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
+<div class="aurora" aria-hidden="true"></div>
 <div class="dawn" aria-hidden="true"></div>
 <canvas id="burst" aria-hidden="true"></canvas>
 
@@ -561,6 +752,30 @@ body.cipher .greet span{filter:blur(5px)}
           <div class="hleg"><span>أقل</span><i style="background:#141e33"></i><i style="background:rgba(255,106,61,.35)"></i><i style="background:rgba(243,185,77,.45)"></i><i style="background:rgba(243,185,77,.75)"></i><i style="background:var(--mint)"></i><span>أكتر</span></div>
         </div>
       </section>
+      <section class="pnl story" id="stories">
+        <div class="ph"><div class="glyph" style="color:var(--ember);border-color:rgba(255,106,61,.35);background:rgba(255,106,61,.08)">❝</div><div><h2>قصة فيها عبرة</h2><span class="en">STORY · قصة جديدة كل يومين</span></div><span class="cnt" id="stCnt"></span></div>
+        <div class="sbook" id="sbook"></div>
+        <div class="srow"><div class="nav"><button class="ib" id="stPrev" type="button" aria-label="القصة اللي قبلها">›</button><button class="ib" id="stNext" type="button" aria-label="القصة اللي بعدها">‹</button></div><button class="readbtn" id="stRead" type="button">قريتها ✓</button><span class="snext" id="stWhen"></span></div>
+        <div class="sdots" id="sdots"></div>
+      </section>
+      <section class="pnl hifz" id="hifz">
+        <div class="ph"><div class="glyph">📖</div><div><h2>مؤشر حفظ القرآن</h2><span class="en">HIFZ · دوس على السورة: بحفظ ← حفظت</span></div><span class="cnt" id="hzCnt"></span></div>
+        <div class="hhead">
+          <svg viewBox="0 0 100 100" role="img" aria-label="نسبة الحفظ"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a3d"/><stop offset="1" stop-color="#ffdc93"/></linearGradient></defs><circle class="hr-bg" cx="50" cy="50" r="42"/><circle class="hr" id="hzRing" cx="50" cy="50" r="42"/><circle class="hr2" id="hzRing2" cx="50" cy="50" r="33"/><text class="ht" id="hzPct" x="50" y="53" text-anchor="middle">0%</text><text class="hs" x="50" y="66" text-anchor="middle">OF QURAN</text></svg>
+          <div class="hstats"><div class="hst"><b id="hzS">0</b><span>سورة محفوظة</span></div><div class="hst"><b id="hzA">0</b><span>آية من 6236</span></div><div class="hst"><b id="hzJ">0</b><span>جزء تقريبًا</span></div></div>
+        </div>
+        <div class="hnow" id="hzNow"></div>
+        <div class="hjuzbar" id="hjuzbar" title="الأجزاء الـ 30"></div><div class="hjl"><span>جزء 1</span><span>جزء 30</span></div>
+        <div class="hjuz" id="hjuz"></div>
+        <div class="hgrid" id="hgrid"></div>
+        <p class="note">الحفظ المتقن مش بالكمية، بالمراجعة. اللي بتحفظه الأسبوع ده راجعه الأسبوع الجاي.</p>
+      </section>
+      <section class="pnl mentor" id="mentor">
+        <div class="ph"><div class="glyph" style="color:var(--sky);border-color:rgba(120,195,255,.3);background:rgba(120,195,255,.08)">◆</div><div><h2>نصيحة من ناس وصلوا</h2><span class="en">MENTORS · نصيحة جديدة كل يوم</span></div><span class="cnt" id="mnCnt"></span></div>
+        <div class="mcard" id="mcard"></div>
+        <div class="mrow2"><div class="nav"><button class="ib" id="mnPrev" type="button" aria-label="اللي قبلها">›</button><button class="ib" id="mnNext" type="button" aria-label="اللي بعدها">‹</button><button class="ib" id="mnRand" type="button" title="عشوائي">⤮</button></div><div class="mfilt" id="mfilt"></div></div>
+        <p class="note">النصايح مكتوبة بالمعنى من كلامهم وكتبهم ومقابلاتهم، مش اقتباس حرفي.</p>
+      </section>
       <section class="pnl" id="dustur">
         <div class="ph"><div class="glyph">◇</div><div><h2>الدستور</h2><span class="en">THE CODE · اقراه كل يوم</span></div></div>
         <div class="verses blur" id="verses"></div>
@@ -577,8 +792,9 @@ body.cipher .greet span{filter:blur(5px)}
   <button type="button" data-go="#report">▤<span>التقرير</span></button>
   <button type="button" data-go="#m-rooh">☾<span>المهام</span></button>
   <button type="button" data-go="#rizq">✧<span>الأدعية</span></button>
+  <button type="button" data-go="#hifz">📖<span>الحفظ</span></button>
   <button type="button" data-go="#counters">∞<span>العدّاد</span></button>
-  <button type="button" class="rev" id="dockRev">◑<span>حساب اليوم</span><i class="badge" id="dockBadge" hidden>0</i></button>
+  <button type="button" class="rev" id="dockRev">◑<span>الحساب</span><i class="badge" id="dockBadge" hidden>0</i></button>
 </nav>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
@@ -624,6 +840,7 @@ const MODS=[
   ['adhkar_m','أذكار الصباح',{hint:'من العدّاد، بتتعلّم لوحدها لما تخلصها'}],['quran','وردك من القرآن',{hint:'ولو صفحتين، المهم كل يوم'}],['adhkar_e','أذكار المساء'],
   ['istighfar','الاستغفار 100 مرة',{hint:'من العدّاد'}],['tasbih','التسبيح 100 مرة',{hint:'من العدّاد'}],
   ['dua_rizq','أدعية الرزق والتيسير',{hint:'من كارت الأدعية: 3 أدعية وبتتعلّم لوحدها'}],
+  ['hifz','حفظت أو راجعت من القرآن',{hint:'من مؤشر الحفظ: علّم سورة وبيتعلّم لوحده'}],['story','قريت قصة اليومين دول',{hint:'من كارت القصص'}],
   ['sadaqa','صدقة أو عمل خير، ولو صغير'],['shukr','الحمد لله على 3 نعم النهارده']]},
  {id:'jasad',g:'△',name:'الجسد',en:'BODY',items:[
   ['wake','صحيت بدري، ومنمتش بعد الفجر'],['train','التمرين أو الجري',{cond:'train'}],['water','8 كوبايات مية'],
@@ -697,7 +914,19 @@ const RIZQ=[
  ['لما تتزنق','لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ','الأنبياء 87 · دعوة ذي النون'],
  ['وانت شايل هم','حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ','آل عمران 173'],
  ['دعاء المكروب','اللَّهُمَّ رَحْمَتَكَ أَرْجُو، فَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ، وَأَصْلِحْ لِي شَأْنِي كُلَّهُ، لَا إِلَهَ إِلَّا أَنْتَ','رواه أبو داود'],
- ['الدنيا والآخرة','رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ','البقرة 201']];
+ ['الدنيا والآخرة','رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ','البقرة 201'],
+ ['سيد الاستغفار · الصبح والمسا','اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ','رواه البخاري'],
+ ['بعد كل صلاة','اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ','رواه أبو داود والنسائي'],
+ ['الثبات على الدين','يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ','رواه الترمذي'],
+ ['الهداية والغنى','اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى','رواه مسلم'],
+ ['الاستخارة · قبل أي قرار','اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ، فَإِنَّكَ تَقْدِرُ وَلَا أَقْدِرُ، وَتَعْلَمُ وَلَا أَعْلَمُ، وَأَنْتَ عَلَّامُ الْغُيُوبِ','رواه البخاري · تكمّلها بحاجتك'],
+ ['للبيت والذرية','رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا','الفرقان 74'],
+ ['قبول العمل','رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ','البقرة 127'],
+ ['الفرج من الضيق','اللَّهُمَّ لَا إِلَهَ إِلَّا أَنْتَ، أَنْتَ الْحَيُّ الْقَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ','رواه الترمذي'],
+ ['الرزق الواسع بالسحر','اللَّهُمَّ ارْزُقْنِي رِزْقًا حَلَالًا طَيِّبًا وَاسِعًا، وَبَارِكْ لِي فِيهِ، وَاجْعَلْنِي مِنَ الشَّاكِرِينَ','دعاء بالمعنى'],
+ ['العافية · الصبح والمسا','اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي','رواه أبو داود وابن ماجه'],
+ ['إصلاح الحال كله','اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي، وَأَصْلِحْ لِي دُنْيَايَ الَّتِي فِيهَا مَعَاشِي، وَأَصْلِحْ لِي آخِرَتِي الَّتِي فِيهَا مَعَادِي','رواه مسلم'],
+ ['توفيق موسى عند مدين','رَبِّ نَجِّنِي مِنَ الْقَوْمِ الظَّالِمِينَ ۝ عَسَىٰ رَبِّي أَن يَهْدِيَنِي سَوَاءَ السَّبِيلِ','القصص 21–22']];
 const MOTI=[
  'الناس بتشوف النتيجة، محدش بيشوف الفجر اللي صحيته. كمّل.',
  'مش لازم تبقى مستعد 100%. ابدأ، والباقي بيتظبط في السكة.',
@@ -728,7 +957,7 @@ const MOTI=[
 const PRAISE=['عاش يا وحش','برافو عليك','أيوه كده','كمّل كده','خطوة كمان','ماشي صح','ربنا يباركلك','إنت قدها'];
 
 /* ---------- state ---------- */
-const DEF_SET=()=>({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{},revHour:21});
+const DEF_SET=()=>({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{},revHour:21,hifz:{},stories:{}});
 const todayKey=()=>keyOf(new Date());
 const S={uid:null,db:null,view:todayKey(),tab:'istighfar',
  settings:Object.assign(DEF_SET(),LS.get('settings')||{}),
@@ -960,6 +1189,95 @@ $('#fstart').addEventListener('click',()=>{if(fEnd)return;fEnd=Date.now()+25*60*
 $('#freset').addEventListener('click',()=>{fEnd=0;LS.set('focusEnd',0);if(fInt){clearInterval(fInt);fInt=null;}tickFocus();});
 if(fEnd)runFocus();
 
+/* =================== stories + hifz data =================== */
+const STORIES=[
+ {t:'يوسف: من البير للعرش',s:'سورة يوسف',p:['إخواته رموه في البير وهو صغير علشان الغيرة. اتباع كعبد، وبعدين اتحط في السجن سنين بتهمة هو بريء منها، مع إنه قاوم الحرام وقال "معاذ الله".','ولا مرة اشتكى ربنا. في السجن كان بيدعو الناس لربنا وبيفسّر أحلامهم. ولما الملك احتاجه، طلع من السجن عزيز مصر، وبعدين جاله إخواته محتاجين، فقالهم: "لا تثريب عليكم اليوم".'],i:'البلاء مش نهاية الحكاية. الصبر مع الإخلاص بيحوّل البير لعرش، والعفو وانت قادر هو قمة القوة.',a:'إِنَّهُ مَن يَتَّقِ وَيَصْبِرْ فَإِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ',r:'يوسف 90'},
+ {t:'أيوب: الصبر اللي بقى مثل',s:'سورة ص والأنبياء',p:['كان نبي غني، عنده مال وعيال وصحة. راح كل ده واحدة ورا التانية، ومرض سنين طويلة لدرجة إن الناس بعدت عنه، ومكانش فاضل معاه غير مراته.','طول المدة دي مقالش كلمة اعتراض. وفي الآخر دعا بأدب: "أني مسني الضر وأنت أرحم الراحمين"، فربنا شفاه ورجعله أهله ومثلهم معهم.'],i:'الدعاء بأدب مع الصبر مش ضعف. ولما تتعب، قول لربنا إنك تعبان، هو أرحم الراحمين.',a:'وَأَيُّوبَ إِذْ نَادَىٰ رَبَّهُ أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ',r:'الأنبياء 83'},
+ {t:'موسى والبحر: "كلا إن معي ربي"',s:'سورة الشعراء',p:['فرعون وجيشه وراهم، والبحر قدامهم. بنو إسرائيل قالوا: "إنا لمدركون" يعني خلاص اتمسكنا.','موسى عليه السلام قال كلمة واحدة: "كلا، إن معي ربي سيهدين". وبعدها جاله الأمر يضرب البحر بعصاه، فاتفلق، وعدّوا، وغرق فرعون في نفس المكان.'],i:'لما الطريق يتقفل من كل ناحية، ده مش وقت اليأس، ده وقت اليقين. المخرج بييجي بعد ما تثبت.',a:'قَالَ كَلَّا ۖ إِنَّ مَعِيَ رَبِّي سَيَهْدِينِ',r:'الشعراء 62'},
+ {t:'يونس في بطن الحوت',s:'سورة الأنبياء والصافات',p:['نبي الله يونس زعل من قومه ومشي من غير إذن ربنا. ركب مركب، واتعملت قرعة فطلعت عليه، فرموه في البحر، وابتلعه الحوت.','في ظلمة البحر وظلمة بطن الحوت وظلمة الليل، قال: "لا إله إلا أنت سبحانك إني كنت من الظالمين". فربنا نجّاه، وقال في القرآن إن الدعوة دي لأي مؤمن يدعو بيها.'],i:'مفيش ضلمة مهما كانت ربنا مش شايفك فيها. اعترف بغلطك وادعي، والنجاة أقرب مما تتخيل.',a:'فَاسْتَجَبْنَا لَهُ وَنَجَّيْنَاهُ مِنَ الْغَمِّ ۚ وَكَذَٰلِكَ نُنجِي الْمُؤْمِنِينَ',r:'الأنبياء 88'},
+ {t:'التلاتة اللي اتقفل عليهم الغار',s:'حديث متفق عليه',p:['تلات رجالة دخلوا غار يباتوا فيه، فوقعت صخرة قفلت الباب. قالوا لبعض: مفيش حد هينفعنا غير ربنا، كل واحد يدعي بأخلص عمل عمله.','الأول: كان بيسقي أبوه وأمه قبل عياله، وفضل واقف بالحليب لحد ما صحيوا. التاني: قدر على بنت عمه في الحرام وسابها خوفًا من ربنا. التالت: أجير مأخدش أجره، فنمّاه له لحد ما بقى غنم وبقر، وادّاه كله. الصخرة اتزحزحت مع كل دعوة لحد ما خرجوا.'],i:'العمل اللي بتعمله في الخفا لله، هو رصيدك يوم الشدة. بر الوالدين، والعفة، والأمانة في الفلوس.',a:'',r:'رواه البخاري ومسلم'},
+ {t:'اللي قتل 99 نفس وتاب',s:'حديث متفق عليه',p:['راجل قتل 99 واحد، وسأل عن أعلم أهل الأرض فدلّوه على راهب. سأله: ليا توبة؟ قاله: لأ. فقتله وكمّل 100.','سأل تاني فدلّوه على عالم. قاله: ومين يقف بينك وبين التوبة؟ بس سيب بلدك دي، واطلع لبلد فيها ناس صالحين. مشي، ومات في نص الطريق. اتخانقت عليه ملائكة الرحمة والعذاب، فقاسوا الأرض، فلقوه أقرب للبلد الصالحة بشبر، فقبضته ملائكة الرحمة.'],i:'مفيش ذنب أكبر من رحمة ربنا. التوبة الصادقة لازم معاها خطوة: غيّر صحابك ومكانك واللي بيرجّعك.',a:'قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ',r:'الزمر 53'},
+ {t:'الغار: "لا تحزن إن الله معنا"',s:'سورة التوبة · الهجرة',p:['في الهجرة، النبي ﷺ وأبو بكر استخبوا في غار ثور، والمشركين وصلوا لحد باب الغار. أبو بكر قال: يا رسول الله لو واحد فيهم بص تحت رجليه هيشوفنا.','النبي ﷺ قاله: "ما ظنك باثنين الله ثالثهما؟ لا تحزن إن الله معنا". ومشيوا، ومشافوش حاجة.'],i:'معية ربنا أقوى من أي خطر. لما تحس إنك محاصر في شغلك أو حياتك، افتكر: الله معنا.',a:'لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا',r:'التوبة 40'},
+ {t:'إبراهيم وإسماعيل: التسليم',s:'سورة الصافات',p:['إبراهيم عليه السلام استنى الولد لحد ما شاب، ولما جاله إسماعيل وكبر وبقى بيسعى معاه، شاف في المنام إنه بيدبحه.','قال لابنه، فالولد قاله: "يا أبت افعل ما تؤمر، ستجدني إن شاء الله من الصابرين". ولما الاتنين سلّموا بجد، ربنا فداه بذبح عظيم، وبقت سنة لحد النهارده.'],i:'لما تسلّم لربنا في أصعب حاجة عندك، ربنا بيعوّضك بأحسن منها. الفدا بييجي بعد التسليم، مش قبله.',a:'فَلَمَّا أَسْلَمَا وَتَلَّهُ لِلْجَبِينِ ۝ وَنَادَيْنَاهُ أَن يَا إِبْرَاهِيمُ ۝ قَدْ صَدَّقْتَ الرُّؤْيَا',r:'الصافات 103–105'},
+ {t:'صاحب الجنتين',s:'سورة الكهف',p:['راجل عنده جنتين فيهم عنب ونخل وزرع ونهر في النص. دخل جنته وهو مغرور وقال: "ما أظن أن تبيد هذه أبدًا"، وقال إنه لو رجع لربه هيلاقي أحسن منها.','صاحبه المؤمن نصحه: ليه مقلتش "ما شاء الله لا قوة إلا بالله"؟ مسمعش. فجاتها عاصفة من السما، وصبح يقلّب كفّيه على اللي صرفه فيها.'],i:'لما ربنا يدّيك مال أو نجاح، انسبه لربنا مش لشطارتك. "ما شاء الله لا قوة إلا بالله" حماية لرزقك.',a:'وَلَوْلَا إِذْ دَخَلْتَ جَنَّتَكَ قُلْتَ مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ',r:'الكهف 39'},
+ {t:'الأبرص والأقرع والأعمى',s:'حديث متفق عليه',p:['تلاتة من بني إسرائيل: أبرص وأقرع وأعمى. ربنا بعتلهم ملك سأل كل واحد نفسه إيه، فشفاهم وادّى الأول إبل، والتاني بقر، والتالت غنم. كبرت وبقوا أغنيا.','بعدها جالهم الملك في صورة راجل فقير محتاج. الأبرص والأقرع نكروا النعمة وقالوا: "إنما ورثت هذا المال كابرًا عن كابر". الأعمى قال: كنت أعمى فردّ الله بصري، خد اللي انت عايزه. فرجع الاتنين زي ما كانوا، وبارك ربنا للتالت.'],i:'الشكر مش كلمة، الشكر إنك تفتكر منين جالك الرزق وتدّي منه. النعمة اللي بتتشكر بتزيد، واللي بتتنكر بتروح.',a:'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ',r:'إبراهيم 7'},
+ {t:'قارون: لما المال يبقى إله',s:'سورة القصص',p:['قارون كان من قوم موسى، وربنا ادّاه كنوز مفاتحها بس تقيلة على مجموعة رجالة. قومه نصحوه: متفرحش غرور، وادّي حق ربنا في المال. قال: "إنما أوتيته على علم عندي".','خرج على الناس في زينته، والناس اللي بتحب الدنيا قالوا: يا ريتنا زيه. وفي الآخر ربنا خسف بيه وبداره الأرض، ومحدش نفعه.'],i:'المال اللي بتقول عليه "ده من شطارتي" هو أول حاجة بتتاخد منك. الفلوس وسيلة، مش هوية.',a:'وَابْتَغِ فِيمَا آتَاكَ اللَّهُ الدَّارَ الْآخِرَةَ ۖ وَلَا تَنسَ نَصِيبَكَ مِنَ الدُّنْيَا',r:'القصص 77'},
+ {t:'أم موسى: "إنا رادّوه إليك"',s:'سورة القصص',p:['فرعون كان بيدبح الولاد. أم موسى ربنا أوحى لها: رضّعيه، ولو خفتي عليه حطيه في الصندوق وارميه في النهر، ومتخافيش ومتحزنيش، إحنا هنرجّعهولك.','رمت ابنها في النهر بإيدها. والنهر وداه لبيت فرعون نفسه، ومراة فرعون حبته، ورفض كل المرضعات، فجابوا أمه ترضّعه بأجر، في أمان، في قصر عدوه.'],i:'أحيانًا الحل إنك تسيب الحاجة اللي بتخاف عليها في إيد ربنا. اللي بتخاف منه ممكن يبقى هو نفسه طريق الحفظ.',a:'فَرَدَدْنَاهُ إِلَىٰ أُمِّهِ كَيْ تَقَرَّ عَيْنُهَا وَلَا تَحْزَنَ وَلِتَعْلَمَ أَنَّ وَعْدَ اللَّهِ حَقٌّ',r:'القصص 13'},
+ {t:'مريم والنخلة: اسعى وانت متوكل',s:'سورة مريم',p:['مريم عليها السلام جاها الطلق لوحدها تحت نخلة، تعبانة وخايفة وقالت: "يا ليتني مت قبل هذا".','ربنا قالها: متحزنيش، وهزّي النخلة. نخلة يابسة والست في أضعف لحظة، بس الأمر كان "هزّي"، فهزّت، فوقع عليها رطب طازة. ربنا كان يقدر ينزل الرطب من غير ما تهز.'],i:'التوكل مش إنك تقعد. ربنا بيطلب منك "هزّة" على قدك، وهو بيكمّل الباقي. اعمل خطوتك الصغيرة النهارده.',a:'وَهُزِّي إِلَيْكِ بِجِذْعِ النَّخْلَةِ تُسَاقِطْ عَلَيْكِ رُطَبًا جَنِيًّا',r:'مريم 25'},
+ {t:'أبو بكر: "أبقيت لهم الله ورسوله"',s:'رواه الترمذي وأبو داود',p:['لما النبي ﷺ طلب الصدقة لغزوة تبوك، عمر قال في نفسه: النهارده هسبق أبو بكر. جاب نص ماله. النبي سأله: إيه اللي سبته لأهلك؟ قال: نصه.','وجه أبو بكر بماله كله. سأله النبي: إيه اللي سبته لأهلك؟ قال: "أبقيت لهم الله ورسوله". عمر قال: والله ما أسابقه إلى شيء أبدًا.'],i:'الصدقة مش من الفايض. اللي بيدّي وهو محتاج هو اللي بيتعلّم إن الرزق من ربنا مش من الحساب.',a:'وَمَا تُنفِقُوا مِنْ خَيْرٍ فَلِأَنفُسِكُمْ ۚ وَمَا تُنفِقُونَ إِلَّا ابْتِغَاءَ وَجْهِ اللَّهِ',r:'البقرة 272'},
+ {t:'عثمان وبئر رومة',s:'رواه الترمذي والنسائي',p:['المدينة كان فيها بير ميتها حلوة، وصاحبها يهودي بيبيع الميّة غالي، والمسلمين تعبانين. النبي ﷺ قال: مين يشتري بئر رومة ويجعل دلوه مع دلاء المسلمين وله الجنة؟','عثمان اشترى نصها، وبعدين اشتراها كلها ووقفها للناس. البير دي لسه موجودة لحد النهارده في المدينة، وليها نخل ووقف باسمه بعد 1400 سنة.'],i:'الصدقة الجارية استثمار مبيقفش بعد موتك. فكّر في حاجة واحدة تسيبها وراك تفضل تجري.',a:'',r:'سنن الترمذي'},
+ {t:'الراجل اللي ينام وقلبه نضيف',s:'رواه أحمد',p:['النبي ﷺ قال تلات مرات: دلوقتي هيدخل عليكم راجل من أهل الجنة. وكل مرة يدخل نفس الراجل من الأنصار. عبد الله بن عمرو قرر يبات عنده تلات ليالي يشوف بيعمل إيه.','ملقاش عنده قيام ليل كتير ولا صيام زيادة، بس كل ما يتقلب في سريره يذكر ربنا. سأله في الآخر: إنت بتعمل إيه؟ قاله: مش بلاقي في قلبي غش لمسلم، ولا بحسد حد على خير ادّاهوله ربنا. فقال: دي اللي وصّلتك.'],i:'سلامة الصدر عبادة. نام من غير ما تشيل لحد حاجة، وبطّل تقارن نفسك بحد.',a:'',r:'مسند أحمد'},
+ {t:'أصحاب الكهف: الثبات',s:'سورة الكهف',p:['شباب آمنوا بربنا في بلد ملكها ظالم بيجبر الناس على الشرك. مقدروش يعيشوا مع الكفر، فقالوا: "ربنا آتنا من لدنك رحمة"، وخرجوا واستخبوا في كهف.','ربنا نيّمهم 309 سنة، والشمس بتميل عن الكهف، وهم بيتقلبوا، وكلبهم على الباب. ولما صحيوا كان البلد كله اتغيّر وبقى على الإيمان.'],i:'لو ثبتّ على حاجة صح والناس كلها ضدك، ربنا بيحفظك بطرق متتخيلهاش. الثبات مع شباب صالحين أسهل من لوحدك.',a:'إِنَّهُمْ فِتْيَةٌ آمَنُوا بِرَبِّهِمْ وَزِدْنَاهُمْ هُدًى',r:'الكهف 13'},
+ {t:'سلمان الفارسي: رحلة الدور على الحق',s:'رواه أحمد',p:['اتولد في فارس مجوسي، وأبوه كان بيحبسه في البيت. شاف نصارى بيصلّوا فحس إن ده أقرب للحق، فهرب للشام وخدم راهب ورا راهب، وآخر واحد قاله: زمان نبي هيطلع في أرض نخل، بياكل الهدية ومش بياكل الصدقة، وبين كتفيه خاتم النبوة.','في الطريق اتباع كعبد ووصل المدينة. لما سمع عن النبي ﷺ جابله صدقة فمكلش، وجابله هدية فأكل، وشاف الخاتم فأسلم وبكى. وبعدين النبي ﷺ ساعده يشتري حريته، وهو اللي اقترح الخندق في الغزوة.'],i:'اللي بيدوّر على الحق بجد ربنا بيوصّله، حتى لو الطريق طويل وفيه عبودية. ومتستهونش بفكرتك في الاجتماع، الخندق كانت فكرة واحد.',a:'وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا',r:'العنكبوت 69'},
+ {t:'الصحابي اللي قال "يا الله" والصخرة',s:'سورة البقرة · غزوة الخندق',p:['في حفر الخندق جات صخرة كبيرة مقدرش الصحابة يكسروها، وهم جعانين وبيربطوا الحجر على بطونهم من الجوع. النبي ﷺ قام بنفسه والحجر على بطنه هو كمان، وضرب الصخرة.','مع كل ضربة قال: الله أكبر، أُعطيت مفاتيح الشام. الله أكبر، أُعطيت فارس. الله أكبر، أُعطيت اليمن. وهم محاصرين وعشرة آلاف عدو برا. وكل ده حصل بعدها بسنين.'],i:'في أصعب لحظة، القائد بيشوف أبعد من الصخرة اللي قدامه. وإنت جعان ومحاصر، بشّر نفسك باللي جاي واشتغل.',a:'وَلَمَّا رَأَى الْمُؤْمِنُونَ الْأَحْزَابَ قَالُوا هَٰذَا مَا وَعَدَنَا اللَّهُ وَرَسُولُهُ',r:'الأحزاب 22'},
+ {t:'عمر والمرأة اللي كانت بتغش اللبن',s:'من أخبار عمر بن الخطاب',p:['عمر كان بيلف بالليل يشوف حال الناس، سمع بنت أمها بتقولها: حطي ميّة على اللبن. البنت قالت: عمر منع ده. الأم: وعمر مش شايفنا. البنت: لو عمر مش شايفنا، رب عمر شايفنا.','الصبح عمر دوّر على البنت دي وجوّزها لابنه عاصم، ومن ذريتها جه عمر بن عبد العزيز، الخليفة العادل.'],i:'الأمانة وانت لوحدك هي اللي بتبني البيت والذرية. اللي انت بتخليه في الخفا، ربنا بيظهره في النور.',a:'يَعْلَمُ خَائِنَةَ الْأَعْيُنِ وَمَا تُخْفِي الصُّدُورُ',r:'غافر 19'},
+ {t:'جريج العابد وأمه',s:'حديث متفق عليه',p:['جريج كان عابد في صومعة. أمه نادته وهو بيصلي، فقال في نفسه: أمي ولا صلاتي؟ وكمّل صلاته. نادت تاني وتالت ومردّش، فدعت عليه: اللهم لا تمته حتى ينظر في وجوه المومسات.','ست فاسدة اتهمته إن الولد اللي معاها منه، فهدموا صومعته وضربوه. فتوضأ وصلى، وكلّم الطفل الرضيع: يا غلام، مين أبوك؟ فنطق الرضيع: الراعي. فعرفوا براءته، وقالوا نبنيهالك دهب، قال: لأ، طين زي ما كانت.'],i:'رد على أمك حتى وانت في عبادة، دعوة الأم بتوصل. والبراءة بتظهر لما تلجأ لربنا مش للناس.',a:'',r:'رواه البخاري ومسلم'},
+ {t:'الغلام والملك وأصحاب الأخدود',s:'رواه مسلم · سورة البروج',p:['ملك عنده ساحر كبر وطلب غلام يعلّمه. الغلام في الطريق كان بيقعد مع راهب وآمن بربنا. ربنا أكرمه فشفى الأعمى والأبرص، فسمع الملك وعذّبه يرجع عن دينه فرفض.','حاولوا يرموه من جبل فدعا ربنا فوقعوا هم. رموه في البحر فغرقوا هم. قالهم: مش هتقدروا تقتلوني إلا لو جمعتوا الناس وقلتوا "باسم الله رب الغلام" ورميتوني بسهم. عملوا كده ومات، فالناس كلها قالت: آمنا برب الغلام. فحفر الملك أخاديد نار ورمى فيها اللي آمنوا، ومرجعوش.'],i:'ساعات نجاحك مش في إنك تعيش، في إن الحق ينتشر بسببك. لو عندك رسالة، خليها أكبر منك.',a:'وَمَا نَقَمُوا مِنْهُمْ إِلَّا أَن يُؤْمِنُوا بِاللَّهِ الْعَزِيزِ الْحَمِيدِ',r:'البروج 8'},
+ {t:'نوح: 950 سنة من غير ما يزهق',s:'سورة نوح والعنكبوت',p:['نوح عليه السلام فضل 950 سنة بيدعو قومه بالليل وبالنهار، سرًا وعلانية، وهم يحطوا صوابعهم في ودانهم ويتكبروا. وآمن معاه قليل جدًا.','وبعدين بنى السفينة في مكان مفيهوش بحر، والناس بتعدي تضحك عليه. ولما جه الطوفان، نجا هو واللي معاه، وابنه نفسه اللي رفض كان من المغرقين.'],i:'الاستمرار على الصح حتى لو النتيجة متأخرة سنين. ابني سفينتك وهم بيضحكوا، والطوفان بييجي.',a:'رَّبِّ إِنِّي دَعَوْتُ قَوْمِي لَيْلًا وَنَهَارًا',r:'نوح 5'},
+ {t:'سليمان والنملة',s:'سورة النمل',p:['سليمان عليه السلام ماشي بجيشه من الجن والإنس والطير، فنملة قالت للنمل: ادخلوا بيوتكم علشان سليمان وجنوده ميدوسوش عليكم وهم مش حاسين.','سليمان سمعها وفهمها، فابتسم وضحك، ومقالش "أنا ملك"، قال: "رب أوزعني أن أشكر نعمتك التي أنعمت عليّ".'],i:'أول رد فعل على النعمة الكبيرة يبقى الشكر مش الغرور. ولو انت كبير، اسمع الصغير.',a:'رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ',r:'النمل 19'}
+];
+/* [name, ayahs, juz] */
+const SURAHS=[['الفاتحة',7,1],['البقرة',286,1],['آل عمران',200,3],['النساء',176,4],['المائدة',120,6],['الأنعام',165,7],['الأعراف',206,8],['الأنفال',75,9],['التوبة',129,10],['يونس',109,11],['هود',123,11],['يوسف',111,12],['الرعد',43,13],['إبراهيم',52,13],['الحجر',99,14],['النحل',128,14],['الإسراء',111,15],['الكهف',110,15],['مريم',98,16],['طه',135,16],['الأنبياء',112,17],['الحج',78,17],['المؤمنون',118,18],['النور',64,18],['الفرقان',77,18],['الشعراء',227,19],['النمل',93,19],['القصص',88,20],['العنكبوت',69,20],['الروم',60,21],['لقمان',34,21],['السجدة',30,21],['الأحزاب',73,21],['سبأ',54,22],['فاطر',45,22],['يس',83,22],['الصافات',182,23],['ص',88,23],['الزمر',75,23],['غافر',85,24],['فصلت',54,24],['الشورى',53,25],['الزخرف',89,25],['الدخان',59,25],['الجاثية',37,25],['الأحقاف',35,26],['محمد',38,26],['الفتح',29,26],['الحجرات',18,26],['ق',45,26],['الذاريات',60,26],['الطور',49,27],['النجم',62,27],['القمر',55,27],['الرحمن',78,27],['الواقعة',96,27],['الحديد',29,27],['المجادلة',22,28],['الحشر',24,28],['الممتحنة',13,28],['الصف',14,28],['الجمعة',11,28],['المنافقون',11,28],['التغابن',18,28],['الطلاق',12,28],['التحريم',12,28],['الملك',30,29],['القلم',52,29],['الحاقة',52,29],['المعارج',44,29],['نوح',28,29],['الجن',28,29],['المزمل',20,29],['المدثر',56,29],['القيامة',40,29],['الإنسان',31,29],['المرسلات',50,29],['النبأ',40,30],['النازعات',46,30],['عبس',42,30],['التكوير',29,30],['الانفطار',19,30],['المطففين',36,30],['الانشقاق',25,30],['البروج',22,30],['الطارق',17,30],['الأعلى',19,30],['الغاشية',26,30],['الفجر',30,30],['البلد',20,30],['الشمس',15,30],['الليل',21,30],['الضحى',11,30],['الشرح',8,30],['التين',8,30],['العلق',19,30],['القدر',5,30],['البينة',8,30],['الزلزلة',8,30],['العاديات',11,30],['القارعة',11,30],['التكاثر',8,30],['العصر',3,30],['الهمزة',9,30],['الفيل',5,30],['قريش',4,30],['الماعون',7,30],['الكوثر',3,30],['الكافرون',6,30],['النصر',3,30],['المسد',5,30],['الإخلاص',4,30],['الفلق',5,30],['الناس',6,30]];
+const TOTAL_AYAH=6236;
+
+/* [name, who, category(biz|mind|deen|lead), advice, how-to-apply, en?] */
+const MENTORS=[
+ ['وارن بافيت','أنجح مستثمر في العالم','biz','القاعدة الأولى: متخسرش فلوس. القاعدة التانية: متنساش القاعدة الأولى.','قبل أي مصروف أو استثمار اسأل: ده ممكن يخسّرني؟ لو آه، استنى.'],
+ ['وارن بافيت','أنجح مستثمر في العالم','mind','أحسن استثمار في الدنيا هو إنك تستثمر في نفسك. محدش يقدر يأخده منك.','الـ 15 دقيقة إنجليزي والـ 10 صفحات قراية في القايمة، دول الاستثمار ده.'],
+ ['وارن بافيت','أنجح مستثمر في العالم','biz','الفرق بين الناجحين والناجحين جدًا إن الناجحين جدًا بيقولوا "لأ" لكل حاجة تقريبًا.','أهم 3 حاجات في اليوم: لو مش فيهم، قول لأ.'],
+ ['تشارلي مانجر','شريك بافيت','mind','مشفتش حد حكيم في حياتي مكانش بيقرا طول الوقت. ولا واحد.','كتاب في إيدك دايمًا بدل الموبايل. 10 صفحات كل يوم = 15 كتاب في السنة.'],
+ ['تشارلي مانجر','شريك بافيت','mind','اقلب المشكلة. بدل ما تسأل "أنجح إزاي؟" اسأل "أفشل إزاي؟" وابعد عن ده.','اكتب 3 حاجات لو عملتها هتبوّظ البزنس، وامنعها.'],
+ ['نافال رافيكانت','مؤسس AngelList','biz','اسعى للثروة مش للفلوس. الثروة أصول بتكسب وانت نايم.','اللي بتبنيه لازم يشتغل من غيرك: منتج، محتوى، كود، أو فريق.'],
+ ['نافال رافيكانت','مؤسس AngelList','biz','اتعلم مهارة محدش يقدر يدرّبك عليها، واعمل بيها حاجة الناس عايزاها ومتعرفش تعملها.','اكتب: إيه الحاجة اللي بتعملها بسهولة والناس بتشوفها صعبة؟ دي بدايتك.'],
+ ['جيف بيزوس','مؤسس أمازون','mind','وانت 80 سنة، إيه اللي هتندم عليه؟ غالبًا مش هتندم على حاجة جربتها وفشلت، هتندم على اللي مجربتهوش.','الخطوة اللي خايف منها: تخيل نفسك 80 سنة وبص لها.'],
+ ['جيف بيزوس','مؤسس أمازون','biz','كل يوم هو اليوم الأول. اليوم التاني معناه ركود، وبعده الموت البطيء.','افتح الصفحة دي كل يوم بعقلية "ده أول يوم".'],
+ ['ستيف جوبز','مؤسس أبل','mind','وقتك محدود، متضيعوش وانت عايش حياة حد تاني.','البزنس بتاعك إنت، مش اللي الناس عايزاه منك.'],
+ ['ستيف جوبز','مؤسس أبل','mind','Stay hungry. Stay foolish.','خليك جعان للعلم، ومتخافش تبان غلطان وانت بتجرب.','en'],
+ ['إيلون ماسك','مؤسس تسلا وسبيس إكس','biz','لو اشتغلت 80 ساعة والتاني 40، هتخلص في 4 شهور اللي هو هيخلصه في سنة.','ساعتين تركيز كل يوم من غير موبايل = سباق مش هيسبقك فيه حد.'],
+ ['إيلون ماسك','مؤسس تسلا وسبيس إكس','mind','فكّر من الأساسيات. اسأل "إيه اللي أكيد صح؟" وابني من هناك، مش من اللي الناس بتعمله.','المجال اللي هتختاره: اسأل ليه الناس بتعمله كده، وهل في طريقة أرخص أو أسرع.'],
+ ['جيمس كلير','مؤلف العادات الذرية','mind','مش بتطلع لمستوى أهدافك، بتنزل لمستوى نظامك.','الصفحة دي هي نظامك. الهدف بييجي لوحده لو النظام اشتغل كل يوم.'],
+ ['جيمس كلير','مؤلف العادات الذرية','mind','1% أحسن كل يوم = 37 ضعف في السنة.','بند واحد زيادة كل يوم عن امبارح.'],
+ ['كال نيوبورت','مؤلف العمل العميق','mind','القدرة على التركيز من غير تشتيت بقت نادرة، وبالتالي بقت أغلى مهارة في سوق الشغل.','جلسة التركيز الـ 25 دقيقة في القايمة: 4 في اليوم.'],
+ ['روبرت كيوساكي','مؤلف الأب الغني','biz','الفقير بيشتري التزامات وفاكرها أصول. الغني بيشتري أصول بتدفعله الالتزامات.','قبل أي مصروف كبير: ده هيدخّل فلوس ولا هيطلّع فلوس؟'],
+ ['مورغان هاوسل','مؤلف سيكولوجية المال','biz','الادخار مش محتاج سبب. الادخار نفسه هو السبب: بيشتريلك حرية وقت.','مبلغ الادخار الأسبوعي في القايمة، حتى لو صغير.'],
+ ['محمد بن راشد','حاكم دبي','lead','سباق التميز مفيهوش خط نهاية.','لما تخلص هدف، حط اللي بعده في نفس اليوم.'],
+ ['محمد بن راشد','حاكم دبي','lead','القائد اللي بيصحى بعد موظفينه مش قائد.','الفجر في الجامع، وأول ساعة من غير موبايل.'],
+ ['أحمد زويل','نوبل في الكيمياء','mind','مفيش حاجة اسمها مستحيل، في حاجة اسمها "لسه متعملتش".','اللي بتقول عليه مستحيل في البزنس، قسّمه لخطوات.'],
+ ['مجدي يعقوب','جراح القلب','lead','اللي بتعمله للناس هو اللي بيفضل. الباقي بيروح.','صدقة أو مساعدة كل يوم، ولو صغيرة.'],
+ ['محمد صلاح','لاعب ليفربول ومصر','mind','لما بقيت بروح التمرين الأول وأمشي الآخر، كل حاجة اتغيرت. الموهبة من غير انضباط مش بتكفي.','تمرينك في وقته، حتى اليوم اللي مش حابب.'],
+ ['نجيب ساويرس','رجل أعمال','biz','ابدأ صغير وكبّر. اللي بيستنى رأس مال كبير بيستنى طول عمره.','خطوة البزنس الصغيرة في القايمة كل يوم، مش انتظار الفرصة الكبيرة.'],
+ ['طلال أبو غزالة','رجل أعمال','biz','التعليم هو الاستثمار الوحيد اللي عمره ما بيخسر.','كورس أو فيديو أو مقال كل يوم.'],
+ ['عمر بن الخطاب','الخليفة الثاني','deen','حاسبوا أنفسكم قبل أن تحاسبوا، وزنوا أعمالكم قبل أن توزن عليكم.','حساب آخر اليوم في الصفحة دي، كل يوم.'],
+ ['علي بن أبي طالب','الخليفة الرابع','deen','قيمة كل امرئ ما يحسنه.','ركّز على المهارة اللي بتتقنها، مش على 10 حاجات نص نص.'],
+ ['الإمام الشافعي','إمام ومجتهد','deen','ما أفلح في العلم إلا من طلبه بالقلة. وإن أردت العلم فعليك بالصبر على مرّ الجفا.','التعب في البداية طبيعي. اصبر على فترة التعلم.'],
+ ['ابن القيم','عالم وفقيه','deen','الوقت هو رأس مال العبد. إضاعة الوقت أشد من الموت، لأن إضاعة الوقت تقطعك عن الله والدار الآخرة.','وقت الشاشة تحت الهدف. ساعة ضايعة مش بترجع.'],
+ ['الحسن البصري','من التابعين','deen','يا ابن آدم، إنما أنت أيام، كلما ذهب يوم ذهب بعضك.','كل يوم في الصفحة دي بيتحسب. متسيبش يوم فاضي.'],
+ ['ابن الجوزي','مؤلف صيد الخاطر','deen','من لم يدافع هوى نفسه الأمارة بالسوء فلا يطمع في الراحة.','قاوم. السيجارة والموبايل والكسل، كل مرة بتقاوم بتقوى.'],
+ ['أبو بكر الصديق','الخليفة الأول','deen','إن أقواكم عندي الضعيف حتى آخذ له حقه، وإن أضعفكم عندي القوي حتى آخذ منه الحق.','القيادة إنك تقف مع اللي محدش بيقف معاه.'],
+ ['طارق السويدان','مدرب قيادة','lead','الناجح بيخطط لسنته وشهره ويومه. اللي مش بيخطط بيعيش في خطة غيره.','أهم 3 حاجات مكتوبة قبل ما تبدأ شغلك.'],
+ ['إبراهيم الفقي','مدرب تنمية','mind','الفشل هو الطريق للنجاح، كل محاولة فاشلة بتقربك خطوة.','الفكرة اللي فشلت، اكتب اتعلمت منها إيه، وجرّب تاني.'],
+ ['دوايت أيزنهاور','رئيس أمريكي وقائد','lead','المهم نادرًا ما بيكون عاجل، والعاجل نادرًا ما بيكون مهم.','الحاجة اللي بتضغط عليك دلوقتي: مهمة ولا بس عاجلة؟'],
+ ['توماس إديسون','مخترع','mind','مفشلتش. أنا لقيت 10 آلاف طريقة متشتغلش.','كل تجربة فاشلة للبزنس هي بيانات، مش نهاية.'],
+ ['سام والتون','مؤسس وول مارت','biz','في زبون واحد بس يقدر يطرد الجميع من الرئيس لآخر موظف: الزبون اللي بيروح يشتري من حد تاني.','كلم عميل كل يوم، واسمعه أكتر ما تتكلم.'],
+ ['هنري فورد','مؤسس فورد','mind','سواء كنت فاكر إنك تقدر أو إنك متقدرش، إنت صح.','Never underestimate yourself. دي في الدستور بتاعك.'],
+ ['جيم رون','مدرب أعمال','life','إنت متوسط الخمس أشخاص اللي بتقضي معاهم أكتر وقت.','اكتب أسماء الـ 5. لو فيهم حد بيرجّعك لورا، قلّل وقته. ودوّر على حد أحسن منك تقعد معاه.'],
+ ['راي داليو','مؤسس أكبر صندوق تحوط','life','ألم + تفكير فيه = تقدم. الألم من غير ما تفهمه بيتكرر.','كل مرة تتوجع من موقف، اكتب: حصل إيه، وأنا غلطت فين، وهعمل إيه المرة الجاية.'],
+ ['ستيفن كوفي','مؤلف العادات السبع','life','ابدأ والنهاية في بالك. لو مش عارف رايح فين، أي طريق هيوديك.','اكتب في سطر واحد: شكل حياتي بعد 5 سنين. وبص عليه كل صبح.'],
+ ['براين تريسي','مدرب إنتاجية','life','كُل الضفدعة الأول. أصعب حاجة في يومك اعملها أول ما تصحى.','المهمة رقم 1 في أهم 3 حاجات تبقى أصعب واحدة، وتتعمل قبل الموبايل.'],
+ ['فيكتور فرانكل','طبيب نفسي وناجي من المعسكرات','life','بين المؤثر والاستجابة في مساحة. في المساحة دي حريتك وقوتك.','قبل ما تتعصب أو ترد: 3 نَفَس. بند "ماتعصبتش" في البيت أصله هنا.'],
+ ['ديل كارنيجي','مؤلف كيف تكسب الأصدقاء','life','اسم الشخص بالنسبة له هو أحلى صوت في أي لغة. افتكر أسامي الناس واهتم بيهم بجد.','كل عميل أو حد جديد تقابله: افتكر اسمه واسأله عن حاجة تخصه المرة الجاية.'],
+ ['ماركوس أوريليوس','إمبراطور وفيلسوف','life','إنت بتتحكم في عقلك، مش في اللي بيحصل برا. لما تفهم ده هتلاقي قوتك.','الحاجة اللي مزعلاك النهارده: في إيدك ولا لأ؟ لو لأ، سيبها.'],
+ ['سينيكا','فيلسوف روماني','life','مش إن عندنا وقت قليل، إحنا بنضيّع كتير منه.','وقت الشاشة في القايمة. اللي بيتقاس بيتحسّن.'],
+ ['تيم فيريس','مؤلف أسبوع العمل 4 ساعات','life','نجاح الإنسان بيتقاس بعدد المحادثات الصعبة اللي مستعد يخوضها.','المكالمة اللي بتأجلها: اعملها النهارده.'],
+ ['ديفيد جوجينز','عداء وجندي سابق','life','لما تحس إنك خلصت، إنت لسه في 40% من قدرتك.','آخر 10 دقايق في التمرين أو الشغل، كمّلهم وانت تعبان.'],
+ ['مصطفى محمود','طبيب ومفكر','life','الحرية الحقيقية إنك تملك نفسك: شهوتك ووقتك وغضبك.','يوم من غير سجاير، ومن غير سوشيال وقت الشغل: ده اسمه حرية.'],
+ ['روبن شارما','مؤلف نادي الخامسة صباحًا','life','اكسب الصبح تكسب اليوم. أول ساعة بتحدد شكل الـ 23 اللي بعدها.','فجر في الجامع + أذكار + 20 دقيقة قراية قبل أي شاشة.'],
+ ['جون روكفلر','أغنى رجل في تاريخ أمريكا','biz','متخافش تسيب الكويس علشان تروح للممتاز.','الشغل المريح اللي مش بيكبّرك، ابدأ تبني اللي بعده بالتوازي.'],
+ ['أندرو كارنيجي','ملك الصلب','biz','الناس اللي مش قادرة تحفّز نفسها لازم ترضى بالمتوسط مهما كانت موهبتها.','كلام الموتيفيشن فوق مش للقراية، للتنفيذ في نفس الدقيقة.'],
+ ['النبي ﷺ','بالمعنى من الحديث','deen','اغتنم خمسًا قبل خمس: شبابك قبل هرمك، وصحتك قبل سقمك، وغناك قبل فقرك، وفراغك قبل شغلك، وحياتك قبل موتك.','العدّاد بتاع الأيام لحد الـ 30 في الصفحة دي، ده الشباب اللي بيتاخد منك كل يوم.']
+];
+const MCATS=[['all','الكل'],['life','تغيّر حياتك'],['biz','بزنس وفلوس'],['mind','عقل وعادات'],['deen','سلف وعلماء'],['lead','قيادة']];
+
 /* mission typing + signal */
 const MISSION='I am a serious, unstoppable, smart machine. I run, I fight, and I do what it takes for what I dreamed of.';
 (function(){const m=$('#mission');const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1025,7 +1343,7 @@ function doneFor(d){const out=[];if(d.c.principles)out.push(['◇','قريت ا�
  MODS.forEach(m=>{m.items.forEach(i=>{if(applicable(i,d.date)&&isDone(i,d))out.push([m.g,i[1]]);});if(m.top3)(d.top||[]).forEach((t,ix)=>{if(t&&t.trim()&&d.c['top'+(ix+1)])out.push([m.g,esc(t)]);});});
  return out;}
 function levelInfo(){let xp=0;const h=S.hist;for(const k in h){if(k===S.day.date)continue;const x=h[k];if(x)xp+=(x.on!=null?x.on*10:Math.round((x.pct||0)/2.5));}
- const td=summarize(S.day);xp+=td.on*10;
+ const td=summarize(S.day);xp+=td.on*10;try{for(const k in S.settings.hifz)if(S.settings.hifz[k]===2)xp+=Math.max(10,Math.round(SURAHS[k-1][1]/4));xp+=Object.keys(S.settings.stories||{}).length*10;}catch(e){}
  const lv=Math.floor(Math.sqrt(xp/150))+1;const lo=Math.pow(lv-1,2)*150,hi=Math.pow(lv,2)*150;return{xp,lv,frac:(xp-lo)/(hi-lo),need:hi-xp};}
 function countUp(node,to,suf){suf=suf||'';const from=+(node.dataset.v||0);node.dataset.v=to;if(REDUCE||from===to){node.textContent=to.toLocaleString('en')+suf;return;}
  const t0=performance.now(),dur=750;(function f(t){const k=Math.min(1,(t-t0)/dur);const e=1-Math.pow(1-k,3);node.textContent=Math.round(from+(to-from)*e).toLocaleString('en')+suf;if(k<1)requestAnimationFrame(f);})(t0);}
@@ -1169,7 +1487,79 @@ function checkAutoReview(isToday){if(!isToday)return;const now=new Date();const 
  if(late&&LS.get('revAuto')!==tk&&$('#sheet').hidden){LS.set('revAuto',tk);setTimeout(()=>openReview('today'),1400);
   try{if(('Notification' in window)&&Notification.permission==='granted'&&document.hidden&&miss>0)new Notification('Mostafa OS · حساب آخر اليوم',{body:'فاضلك '+miss+' حاجة النهارده. لسه في وقت.'});}catch(e){}}}
 
-function renderBoost(p,isToday){if(!booted)return;renderReport(p,isToday);renderRizq();renderLevel();checkAutoReview(isToday);}
+
+/* ---------- stories: one every 2 days ---------- */
+const EPOCH=Date.UTC(2026,9,1);
+const storySlot=()=>Math.floor((Date.now()-EPOCH)/864e5/2);
+RB.st=null;
+function curStoryIdx(){return ((storySlot()%STORIES.length)+STORIES.length)%STORIES.length;}
+function storyRead(i){return !!S.settings.stories[i];}
+function renderStory(dir){const cur=curStoryIdx();if(RB.st==null)RB.st=cur;const i=RB.st,st=STORIES[i];const b=$('#sbook');
+ const isCur=i===cur;const locked=false;
+ b.innerHTML='<span class="sk"><span>STORY '+pad(i+1)+' / '+STORIES.length+(isCur?' · THIS TIME':'')+'</span><span>'+esc(st.s)+'</span></span><h3>'+esc(st.t)+'</h3>'+
+  st.p.map((x,k)=>'<p><span style="animation-delay:'+(k*250)+'ms">'+esc(x)+'</span></p>').join('')+
+  '<div class="ibra"><b>العبرة</b>'+esc(st.i)+(st.a?'<div class="ayah blur">'+st.a+'</div>':'')+'<div class="ref">'+esc(st.r)+'</div></div>';
+ if(dir&&!REDUCE){b.classList.remove('flip');void b.offsetWidth;b.classList.add('flip');}
+ const rb=$('#stRead');const rd=storyRead(i);rb.textContent=rd?'قريتها ✓':'قريتها ✓';rb.classList.toggle('on',rd);rb.textContent=rd?'✓ مقروءة':'قريتها ✓';
+ const days=2-Math.floor(((Date.now()-EPOCH)/864e5)%2);$('#stWhen').textContent=isCur?('القصة الجاية بعد '+(days===1?'يوم':'يومين')):'دي قصة قديمة';
+ const n=Object.keys(S.settings.stories).length;const c=$('#stCnt');c.textContent=n+'/'+STORIES.length;c.classList.toggle('full',n>=STORIES.length);
+ const d=$('#sdots');d.innerHTML='';STORIES.forEach((x,k)=>{const dot=el('i',(storyRead(k)?'read':'')+(k===i?' cur':''));dot.dataset.st=k;dot.title=x.t;d.appendChild(dot);});}
+$('#stNext').addEventListener('click',()=>{RB.st=(RB.st+1)%STORIES.length;renderStory(1);});
+$('#stPrev').addEventListener('click',()=>{RB.st=(RB.st-1+STORIES.length)%STORIES.length;renderStory(-1);});
+$('#sdots').addEventListener('click',e=>{const t=e.target.closest('[data-st]');if(!t)return;RB.st=+t.dataset.st;renderStory(1);});
+$('#stRead').addEventListener('click',e=>{const i=RB.st;if(storyRead(i)){delete S.settings.stories[i];saveSettings();render();return;}
+ if(S.view!==todayKey())go(todayKey());const lvB=levelInfo().lv;S.settings.stories[i]=todayKey();S.day.c.story=true;saveSettings();saveDay();
+ sparks(e.clientX,e.clientY,14,['#ff6a3d','#f3b94d','#ffdc93']);render();toast('❝','قصة في الرصيد',STORIES[i].t,'+10 XP');
+ if(levelInfo().lv>lvB)setTimeout(()=>{burst(120);toast('★','LEVEL UP · وصلت مستوى '+levelInfo().lv,'');},600);});
+
+/* ---------- hifz tracker ---------- */
+RB.hj='30';
+const JUZ_TABS=[['30','جزء 30'],['29','جزء 29'],['28','جزء 28'],['27','جزء 27'],['26','جزء 26'],['rest','1–25'],['all','الكل']];
+function hifzOf(n){return S.settings.hifz[n]||0;}
+function hifzStats(){let ay=0,done=0,prog=[];const jz={};SURAHS.forEach((s,i)=>{const v=hifzOf(i+1);const j=s[2];jz[j]=jz[j]||[0,0];jz[j][1]+=s[1];if(v===2){ay+=s[1];done++;jz[j][0]+=s[1];}else if(v===1){prog.push(i+1);jz[j][0]+=s[1]*.35;}});return{ay,done,prog,jz};}
+function buildHifz(){const t=$('#hjuz');JUZ_TABS.forEach(([k,n])=>{const b=el('button','',n+'<small></small>');b.type='button';b.dataset.j=k;t.appendChild(b);});
+ const jb=$('#hjuzbar');for(let j=1;j<=30;j++){const i=el('i','','<b></b>');i.dataset.jz=j;i.title='جزء '+j;jb.appendChild(i);}
+ t.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;RB.hj=b.dataset.j;RB.hgridSig='';renderHifz();});
+ $('#hgrid').addEventListener('click',e=>{const c=e.target.closest('[data-s]');if(!c)return;const n=+c.dataset.s;const v=hifzOf(n);const nv=(v+1)%3;
+  if(nv)S.settings.hifz[n]=nv;else delete S.settings.hifz[n];
+  if(nv&&S.view===todayKey()){S.day.c.hifz=true;saveDay();}
+  const lvB=levelInfo().lv;saveSettings();
+  const r=c.getBoundingClientRect();if(nv===2){sparks(r.left+r.width/2,r.top+r.height/2,16,['#5ee0b0','#a6f5d6','#ffdc93']);toast('📖','ما شاء الله · سورة '+SURAHS[n-1][0]+' محفوظة',SURAHS[n-1][1]+' آية في الرصيد','+XP');const st=hifzStats();if(st.done%10===0)burst(120);}
+  else if(nv===1)toast('📖','بدأت سورة '+SURAHS[n-1][0],'راجعها كل يوم لحد ما تثبت');
+  RB.hgridSig='';render();if(levelInfo().lv>lvB)setTimeout(()=>{burst(120);toast('★','LEVEL UP · وصلت مستوى '+levelInfo().lv,'');},600);});
+ jb.addEventListener('click',e=>{const i=e.target.closest('[data-jz]');if(!i)return;const j=+i.dataset.jz;RB.hj=j>=26?String(j):'rest';RB.hgridSig='';renderHifz();jump('#hgrid');});}
+function renderHifz(){const st=hifzStats();const pct=st.ay/TOTAL_AYAH*100;const L=2*Math.PI*42,L2=2*Math.PI*33;
+ const r=$('#hzRing');r.style.strokeDasharray=L;r.style.strokeDashoffset=L*(1-pct/100);
+ const r2=$('#hzRing2');r2.style.strokeDasharray=L2;r2.style.strokeDashoffset=L2*(1-Math.min(1,st.done/114));
+ $('#hzPct').textContent=(pct<10?pct.toFixed(1):Math.round(pct))+'%';countUp($('#hzS'),st.done);countUp($('#hzA'),st.ay);$('#hzJ').textContent=(st.ay/TOTAL_AYAH*30).toFixed(1);
+ const c=$('#hzCnt');c.textContent=st.done+'/114';c.classList.toggle('full',st.done===114);
+ const now=$('#hzNow');if(st.prog.length){now.innerHTML='شغال دلوقتي على: '+st.prog.map(n=>'<b>'+SURAHS[n-1][0]+'</b>').join('، ')+'<span class="hmini"><i style="width:'+Math.min(100,pct).toFixed(1)+'%"></i></span>';}
+ else if(st.done===114)now.innerHTML='<b style="color:var(--mint)">ختمت حفظ القرآن كله. ما شاء الله، حافظ عليه بالمراجعة.</b>';
+ else now.innerHTML='اختار سورة من تحت ودوس عليها مرة علشان تبدأ فيها، ومرة تانية لما تحفظها.';
+ document.querySelectorAll('#hjuzbar i').forEach(i=>{const j=+i.dataset.jz;const z=st.jz[j]||[0,1];const f=z[0]/z[1];i.querySelector('b').style.width=(f*100).toFixed(0)+'%';i.classList.toggle('full',f>=.999);i.title='جزء '+j+' · '+Math.round(f*100)+'%';});
+ document.querySelectorAll('#hjuz button').forEach(b=>{b.classList.toggle('on',b.dataset.j===RB.hj);const k=b.dataset.j;let t=0,d=0;SURAHS.forEach((s,i)=>{const j=s[2];const inT=k==='all'||(k==='rest'?j<=25:j===+k);if(!inT)return;t++;if(hifzOf(i+1)===2)d++;});b.querySelector('small').textContent=d+'/'+t;});
+ const sig=RB.hj+'|'+JSON.stringify(S.settings.hifz);if(sig===RB.hgridSig)return;RB.hgridSig=sig;
+ const g=$('#hgrid');g.innerHTML='';let k=0;SURAHS.forEach((s,i)=>{const j=s[2];const inT=RB.hj==='all'||(RB.hj==='rest'?j<=25:j===+RB.hj);if(!inT)return;
+  const v=hifzOf(i+1);const c=el('div','hs'+v,'<span class="no">'+(i+1)+'</span><span class="nm">'+s[0]+'</span><span class="ay">'+s[1]+'</span>');c.dataset.s=i+1;c.title=s[0]+' · '+s[1]+' آية · جزء '+j;c.style.animationDelay=Math.min(k++,30)*12+'ms';g.appendChild(c);});}
+
+
+/* ---------- mentors ---------- */
+RB.mc='all';RB.mn=null;
+function mentorList(){return MENTORS.map((m,i)=>i).filter(i=>RB.mc==='all'||MENTORS[i][2]===RB.mc);}
+function buildMentor(){const f=$('#mfilt');MCATS.forEach(([k,n])=>{const b=el('button','',n);b.type='button';b.dataset.c=k;f.appendChild(b);});
+ f.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;RB.mc=b.dataset.c;const l=mentorList();if(l.indexOf(RB.mn)<0)RB.mn=l[0];renderMentor(1);});
+ $('#mnNext').addEventListener('click',()=>{const l=mentorList();RB.mn=l[(l.indexOf(RB.mn)+1)%l.length];renderMentor(1);});
+ $('#mnPrev').addEventListener('click',()=>{const l=mentorList();RB.mn=l[(l.indexOf(RB.mn)-1+l.length)%l.length];renderMentor(-1);});
+ $('#mnRand').addEventListener('click',()=>{const l=mentorList();RB.mn=l[Math.floor(Math.random()*l.length)];renderMentor(1);});}
+function renderMentor(dir){if(RB.mn==null)RB.mn=Math.floor(Date.now()/864e5)%MENTORS.length;const m=MENTORS[RB.mn];const c=$('#mcard');
+ const ini=m[0].split(' ').slice(0,2).map(x=>x[0]).join('');const cat=MCATS.find(x=>x[0]===m[2]);
+ c.innerHTML='<div class="mwho"><div class="av">'+esc(ini)+'</div><div><b>'+esc(m[0])+'</b><small>'+esc(m[1])+'</small></div><span class="tag">'+(cat?cat[1]:'')+'</span></div>'+
+  '<div class="mq'+(m[5]==='en'?' en':'')+' blur">'+esc(m[3])+'</div><div class="mhow"><b>تطبّقها إزاي النهارده</b>'+esc(m[4])+'</div>';
+ if(dir&&!REDUCE){c.classList.remove('flip');void c.offsetWidth;c.classList.add('flip');}
+ document.querySelectorAll('#mfilt button').forEach(b=>b.classList.toggle('on',b.dataset.c===RB.mc));
+ $('#mnCnt').textContent=pad(mentorList().indexOf(RB.mn)+1)+'/'+mentorList().length;}
+
+function renderBoost(p,isToday){if(!booted)return;if(RB.mn==null)renderMentor();renderReport(p,isToday);renderRizq();renderLevel();renderStory();renderHifz();checkAutoReview(isToday);}
 
 /* reveal on scroll + spotlight */
 function setupFX(){if(REDUCE||!('IntersectionObserver' in window))return;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
@@ -1196,7 +1586,7 @@ setInterval(refreshClock,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClock();});
 window.addEventListener('focus',refreshClock);window.addEventListener('pageshow',refreshClock);
 S.lastToday=todayKey();
-buildReport();booted=true;
+buildReport();buildHifz();buildMentor();booted=true;
 setSync('local');render();connect();
 setupFX();nextMoti();startMoti();
 })();
