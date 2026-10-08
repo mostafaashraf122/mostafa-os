@@ -890,6 +890,9 @@ const $=s=>document.querySelector(s);
 const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
 const LS={get(k){try{const v=localStorage.getItem('mos:'+k);return v?JSON.parse(v):null;}catch(e){return null;}},set(k,v){try{localStorage.setItem('mos:'+k,JSON.stringify(v));}catch(e){}}};
 const pad=n=>String(n).padStart(2,'0');
+const esc0=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function tickClock(){const c=document.getElementById('clock');if(!c)return;const n=new Date();const H=n.getHours();c.textContent=(H%12||12)+':'+pad(n.getMinutes())+':'+pad(n.getSeconds())+(H<12?' ص':' م');}
+setInterval(()=>{tickClock();if(typeof tickNext==='function')tickNext();},1000);
 const keyOf=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const parseKey=k=>{const a=k.split('-').map(Number);return new Date(a[0],a[1]-1,a[2]);};
 const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
@@ -897,19 +900,20 @@ const weekStartKey=k=>{const d=parseKey(k);return keyOf(addDays(d,-d.getDay()));
 const AR_DAYS=['الأحد','الاتنين','التلات','الأربع','الخميس','الجمعة','السبت'];
 
 /* ---------- prayer times: Umm al-Qura style, Riyadh ---------- */
-const LAT=24.7136,LNG=46.6753,TZ=3;
+const CITIES=[['الرياض',24.7136,46.6753,'uq'],['جدة',21.4858,39.1925,'uq'],['مكة',21.3891,39.8579,'uq'],['المدينة',24.5247,39.5692,'uq'],['الدمام',26.4207,50.0888,'uq'],['أبها',18.2164,42.5053,'uq'],['القاهرة',30.0444,31.2357,'eg'],['الجيزة',30.0131,31.2089,'eg'],['الإسكندرية',31.2001,29.9187,'eg'],['المنصورة',31.0409,31.3785,'eg'],['طنطا',30.7865,31.0004,'eg'],['الزقازيق',30.5877,31.5020,'eg'],['أسيوط',27.1809,31.1837,'eg'],['المنيا',28.1099,30.7503,'eg'],['سوهاج',26.5591,31.6957,'eg'],['أسوان',24.0889,32.8998,'eg'],['دبي',25.2048,55.2708,'uq'],['أبوظبي',24.4539,54.3773,'uq'],['الدوحة',25.2854,51.5310,'uq'],['الكويت',29.3759,47.9774,'uq'],['المنامة',26.2285,50.5860,'uq'],['مسقط',23.5880,58.3829,'uq'],['عمّان',31.9454,35.9284,'eg'],['بيروت',33.8938,35.5018,'eg'],['إسطنبول',41.0082,28.9784,'uq']];
+const LOC={name:'الرياض',lat:24.7136,lng:46.6753,m:'uq'};
 const PT=(function(){const d2r=Math.PI/180,r2d=180/Math.PI;const sin=d=>Math.sin(d*d2r),cos=d=>Math.cos(d*d2r),tan=d=>Math.tan(d*d2r);
 const asin=x=>r2d*Math.asin(x),acos=x=>r2d*Math.acos(x),atan2=(y,x)=>r2d*Math.atan2(y,x),acot=x=>r2d*Math.atan(1/x);
 const fix=(a,b)=>{a=a-b*Math.floor(a/b);return a<0?a+b:a;};
 function julian(y,m,d){if(m<=2){y-=1;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;}
 function sun(jd){const D=jd-2451545;const g=fix(357.529+0.98560028*D,360),q=fix(280.459+0.98564736*D,360);const L=fix(q+1.915*sin(g)+0.02*sin(2*g),360);const e=23.439-0.00000036*D;const RA=fix(atan2(cos(e)*sin(L),cos(L))/15,24);return{decl:asin(sin(e)*sin(L)),eqt:q/15-RA};}
-function compute(date,ramadan){const jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-LNG/(15*24);
+function compute(date,ramadan){const LAT=LOC.lat,LNG=LOC.lng;const TZ=-new Date(date.getFullYear(),date.getMonth(),date.getDate(),12).getTimezoneOffset()/60;const FA=LOC.m==='eg'?19.5:18.5;const jd=julian(date.getFullYear(),date.getMonth()+1,date.getDate())-LNG/(15*24);
 const mid=t=>fix(12-sun(jd+t).eqt,24);
 const at=(a,t,ccw)=>{const s=sun(jd+t);const v=(-sin(a)-sin(s.decl)*sin(LAT))/(cos(s.decl)*cos(LAT));const T=acos(v)/15;return mid(t)+(ccw?-T:T);};
 const asr=(f,t)=>{const s=sun(jd+t);return at(-acot(f+tan(Math.abs(LAT-s.decl))),t);};
 let t={fajr:5,sunrise:6,dhuhr:12,asr:13,maghrib:18};
-for(let i=0;i<2;i++){const p={};for(const k in t)p[k]=t[k]/24;t={fajr:at(18.5,p.fajr,true),sunrise:at(0.833,p.sunrise,true),dhuhr:mid(p.dhuhr),asr:asr(1,p.asr),maghrib:at(0.833,p.maghrib)};}
-const o={};for(const k in t)o[k]=t[k]+TZ-LNG/15;o.isha=o.maghrib+(ramadan?2:1.5);return o;}
+for(let i=0;i<2;i++){const p={};for(const k in t)p[k]=t[k]/24;t={fajr:at(FA,p.fajr,true),sunrise:at(0.833,p.sunrise,true),dhuhr:mid(p.dhuhr),asr:asr(1,p.asr),maghrib:at(0.833,p.maghrib)};}
+const o={};for(const k in t)o[k]=t[k]+TZ-LNG/15;if(LOC.m==='eg'){const pi=t.maghrib/24;o.isha=at(17.5,pi)+TZ-LNG/15;}else o.isha=o.maghrib+(ramadan?2:1.5);return o;}
 return{compute};})();
 let hijriFmt=null,hijriMonth=null;
 try{hijriFmt=new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'});hijriMonth=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{month:'numeric'});}catch(e){}
@@ -1041,14 +1045,15 @@ const MOTI=[
 const PRAISE=['عاش يا وحش','برافو عليك','أيوه كده','كمّل كده','خطوة كمان','ماشي صح','ربنا يباركلك','إنت قدها'];
 
 /* ---------- state ---------- */
-const DEF_SET=()=>({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{},revHour:21,hifz:{},stories:{}});
+const DEF_SET=()=>({birth:'',train:[0,2,4,6],book:'',screenGoal:3,ms:{},revHour:21,hifz:{},stories:{},loc:null});
 const todayKey=()=>keyOf(new Date());
 const S={uid:null,db:null,view:todayKey(),tab:'istighfar',
  settings:Object.assign(DEF_SET(),LS.get('settings')||{}),
  hist:LS.get('hist')||{},day:null,week:null,celebrated:LS.get('celebrated')||''};
 const blankDay=k=>({kind:'day',date:k,c:{},n:{},top:['','',''],screen:null,focus:0,grat:'',mood:0});
 const blankWeek=k=>({kind:'week',start:k,c:{}});
-function loadLocal(){S.day=Object.assign(blankDay(S.view),LS.get('d-'+S.view)||{});const wk=weekStartKey(S.view);S.week=Object.assign(blankWeek(wk),LS.get('w-'+wk)||{});}
+function applyLoc(){const l=S.settings.loc;if(l&&isFinite(l.lat)&&isFinite(l.lng)){LOC.lat=+l.lat;LOC.lng=+l.lng;LOC.m=l.m||'uq';LOC.name=l.name||'مكاني';}}
+function loadLocal(){applyLoc();S.day=Object.assign(blankDay(S.view),LS.get('d-'+S.view)||{});const wk=weekStartKey(S.view);S.week=Object.assign(blankWeek(wk),LS.get('w-'+wk)||{});}
 loadLocal();
 
 /* ---------- logic ---------- */
@@ -1144,10 +1149,12 @@ function buildMods(){const host=$('#mods');
   '<div class="field"><label for="book">الكتاب اللي بتقراه دلوقتي</label><input id="book" maxlength="80" placeholder="اسم الكتاب"></div>'+
   '<div class="field"><label>قايمة القراية (دوس على كتاب علشان تبدأه)</label><div class="rlist" id="rlist"></div></div>'+
   '<div class="field"><label for="sgoalIn">هدف وقت الشاشة في اليوم (ساعات)</label><input id="sgoalIn" type="number" min="0.5" max="12" step="0.5" style="width:110px"></div>'+
+  '<div class="field"><label>مكانك (مواعيد الصلاة بتتحسب عليه كل يوم لوحدها)</label><div class="days" id="cities"></div><div class="trow"><button class="minibtn gold" id="geoBtn" type="button">📍 حدّد مكاني تلقائيًا</button><span class="sub" id="locNow"></span></div></div>'+
   '<div class="field"><label for="revHour">حساب آخر اليوم يطلعلك الساعة كام؟ (17 لـ 23)</label><input id="revHour" type="number" min="17" max="23" step="1" style="width:110px"></div>'+
-  '<p class="note">مواعيد الصلاة تقريبية، محسوبة للرياض بطريقة أم القرى. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
+  '<p class="note">مواعيد الصلاة بتتحسب فلكيًا لمكانك كل يوم لوحدها (أم القرى للسعودية والخليج، الهيئة المصرية لمصر والشام)، تقريبية بدقيقة أو اتنين. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
  host.appendChild(s);
  const rl=$('#rlist');BOOKS.forEach((bk,ix)=>{const bt=el('button','','<span class="rn">'+pad(ix+1)+'</span><b>'+bk[0]+' <small>· '+bk[1]+'</small></b><span class="rw">'+bk[2]+'</span>');bt.type='button';bt.dataset.bk=ix;rl.appendChild(bt);});
+ const cl=$('#cities');CITIES.forEach((c,ix)=>{const bt=el('button','',c[0]);bt.type='button';bt.dataset.c=ix;cl.appendChild(bt);});
  const td=$('#tdays');AR_DAYS.forEach((n,ix)=>{const bt=el('button','',n);bt.type='button';bt.dataset.d=ix;td.appendChild(bt);});
  // counters
  TABS.forEach(t=>{const bt=el('button','tab',t[1]);bt.type='button';bt.dataset.tab=t[0];$('#ctabs').appendChild(bt);});
@@ -1164,7 +1171,7 @@ function render(){const d=S.day,k=S.view,isToday=k===todayKey();
  const vd=parseKey(k);
  let line=AR_DAYS[vd.getDay()]+' '+vd.getDate()+'/'+(vd.getMonth()+1);try{if(hijriFmt)line+=' · '+hijriFmt.format(vd);}catch(e){}
  if(!isToday)line+=' · بتعدّل يوم فات';
- $('#dateline').textContent=line;$('#today').hidden=isToday;$('#next').disabled=isToday;
+ $('#dateline').innerHTML=esc0(line)+' · <span class="mono" id="clock" style="color:var(--gold);direction:ltr;display:inline-block"></span> · '+esc0(LOC.name);tickClock();$('#today').hidden=isToday;$('#next').disabled=isToday;
  const times=PT.compute(vd,isRamadan(vd));
  document.querySelectorAll('[data-t]').forEach(s=>{s.textContent=hm(times[s.dataset.t]);});
  const train=isTrainDay(k);document.querySelectorAll('[data-cond]').forEach(s=>s.textContent=train?'يوم تمرين':'راحة');
@@ -1208,10 +1215,11 @@ const CALM=[['إِنَّ اللَّهَ رَفِيقٌ يُحِبُّ الرِّ
 function renderCalm(){const g=$('#grat');if(document.activeElement!==g)g.value=S.day.grat||'';
  const d=parseKey(S.view);const doy=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);const h=CALM[doy%CALM.length];$('#hadith').innerHTML=h[0]+'<span class="ref">'+h[1]+'</span>';
  const yk=keyOf(addDays(d,-1));const y=LS.get('d-'+yk);const pp=$('#gratPast');if(y&&y.grat&&y.grat.trim()){pp.hidden=false;pp.innerHTML='<b>YESTERDAY</b>'+y.grat.replace(/</g,'&lt;').replace(/\n/g,'<br>');}else pp.hidden=true;}
-function renderNext(t,isToday){const box=$('#nextp');if(!isToday){box.innerHTML='';return;}
+let NX=null;function tickNext(){if(!NX)return;const box=$('#nextp');const now=new Date();const h=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;let left=Math.max(0,(NX.nt-h)*3600);if(left<=0){render();return;}const hh=Math.floor(left/3600),mm=Math.floor(left%3600/60),ss=Math.floor(left%60);box.innerHTML='الصلاة الجاية: <b>'+PNAMES[NX.nk]+'</b> <span class="mono">'+hm(NX.nt)+'</span> · باقي <span class="mono">'+hh+':'+pad(mm)+':'+pad(ss)+'</span>';}
+function renderNext(t,isToday){const box=$('#nextp');if(!isToday){NX=null;box.innerHTML='';return;}
  const now=new Date();const h=now.getHours()+now.getMinutes()/60;const order=['fajr','dhuhr','asr','maghrib','isha'];
  let nk=order.find(k=>t[k]>h),nt;if(nk)nt=t[nk];else{nk='fajr';nt=PT.compute(addDays(now,1),isRamadan(addDays(now,1))).fajr+24;}
- const left=Math.max(0,Math.round((nt-h)*60));box.innerHTML='الصلاة الجاية: <b>'+PNAMES[nk]+'</b> <span class="mono">'+hm(nt)+'</span> · باقي <span class="mono">'+Math.floor(left/60)+':'+pad(left%60)+'</span>';}
+ NX={nk,nt};tickNext();}
 function cnt(id){return S.day.n[id]||0;}
 function renderCounters(){const t=TABS.find(x=>x[0]===S.tab);document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
  const n=cnt(t[0]);$('#tapN').textContent=n;$('#tapOf').textContent='/ '+t[3];$('#tapZ').textContent=t[2];$('#tap').classList.toggle('done',n>=t[3]);const cr=$('#cr');if(cr){const L=2*(392+132)-8*18+2*Math.PI*18;cr.style.strokeDasharray=L;cr.style.strokeDashoffset=L*(1-Math.min(1,n/t[3]));}
@@ -1224,6 +1232,7 @@ function renderTools(){$('#fc').textContent=S.day.focus||0;const inp=$('#screen'
 function renderSettings(){const b=$('#birth');if(document.activeElement!==b)b.value=S.settings.birth||'';const bk=$('#book');if(document.activeElement!==bk)bk.value=S.settings.book||'';const sg=$('#sgoalIn');if(document.activeElement!==sg)sg.value=S.settings.screenGoal;
  const rh=$('#revHour');if(document.activeElement!==rh)rh.value=S.settings.revHour||21;
  document.querySelectorAll('#tdays button').forEach(bt=>bt.classList.toggle('on',S.settings.train.indexOf(+bt.dataset.d)>=0));
+ document.querySelectorAll('#cities button').forEach(bt=>{const c=CITIES[+bt.dataset.c];bt.classList.toggle('on',Math.abs(c[1]-LOC.lat)<.01&&Math.abs(c[2]-LOC.lng)<.01);});$('#locNow').textContent='دلوقتي: '+LOC.name+' · '+(LOC.m==='eg'?'الهيئة المصرية':'أم القرى')+' · توقيت الجهاز UTC'+(-(new Date().getTimezoneOffset())/60>=0?'+':'')+(-(new Date().getTimezoneOffset())/60);
  document.querySelectorAll('#rlist button').forEach(bt=>bt.classList.toggle('on',(S.settings.book||'').trim()===BOOKS[+bt.dataset.bk][0]));}
 
 /* ---------- interactions ---------- */
@@ -1241,6 +1250,10 @@ document.addEventListener('click',e=>{const r=e.target.closest('.it[data-id]');i
   saveDay();render();return;}
  const tb=e.target.closest('.tab');if(tb){S.tab=tb.dataset.tab;renderCounters();return;}
  const rb=e.target.closest('#rlist button');if(rb){S.settings.book=BOOKS[+rb.dataset.bk][0];$('#book').value=S.settings.book;saveSettings();render();return;}
+ const cb=e.target.closest('#cities button');if(cb){const c=CITIES[+cb.dataset.c];S.settings.loc={name:c[0],lat:c[1],lng:c[2],m:c[3]};applyLoc();saveSettings();render();return;}
+ if(e.target.closest('#geoBtn')){const b=e.target.closest('#geoBtn');if(!navigator.geolocation){b.textContent='المتصفح مش بيدعم تحديد المكان';return;}b.textContent='بحدد...';
+  navigator.geolocation.getCurrentPosition(pos=>{const la=pos.coords.latitude,lo=pos.coords.longitude;let best=null,bd=1e9;CITIES.forEach(c=>{const d=Math.hypot(c[1]-la,c[2]-lo);if(d<bd){bd=d;best=c;}});
+   const m=(lo<36&&la>21&&la<32)?'eg':'uq';S.settings.loc={name:bd<1.2?best[0]:'مكاني ('+la.toFixed(2)+', '+lo.toFixed(2)+')',lat:la,lng:lo,m};applyLoc();saveSettings();b.textContent='📍 حدّد مكاني تلقائيًا';render();},err=>{b.textContent='مقدرتش أحدد، اختار مدينة من فوق';setTimeout(()=>{b.textContent='📍 حدّد مكاني تلقائيًا';},3000);},{timeout:10000,maximumAge:3600000});return;}
  const td=e.target.closest('#tdays button');if(td){const d=+td.dataset.d;const a=S.settings.train;const ix=a.indexOf(d);if(ix>=0)a.splice(ix,1);else a.push(d);a.sort();saveSettings();render();return;}});
 document.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&e.target.matches('.it[data-id]')){e.preventDefault();toggle(e.target.dataset.id,e.target);}});
 $('#tap').addEventListener('click',()=>{const t=TABS.find(x=>x[0]===S.tab);const v=cnt(t[0])+1;S.day.n[t[0]]=v;
