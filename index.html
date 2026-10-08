@@ -904,6 +904,67 @@ html.locked .lock{display:grid}
 .gmg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-top:10px}
 .gmg button{aspect-ratio:auto;padding:7px 2px;font-family:var(--body);font-size:11.5px}
 .gmg button.turn{border-color:var(--gold2)}
+.bud{margin-top:12px}
+.bstack{display:flex;height:12px;border-radius:7px;overflow:hidden;background:#1a2540}
+.bstack i{display:block;height:100%}.bstack .f,.dot.f{background:#ff6a3d}.bstack .v,.dot.v{background:#f3b94d}.bstack .s,.dot.s{background:#78c3ff}.bstack .l,.dot.l{background:#5ee0b0}
+.brows{display:grid;gap:4px;margin-top:10px;font-size:13.5px}
+.brows div{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.brows small{color:var(--dim);font-size:11.5px}
+.brows b{font-family:var(--mono);font-size:13px;direction:ltr;white-space:nowrap}
+.brows .tot{border-top:1px dashed var(--line2);padding-top:6px;margin-top:2px;font-weight:600}
+.brows .tot b{font-size:16px}
+.pi{color:var(--mint)}.neg{color:var(--ember)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:3px;margin-inline-end:6px}
+.bday{margin-top:8px;font-size:13px;color:var(--frost);background:rgba(94,224,176,.06);border:1px solid rgba(94,224,176,.2);border-radius:10px;padding:7px 10px}
+.bday b{color:var(--mint);font-family:var(--mono)}.bday.neg{background:rgba(255,106,61,.07);border-color:rgba(255,106,61,.3);color:#ffc7b5}
+.xtra{margin-top:10px;display:grid;gap:6px;padding:12px;border-radius:14px;border:1px solid rgba(243,185,77,.45);background:rgba(243,185,77,.07)}
+.xtra span{font-size:13px;color:var(--frost)}.xtra .svact{flex-wrap:wrap}
+.fxl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
+.fxl button{display:flex;justify-content:space-between;gap:6px;padding:8px 10px;border-radius:10px;border:1px solid var(--line2);background:rgba(7,11,20,.45);color:var(--frost);font:inherit;font-size:13px;cursor:pointer;text-align:start}
+.fxl button b{font-family:var(--mono);font-size:12px}
+.fxl button.on{border-color:rgba(94,224,176,.5);color:var(--mint);background:rgba(94,224,176,.07)}
+/* pages + dock */
+.dock button.on{color:var(--gold);background:rgba(243,185,77,.12)}
+.dock button[data-pg]{min-width:52px}
+@media (min-width:900px){html[data-page="money"] .grid,html[data-page="coach"] .grid,html[data-page="soul"] .grid,html[data-page="more"] .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.col:empty,.col:not(:has(.pnl:not([hidden]))){display:none}
+@media (min-width:900px){.grid:has(.col:not(:has(.pnl:not([hidden])))){grid-template-columns:minmax(0,760px);justify-content:center}}
+/* simple today */
+.smp{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.it.pd{flex-direction:column;align-items:center;gap:4px;padding:10px 4px;text-align:center;border-radius:14px}
+.it.pd .lbl{font-size:12.5px}
+.it.pd .box{margin:0}
+.smb{display:grid;gap:6px;margin-top:10px}
+.it.sb{padding:11px 12px;border-radius:14px}
+.it.sb .si{width:24px;text-align:center;font-size:16px;color:var(--gold)}
+.it.sb .lbl{font-size:15px}
+.smq{margin-top:12px;text-align:center;padding:10px;border-radius:14px;background:rgba(7,11,20,.35);border:1px dashed var(--line2)}
+.smq .quran{font-family:var(--quran);font-size:20px;color:var(--gold2);line-height:1.8}
+.smq .ref{font-size:11.5px;color:var(--dim)}
+.smq small{display:block;margin-top:6px;color:var(--frost);font-size:12.5px}
+.smq b{color:var(--mint)}
+/* quick add */
+.aifab.qfab{background:radial-gradient(circle at 30% 25%,#ffe3a6,#f3b94d 60%,#b9801f);border-color:rgba(243,185,77,.7);color:#1b1305;font-size:30px;font-weight:300;box-shadow:0 10px 30px rgba(243,185,77,.35)}
+.aifab.qfab .pulse{border-color:rgba(243,185,77,.5)}
+.qcard{height:auto;max-height:92dvh}
+.qbody{padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 16px);display:grid;gap:10px;overflow:auto}
+#qA{background:none;border:none;border-bottom:2px solid var(--gold);color:var(--text);font-family:var(--mono);font-size:44px;text-align:center;padding:6px;width:100%;direction:ltr}
+#qA:focus{outline:none}
+#qN{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:12px;color:var(--text);padding:10px 12px;font:inherit}
+.qcats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.qcats button{display:grid;justify-items:center;gap:2px;padding:8px 2px;border-radius:12px;border:1px solid var(--line2);background:rgba(7,11,20,.5);color:var(--frost);font:inherit;font-size:11.5px;cursor:pointer}
+.qcats button span{font-size:19px}
+.qcats button.on{border-color:var(--gold);background:rgba(243,185,77,.12);color:var(--gold2)}
+.qdone{color:var(--mint);font-weight:600;text-align:center}
+.qm{display:flex;gap:8px;align-items:flex-start;padding:9px 11px;border-radius:12px;font-size:13.5px;margin-top:6px;border:1px solid}
+.qm.bad{border-color:rgba(255,106,61,.5);background:rgba(255,106,61,.08);color:#ffc7b5}
+.qm.warn{border-color:rgba(243,185,77,.45);background:rgba(243,185,77,.07);color:var(--gold2)}
+.qm.tip{border-color:rgba(120,195,255,.35);background:rgba(120,195,255,.06)}
+.qm.ok{border-color:rgba(94,224,176,.35);background:rgba(94,224,176,.06)}
+.lims{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.lims label{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--frost)}
+.lims label span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lims input{width:76px;flex:0 0 76px;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:6px;font:inherit;font-size:13px}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1440,18 +1501,29 @@ function renderBackup(){const n=$('#bkNow');if(!n)return;const t=LS.get('lastBac
 /* ---------- money: income & spending, kept on this phone ---------- */
 const CAT_OUT=[['أكل','🍽'],['مواصلات','🚗'],['بيت وفواتير','🏠'],['أهل','👪'],['صحة','💊'],['لبس','👕'],['تعليم','📚'],['اشتراكات','📱'],['ترفيه','🎮'],['صدقة','🤲'],['تاني','•']];
 const CAT_IN=[['مرتب','💼'],['عمولة','📈'],['شغل حر','🛠'],['بزنس','✦'],['هدية','🎁'],['تاني','•']];
-const MN=Object.assign({list:[],goal:0},LS.get('money')||{});MN.view=null;MN.t='out';
-const saveMoney=()=>LS.set('money',{list:MN.list,goal:MN.goal});
+const MN=Object.assign({list:[],goal:0,plan:{sal:0,fixed:[]},paid:{},extra:null},LS.get('money')||{});MN.plan=Object.assign({sal:0,fixed:[]},MN.plan||{});MN.paid=MN.paid||{};MN.view=null;MN.t='out';
+const saveMoney=()=>LS.set('money',{list:MN.list,goal:MN.goal,plan:MN.plan,paid:MN.paid,extra:MN.extra,lim:MN.lim});
 const monKey=d=>d.slice(0,7);
 const fmt=n=>Math.round(n).toLocaleString('en');
 const AR_MON=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 function monSum(mk){let i=0,o=0;const cats={};MN.list.forEach(x=>{if(monKey(x.d)!==mk)return;if(x.t==='in')i+=x.a;else{o+=x.a;cats[x.c]=(cats[x.c]||0)+x.a;}});return{i,o,net:i-o,rate:i>0?Math.round((i-o)*100/i):null,cats};}
+function budget(mk){const s=monSum(mk);const sl=MN.list.filter(x=>x.t==='in'&&x.c==='مرتب'&&monKey(x.d)===mk).reduce((a,x)=>a+x.a,0);
+ const sal=Math.max(+MN.plan.sal||0,sl),extra=s.i-sl,inc=sal+extra;const fx=MN.plan.fixed||[];const fixed=fx.reduce((a,f)=>a+f.a,0);const paid=(MN.paid[mk]||[]).filter(id=>fx.some(f=>f.id===id));
+ const save=+MN.goal||0;let saved=0;try{SV.goals.forEach(g=>g.moves.forEach(m=>{if(monKey(m.d)===mk)saved+=m.a;}));}catch(e){}
+ const left=inc-fixed-save-s.o;const cur=monKey(todayKey());let days=0;if(mk===cur){const t=parseKey(todayKey());days=new Date(t.getFullYear(),t.getMonth()+1,0).getDate()-t.getDate()+1;}
+ return{inc,sal,extra,fixed,fx,paid,save,saved,varOut:s.o,left,days,rate:inc>0?Math.round((inc-fixed-s.o)*100/inc):null};}
 function shiftMon(mk,n){const a=mk.split('-').map(Number);const d=new Date(a[0],a[1]-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1);}
 function buildMoney(){const host=$('#coach');const sec=el('section','pnl money');sec.id='money';
  sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--gold2);border-color:rgba(243,185,77,.4);background:rgba(243,185,77,.08)">◈</div><div><h2>فلوسي</h2><span class="en">MONEY · 🔒 على موبايلك بس</span></div>'+
   '<div class="mnav"><button class="ib" id="mnP" type="button" aria-label="الشهر اللي قبله">›</button><span id="mnM"></span><button class="ib" id="mnN" type="button" aria-label="الشهر اللي بعده">‹</button></div></div>'+
-  '<div class="kpis mk"><div class="kpi" style="--c:var(--mint)"><b id="mI">0</b><span>دخل الشهر</span></div><div class="kpi" style="--c:var(--ember)"><b id="mO">0</b><span>مصروف الشهر</span></div><div class="kpi" style="--c:var(--gold)"><b id="mNt">0</b><span>الصافي</span></div><div class="kpi" style="--c:var(--sky)"><b id="mR">—</b><span>نسبة الادخار</span></div></div>'+
-  '<div class="mgoal" id="mGoal"></div>'+
+  '<div class="kpis mk"><div class="kpi" style="--c:var(--mint)"><b id="mI">0</b><span>الدخل</span></div><div class="kpi" style="--c:var(--ember)"><b id="mO">0</b><span>المصاريف</span></div><div class="kpi" style="--c:var(--sky)"><b id="mSv">0</b><span>الادخار</span></div><div class="kpi" style="--c:var(--gold)"><b id="mNt">0</b><span>المتاح تصرفه</span></div></div>'+
+  '<div class="bud" id="mBud"></div><div id="mExtra"></div><div id="mFix"></div>'+
+  '<details class="svnew" id="mPlanD"><summary class="minibtn" style="display:inline-block;margin-top:10px">⚙ ظبط ميزانية الشهر</summary><div class="svform">'+
+   '<label class="sub">الدخل الثابت في الشهر (المرتب)</label><input id="pSal" type="number" inputmode="numeric" min="0" placeholder="مثلًا 14000">'+
+   '<label class="sub">المبلغ اللي هتدّخره كل شهر</label><input id="mGoalIn" type="number" inputmode="numeric" min="0" step="100" placeholder="مثلًا 3000">'+
+   '<label class="sub">المصاريف الثابتة كل شهر (إيجار، فواتير، أقساط، أهل…)</label><div id="pFixed"></div>'+
+   '<div class="mrow1"><input id="pfN" maxlength="30" placeholder="اسم المصروف"><input id="pfA" type="number" inputmode="numeric" min="0" placeholder="المبلغ"></div><button class="minibtn" id="pfAdd" type="button">+ ضيف مصروف ثابت</button>'+
+   '<p class="note" style="margin:0">المصاريف الثابتة بتتحسب لوحدها كل شهر، فمتسجلهاش تاني تحت. وأي دخل غير المرتب بيتحسب "دخل زيادة".</p></div></details>'+
   '<div class="madd"><div class="seg" id="mT" style="margin-inline-start:0"><button type="button" data-mt="out" class="on">مصروف</button><button type="button" data-mt="in">دخل</button></div>'+
   '<div class="mrow1"><input id="mA" type="number" inputmode="decimal" min="0" step="0.01" placeholder="المبلغ" aria-label="المبلغ"><select id="mC" aria-label="التصنيف"></select></div>'+
   '<div class="mrow1"><input id="mNo" type="text" maxlength="60" placeholder="ملاحظة (اختياري)" aria-label="ملاحظة"><input id="mD" type="date" aria-label="التاريخ"></div>'+
@@ -1459,17 +1531,19 @@ function buildMoney(){const host=$('#coach');const sec=el('section','pnl money')
   '<div class="rsub" style="margin-top:14px">WHERE IT WENT · المصروف راح فين</div><div class="mcats" id="mCats"></div>'+
   '<div class="rsub" style="margin-top:14px">6 MONTHS · دخل ومصروف</div><div class="m6" id="m6"></div>'+
   '<details class="mlog"><summary class="sub">سجل الشهر <span id="mCnt"></span></summary><div id="mList"></div></details>'+
-  '<div class="field" style="margin-top:10px"><label for="mGoalIn">هدف الادخار في الشهر (ريال)</label><input id="mGoalIn" type="number" inputmode="numeric" min="0" step="100" style="width:150px" placeholder="مثلًا 3000"></div>'+
+  
   '<p class="note">ادفع لنفسك الأول: حوّل الادخار أول ما الدخل ينزل، وبعدين اصرف من الباقي. والصدقة بركة مش خسارة.</p>';
  host.insertAdjacentElement('afterend',sec);
  const setCats=()=>{$('#mC').innerHTML=(MN.t==='in'?CAT_IN:CAT_OUT).map(c=>'<option value="'+c[0]+'">'+c[1]+' '+c[0]+'</option>').join('');};setCats();
- $('#mD').value=todayKey();$('#mGoalIn').value=MN.goal||'';
+ $('#mD').value=todayKey();$('#mGoalIn').value=MN.goal||'';wireBudget();
  $('#mT').addEventListener('click',e=>{const b=e.target.closest('[data-mt]');if(!b)return;MN.t=b.dataset.mt;$('#mT').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));setCats();});
  $('#mAdd').addEventListener('click',e=>{const a=parseFloat($('#mA').value);if(!(a>0)){$('#mA').focus();return;}const d=$('#mD').value||todayKey();
   MN.list.push({id:Date.now().toString(36),t:MN.t,a:Math.round(a*100)/100,c:$('#mC').value,n:$('#mNo').value.trim().slice(0,60),d});saveMoney();
   $('#mA').value='';$('#mNo').value='';MN.view=monKey(d);sparks(e.clientX,e.clientY,10,['#f3b94d','#5ee0b0']);
   if(MN.t==='out'&&d===todayKey()&&!S.day.c.spend&&S.view===todayKey()&&findItem('spend')){S.day.c.spend=true;saveDay();render();toast('◈','سجّلت '+fmt(a)+' ريال','واتعلّم بند "سجلت مصاريفي" لوحده');}
+  else if(MN.t==='in'&&$('#mC').value!=='مرتب'){MN.extra={a:Math.round(a),d,c:$('#mC').value};saveMoney();toast('💰','دخل زيادة '+fmt(a)+' ريال','الحمد لله. تحب تحوّش منه؟');}
   else toast('◈',(MN.t==='in'?'دخل ':'مصروف ')+fmt(a)+' ريال',$('#mC').value);
+  if(MN.t==='out'){const ms=assistCheck(MN.list[MN.list.length-1]).filter(m=>m[0]==='bad'||m[0]==='warn');if(ms.length)setTimeout(()=>toast('⚠','المساعد: خلي بالك',ms[0][1]),900);}
   renderMoney();renderCoach();});
  $('#mA').addEventListener('keydown',e=>{if(e.key==='Enter')$('#mAdd').click();});
  $('#mnP').addEventListener('click',()=>{MN.view=shiftMon(MN.view,-1);renderMoney();});
@@ -1479,15 +1553,45 @@ function buildMoney(){const host=$('#coach');const sec=el('section','pnl money')
  renderMoney();}
 function renderMoney(){if(!$('#money'))return;const cur=monKey(todayKey());if(!MN.view)MN.view=cur;const mk=MN.view;const s=monSum(mk);const a=mk.split('-').map(Number);
  $('#mnM').textContent=AR_MON[a[1]-1]+' '+a[0];$('#mnN').disabled=mk>=cur;
- $('#mI').textContent=fmt(s.i);$('#mO').textContent=fmt(s.o);$('#mNt').textContent=(s.net<0?'−':'')+fmt(Math.abs(s.net));$('#mR').textContent=s.rate==null?'—':s.rate+'%';
- const g=$('#mGoal');if(MN.goal>0){const f=Math.max(0,Math.min(1,s.net/MN.goal));g.innerHTML='<div class="sub">هدف الادخار: '+fmt(Math.max(0,s.net))+' من '+fmt(MN.goal)+' ريال'+(f>=1?' · ✓ وصلت':'')+'</div><div class="track"><i style="width:'+(f*100).toFixed(1)+'%"></i></div>';}else g.innerHTML='';
+ 
+renderBudget(mk);
  const cats=Object.entries(s.cats).sort((x,y)=>y[1]-x[1]);const mx=cats.length?cats[0][1]:1;const ic=c=>(CAT_OUT.find(x=>x[0]===c)||['','•'])[1];
- $('#mCats').innerHTML=cats.length?cats.map(c=>'<div class="mc"><span class="ml">'+ic(c[0])+' '+esc(c[0])+'</span><span class="mb"><i style="width:'+(c[1]*100/mx).toFixed(1)+'%"></i></span><b>'+fmt(c[1])+'</b><small>'+(s.o?Math.round(c[1]*100/s.o):0)+'%</small></div>').join(''):'<span class="sub">مفيش مصروفات متسجلة الشهر ده.</span>';
+ $('#mCats').innerHTML=cats.length?cats.map(c=>'<div class="mc"><span class="ml">'+ic(c[0])+' '+esc(c[0])+'</span><span class="mb"><i style="width:'+(c[1]*100/mx).toFixed(1)+'%"></i></span><b'+(MN.lim[c[0]]&&c[1]>MN.lim[c[0]]?' class="neg"':'')+'>'+fmt(c[1])+'</b><small>'+(MN.lim[c[0]]?'/'+fmt(MN.lim[c[0]]):(s.o?Math.round(c[1]*100/s.o):0)+'%')+'</small></div>').join(''):'<span class="sub">مفيش مصروفات متسجلة الشهر ده.</span>';
  const ms=[];for(let i=5;i>=0;i--){const k=shiftMon(mk,-i);ms.push([k,monSum(k)]);}const top=Math.max(1,...ms.map(x=>Math.max(x[1].i,x[1].o)));
  $('#m6').innerHTML=ms.map(x=>{const m=+x[0].slice(5);return '<div class="mcol'+(x[0]===mk?' on':'')+'" title="'+AR_MON[m-1]+': دخل '+fmt(x[1].i)+' · مصروف '+fmt(x[1].o)+'"><div class="bars2"><i class="bi" style="height:'+(x[1].i*100/top).toFixed(1)+'%"></i><i class="bo" style="height:'+(x[1].o*100/top).toFixed(1)+'%"></i></div><span>'+AR_MON[m-1].slice(0,3)+'</span></div>';}).join('')+'<div class="m6l"><span><i class="bi"></i>دخل</span><span><i class="bo"></i>مصروف</span></div>';
  const items=MN.list.filter(x=>monKey(x.d)===mk).sort((x,y)=>y.d.localeCompare(x.d)||y.id.localeCompare(x.id));$('#mCnt').textContent='('+items.length+')';
  $('#mList').innerHTML=items.length?items.map(x=>'<div class="ml2 '+x.t+'"><span class="d">'+x.d.slice(8)+'/'+x.d.slice(5,7)+'</span><span class="c">'+esc(x.c)+(x.n?' · <small>'+esc(x.n)+'</small>':'')+'</span><b>'+(x.t==='in'?'+':'−')+fmt(x.a)+'</b><button type="button" data-mdel="'+x.id+'" aria-label="امسح">✕</button></div>').join(''):'<span class="sub">مفيش حاجة متسجلة.</span>';}
-function moneyInsight(){const s=monSum(monKey(todayKey()));if(!s.i&&!s.o)return null;
+function renderBudget(mk){const b=budget(mk);const cur=monKey(todayKey());
+ $('#mI').textContent=fmt(b.inc);$('#mO').textContent=fmt(b.fixed+b.varOut);$('#mSv').textContent=fmt(b.save);$('#mNt').textContent=(b.left<0?'−':'')+fmt(Math.abs(b.left));
+ $('#mNt').parentElement.style.setProperty('--c',b.left<0?'var(--ember)':'var(--gold)');
+ const planned=b.sal>0||b.fixed>0||b.save>0;const box=$('#mBud');
+ if(!planned&&!b.inc){box.innerHTML='<div class="sub" style="margin-top:10px">ابدأ من "⚙ ظبط ميزانية الشهر": اكتب مرتبك، ومصاريفك الثابتة، والمبلغ اللي هتدّخره. وأنا أحسبلك الباقي تصرفه كل يوم.</div>';}
+ else{const tot=Math.max(b.inc,b.fixed+b.save+b.varOut,1);const w=v=>(Math.max(0,v)*100/tot).toFixed(1);
+  box.innerHTML='<div class="bstack"><i class="f" style="width:'+w(b.fixed)+'%"></i><i class="v" style="width:'+w(b.varOut)+'%"></i><i class="s" style="width:'+w(b.save)+'%"></i><i class="l" style="width:'+w(b.left)+'%"></i></div>'+
+  '<div class="brows">'+
+   '<div><span>الدخل'+(b.extra>0?' <small>(مرتب '+fmt(b.sal)+' + زيادة '+fmt(b.extra)+')</small>':'')+'</span><b class="pi">'+fmt(b.inc)+'</b></div>'+
+   '<div><span><i class="dot f"></i>مصاريف ثابتة <small>('+b.paid.length+' من '+b.fx.length+' اتدفعت)</small></span><b>− '+fmt(b.fixed)+'</b></div>'+
+   '<div><span><i class="dot s"></i>الادخار'+(b.save?' <small>(حوّشت '+fmt(b.saved)+' من '+fmt(b.save)+')</small>':'')+'</span><b>− '+fmt(b.save)+'</b></div>'+
+   '<div><span><i class="dot v"></i>مصاريف الشهر</span><b>− '+fmt(b.varOut)+'</b></div>'+
+   '<div class="tot"><span><i class="dot l"></i>المتاح تصرفه</span><b class="'+(b.left<0?'neg':'pi')+'">'+(b.left<0?'− ':'')+fmt(Math.abs(b.left))+'</b></div></div>'+
+   (b.days&&b.left>0?'<div class="bday">يعني تقدر تصرف <b>'+fmt(b.left/b.days)+'</b> ريال في اليوم لحد آخر الشهر ('+b.days+' يوم)</div>':'')+
+   (b.left<0?'<div class="bday neg">صرفت أكتر من الميزانية بـ '+fmt(-b.left)+' ريال. قلّل المتغير أو خد من الادخار بس لو ضروري.</div>':'');}
+ const x=MN.extra;$('#mExtra').innerHTML=x&&monKey(x.d)===mk?'<div class="xtra"><b>💰 جالك دخل زيادة '+fmt(x.a)+' ريال ('+esc(x.c)+')</b><span>تحوّش منه قد إيه؟</span><div class="svact"><button class="minibtn gold" data-xs="50" type="button">50% · '+fmt(x.a/2)+'</button><button class="minibtn" data-xs="25" type="button">25%</button><button class="minibtn" data-xs="100" type="button">كله</button><button class="minibtn" data-xs="0" type="button">مش دلوقتي</button></div></div>':'';
+ $('#mFix').innerHTML=b.fx.length?'<div class="rsub" style="margin-top:14px">FIXED · المصاريف الثابتة '+(mk===cur?'الشهر ده':'')+'</div><div class="fxl">'+b.fx.map(f=>{const on=b.paid.indexOf(f.id)>=0;return '<button type="button" data-fx="'+f.id+'" class="'+(on?'on':'')+'"><span>'+(on?'✓ ':'')+esc(f.n)+'</span><b>'+fmt(f.a)+'</b></button>';}).join('')+'</div>':'';
+ $('#pFixed').innerHTML=b.fx.map(f=>'<div class="ml2 out" style="grid-template-columns:minmax(0,1fr) auto 28px"><span class="c">'+esc(f.n)+'</span><b>'+fmt(f.a)+'</b><button type="button" data-fxdel="'+f.id+'" aria-label="امسح">✕</button></div>').join('');}
+function wireBudget(){const sec=$('#money');const ps=$('#pSal');ps.value=MN.plan.sal||'';ps.addEventListener('change',()=>{MN.plan.sal=Math.max(0,+ps.value||0);saveMoney();renderMoney();renderCoach();});
+ $('#pfAdd').addEventListener('click',()=>{const n=$('#pfN').value.trim(),a=parseFloat($('#pfA').value);if(!n){$('#pfN').focus();return;}if(!(a>0)){$('#pfA').focus();return;}
+  MN.plan.fixed.push({id:Date.now().toString(36),n:n.slice(0,30),a:Math.round(a)});saveMoney();$('#pfN').value='';$('#pfA').value='';renderMoney();});
+ $('#pfA').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pfAdd').click();});
+ sec.addEventListener('click',e=>{const t=e.target;
+  const fx=t.closest('[data-fx]');if(fx){const mk=MN.view;const arr=MN.paid[mk]=MN.paid[mk]||[];const i=arr.indexOf(fx.dataset.fx);if(i>=0)arr.splice(i,1);else{arr.push(fx.dataset.fx);sparks(e.clientX,e.clientY,8,['#ff6a3d','#f3b94d']);}saveMoney();renderMoney();return;}
+  const fd=t.closest('[data-fxdel]');if(fd){MN.plan.fixed=MN.plan.fixed.filter(f=>f.id!==fd.dataset.fxdel);saveMoney();renderMoney();return;}
+  const xs=t.closest('[data-xs]');if(xs){const pc=+xs.dataset.xs;const x=MN.extra;MN.extra=null;saveMoney();
+   if(pc&&x){const amt=Math.round(x.a*pc/100);let g=SV.goals.find(g=>gSaved(g)<g.target);if(!g){g={id:uid(),n:'تحويش عام',ic:'🐷',target:Math.max(amt,10000),by:'',moves:[],at:todayKey()};SV.goals.push(g);}
+    g.moves.push({a:amt,d:todayKey()});saveSV();renderSave();markWeekSave();burst(70);toast(g.ic,'حوّشت '+fmt(amt)+' ريال من الدخل الزيادة','في "'+g.n+'"');}
+   renderMoney();renderCoach();return;}});}
+function moneyInsight(){const b=budget(monKey(todayKey()));if(b.inc>0&&(b.fixed||b.save)){return b.left<0?{i:'◈',c:'warn',t:'عدّيت ميزانية الشهر بـ '+fmt(-b.left)+' ريال',s:'وقّف المصاريف المتغيرة لحد آخر الشهر، وحافظ على الادخار.'}:{i:'◈',c:b.days&&b.left/b.days<50?'warn':'good',t:'المتاح تصرفه: '+fmt(b.left)+' ريال'+(b.days?' ('+fmt(b.left/b.days)+' في اليوم)':''),s:'مخطط تدّخر '+fmt(b.save)+' وحوّشت '+fmt(b.saved)+' لحد دلوقتي.'};}
+ const s=monSum(monKey(todayKey()));if(!s.i&&!s.o)return null;
  if(s.rate==null)return{i:'◈',c:'warn',t:'مصروف الشهر '+fmt(s.o)+' ريال، ولسه مسجلتش دخل',s:'سجّل دخل الشهر علشان أحسبلك نسبة الادخار.'};
  return{i:'◈',c:s.rate>=20?'good':s.rate<10?'warn':'',t:'نسبة ادخارك الشهر ده '+s.rate+'%',s:s.rate>=20?'ممتاز. كمّل وفكّر تستثمر جزء بالحلال.':'الهدف 20% على الأقل. أكبر بند مصروف عندك: '+(Object.entries(s.cats).sort((a,b)=>b[1]-a[1])[0]||['—'])[0]+'.'};}
 
@@ -1863,7 +1967,7 @@ function buildReport(){const mb=$('#mbars');
   document.querySelectorAll('#chartbox .hl').forEach(x=>x.classList.toggle('on',x.dataset.i===h.dataset.i));});
  $('#chartbox').addEventListener('pointerleave',()=>{$('#ctip').style.opacity=0;document.querySelectorAll('#chartbox .hl').forEach(x=>x.classList.remove('on'));});
  $('#heat').addEventListener('click',e=>{const c=e.target.closest('[data-k]');if(c){go(c.dataset.k);window.scrollTo({top:0,behavior:REDUCE?'auto':'smooth'});}});}
-function jump(sel){const t=document.querySelector(sel);if(!t)return;t.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
+function jump(sel){const t=document.querySelector(sel);if(!t)return;const pp=t.closest('.pnl');if(pp&&pp.hidden&&typeof goPage==='function'){if(pp.dataset.page==='tasks'){LS.set('showAll',true);goPage('today',true);}else goPage(pp.dataset.page,true);}t.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
  t.animate&&!REDUCE&&t.animate([{boxShadow:'0 0 0 0 rgba(243,185,77,.0)'},{boxShadow:'0 0 0 3px rgba(243,185,77,.55)'},{boxShadow:'0 0 0 0 rgba(243,185,77,0)'}],{duration:1400,delay:350});}
 function buildChart(n){const end=new Date();const vals=[];for(let i=n-1;i>=0;i--){const dd=addDays(end,-i);const k=keyOf(dd);const h=histOf(k);vals.push({k,dd,v:h?h.pct:null});}
  const sig=n+'|'+vals.map(x=>x.v).join(',');if(sig===RB.chartSig)return;RB.chartSig=sig;
@@ -2083,7 +2187,7 @@ function renderMood(){const v=S.day.mood||0;document.querySelectorAll('#mood but
  $('#moodk').textContent=v?('النهارده: '+MOODS[v-1][1]+(v<=2?' · خد نفس، وافتح "هدّي" فوق':' · كمّل كده')):'إنت حاسس بإيه النهارده؟';
  const l=$('#moodline');l.innerHTML='';const end=parseKey(S.view);for(let i=13;i>=0;i--){const k=keyOf(addDays(end,-i));const h=histOf(k);const mv=h&&h.mood?h.mood:0;l.appendChild(el('span','',mv?MOODS[mv-1][0]:'·')).title=k;}}
 
-function renderBoost(p,isToday){if(!booted)return;if(RB.mn==null)renderMentor();renderReport(p,isToday);renderRizq();renderLevel();renderStory();renderHifz();renderQuest();renderGarden();renderMood();renderBadges();renderCoach();checkAutoReview(isToday);}
+function renderBoost(p,isToday){if(!booted)return;if(RB.mn==null)renderMentor();renderReport(p,isToday);renderRizq();renderLevel();renderStory();renderHifz();renderQuest();renderGarden();renderMood();renderBadges();renderCoach();if(typeof renderSimple==='function')renderSimple();checkAutoReview(isToday);}
 
 /* reveal on scroll + spotlight */
 function setupFX(){if(REDUCE||!('IntersectionObserver' in window))return;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
@@ -2325,7 +2429,6 @@ function buildCoach(){
  const chips=e=>{const b=e.target.closest('[data-q]');if(!b)return;const q=QUICK[+b.dataset.q];if(q[2])sendLocal(+b.dataset.q);else openChat(q[1]);};
  $('#aiChips').addEventListener('click',chips);$('#aiQuick').addEventListener('click',chips);
  $('#aiBrief').addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;if(a==='brief')makeBrief(false);if(a==='usetop')useTop();if(a==='chat')openChat();});
- $('#aiFab').addEventListener('click',()=>openChat());
  $('#aiClose').addEventListener('click',closeChat);$('#aiBg').addEventListener('click',closeChat);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#aiSheet').hidden)closeChat();});
  const ta=$('#aiIn');const grow=()=>{ta.style.height='auto';ta.style.height=Math.min(120,ta.scrollHeight)+'px';};
@@ -2460,7 +2563,79 @@ function saveInsight(){if(!SV.goals.length&&!SV.ch)return null;const w=savedThis
  if(SV.goals.length&&!w&&wd>=4)return{i:'🐷',c:'warn',t:'محوّشتش حاجة الأسبوع ده',s:'ولو 50 ريال. العادة أهم من المبلغ.'};
  const g=SV.goals.filter(x=>gSaved(x)<x.target).sort((a,b)=>gSaved(b)/b.target-gSaved(a)/a.target)[0];if(g)return{i:g.ic,c:'good',t:'أقرب هدف: '+g.n+' ('+Math.round(gSaved(g)*100/g.target)+'%)',s:needPace(g).replace(/<[^>]+>/g,'')||('فاضل '+fmt(g.target-gSaved(g))+' ريال')};return null;}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildTaskEditor();renderBackup();initLock();persistStorage();booted=true;RB.firstRender=true;
+/* ---------- spending assistant: quick add from anywhere + it watches over your money ---------- */
+MN.lim=MN.lim||{};
+function catAvg(c,excludeId){const since=keyOf(addDays(parseKey(todayKey()),-90));const xs=MN.list.filter(x=>x.t==='out'&&x.c===c&&x.d>=since&&x.id!==excludeId);return xs.length>=3?xs.reduce((s,x)=>s+x.a,0)/xs.length:0;}
+function todaySpent(){const tk=todayKey();return MN.list.filter(x=>x.t==='out'&&x.d===tk).reduce((s,x)=>s+x.a,0);}
+function assistCheck(e){const out=[];const mk=monKey(e.d);const s=monSum(mk);const b=budget(mk);
+ const lim=+MN.lim[e.c]||0;if(lim){const used=s.cats[e.c]||0;if(used>lim)out.push(['bad','عدّيت حد "'+e.c+'" الشهر ده: '+fmt(used)+' من '+fmt(lim)+' ريال (زيادة '+fmt(used-lim)+')']);else if(used>=lim*.8)out.push(['warn','قربت تخلّص حد "'+e.c+'": '+fmt(used)+' من '+fmt(lim)+' ('+Math.round(used*100/lim)+'%)']);}
+ if(e.d===todayKey()&&b.days&&b.inc>0){const before=b.left+todaySpent();const allow=before/b.days;const ts=todaySpent();if(allow>0&&ts>allow)out.push(['warn','صرفت النهارده '+fmt(ts)+' ريال، والمتاح ليك في اليوم '+fmt(allow)+'. حاول متصرفش تاني النهارده.']);}
+ const av=catAvg(e.c,e.id);if(av&&e.a>=av*2.5&&e.a>=100)out.push(['warn','المصروف ده أكبر من عادتك في "'+e.c+'" بحوالي '+Math.round(e.a/av)+' مرات (متوسطك '+fmt(av)+').']);
+ if(b.inc>0&&b.left<0)out.push(['bad','كده عدّيت ميزانية الشهر كلها بـ '+fmt(-b.left)+' ريال. الادخار أولى من أي حاجة مش ضرورية.']);
+ if(!out.length&&['ترفيه','لبس','اشتراكات'].indexOf(e.c)>=0&&e.a>=300)out.push(['tip','نصيحة: أي شرا فوق 300 ريال من غير ما تكون محتاجه، استنى عليه 48 ساعة.']);
+ if(!out.length)out.push(['ok',b.inc>0&&b.days?'تمام. فاضلك '+fmt(Math.max(0,b.left))+' ريال للشهر، يعني '+fmt(Math.max(0,b.left)/b.days)+' في اليوم.':'اتسجّل. ظبط الميزانية في صفحة فلوسي علشان أقدر أنبّهك.']);
+ return out;}
+function openQuick(){const sh=$('#qSheet');sh.hidden=false;$('#qMsg').innerHTML='';$('#qA').value='';$('#qN').value='';
+ const lastC=LS.get('qLastC')||'أكل';$('#qCats').innerHTML=CAT_OUT.map(c=>'<button type="button" data-qc="'+c[0]+'" class="'+(c[0]===lastC?'on':'')+'"><span>'+c[1]+'</span>'+c[0]+'</button>').join('');
+ const tk=todayKey();const b=budget(monKey(tk));$('#qHint').innerHTML=b.inc>0&&b.days?'المتاح ليك النهارده: <b>'+fmt(Math.max(0,(b.left+todaySpent())/b.days-todaySpent()))+'</b> ريال · اتصرف النهارده '+fmt(todaySpent()):'سجّل مصروفك، والمساعد هيراقب لك الميزانية';
+ setTimeout(()=>{try{$('#qA').focus();}catch(e){}},200);}
+function closeQuick(){$('#qSheet').hidden=true;}
+function saveQuick(){const a=parseFloat($('#qA').value);if(!(a>0)){$('#qA').focus();return;}const cb=$('#qCats .on');const c=cb?cb.dataset.qc:'تاني';LS.set('qLastC',c);
+ const e={id:Date.now().toString(36),t:'out',a:Math.round(a*100)/100,c,n:$('#qN').value.trim().slice(0,60),d:todayKey()};MN.list.push(e);saveMoney();
+ if(!S.day.c.spend&&S.view===todayKey()&&findItem('spend')){S.day.c.spend=true;saveDay();render();}
+ const msgs=assistCheck(e);const ic={bad:'⛔',warn:'⚠',tip:'💡',ok:'✓'};
+ $('#qMsg').innerHTML='<div class="qdone">✓ اتسجّل '+fmt(e.a)+' ريال · '+esc(c)+'</div>'+msgs.map(m=>'<div class="qm '+m[0]+'"><span>'+ic[m[0]]+'</span>'+esc(m[1])+'</div>').join('');
+ $('#qA').value='';$('#qN').value='';renderMoney();renderCoach();if(navigator.vibrate&&msgs.some(m=>m[0]==='bad'||m[0]==='warn'))try{navigator.vibrate([60,40,60]);}catch(x){}}
+function buildQuick(){const fab=$('#aiFab');fab.innerHTML='＋<span class="pulse" aria-hidden="true"></span>';fab.setAttribute('aria-label','سجّل مصروف');fab.title='سجّل مصروف';fab.classList.add('qfab');
+ fab.addEventListener('click',openQuick);
+ document.body.insertAdjacentHTML('beforeend','<div class="aisheet" id="qSheet" hidden role="dialog" aria-modal="true" aria-label="سجّل مصروف"><div class="bg" id="qBg"></div><div class="aicard qcard"><div class="aihead"><div class="av" style="background:radial-gradient(circle at 30% 25%,#ffe3a6,#f3b94d 60%,#b9801f)">◈</div><div><h3>سجّل مصروف</h3><small>SPENDING ASSISTANT · 🔒 ON THIS PHONE</small></div><button class="ib" id="qClose" type="button" aria-label="اقفل">✕</button></div>'+
+  '<div class="qbody"><input id="qA" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" aria-label="المبلغ"><div class="sub" id="qHint" style="text-align:center"></div><div class="qcats" id="qCats"></div><input id="qN" maxlength="60" placeholder="على إيه؟ (اختياري)"><button class="minibtn gold" id="qSave" type="button" style="width:100%;padding:12px;font-size:16px">سجّل ✓</button><div id="qMsg"></div></div></div></div>');
+ $('#qBg').addEventListener('click',closeQuick);$('#qClose').addEventListener('click',closeQuick);$('#qSave').addEventListener('click',saveQuick);
+ $('#qA').addEventListener('keydown',e=>{if(e.key==='Enter')saveQuick();});
+ $('#qCats').addEventListener('click',e=>{const b=e.target.closest('[data-qc]');if(!b)return;$('#qCats').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#qSheet').hidden)closeQuick();});
+ // category limits editor inside the budget settings
+ const host=$('#pFixed');host.insertAdjacentHTML('afterend','<label class="sub" style="margin-top:6px">حد الصرف لكل تصنيف في الشهر (اختياري، والمساعد هينبّهك لو قربت أو عدّيت)</label><div class="lims" id="pLims">'+CAT_OUT.filter(c=>c[0]!=='تاني').map(c=>'<label><span>'+c[1]+' '+c[0]+'</span><input type="number" inputmode="numeric" min="0" step="50" data-lim="'+c[0]+'" value="'+(MN.lim[c[0]]||'')+'" placeholder="—"></label>').join('')+'</div>');
+ $('#pLims').addEventListener('change',e=>{const i=e.target.closest('[data-lim]');if(!i)return;const v=Math.max(0,+i.value||0);if(v)MN.lim[i.dataset.lim]=v;else delete MN.lim[i.dataset.lim];saveMoney();renderMoney();});}
+/* ---------- simple today: the minimum that keeps you close to Allah and moving forward ---------- */
+const BASICS=[['quran','📖','وردك من القرآن','ولو صفحتين'],['adhkar_m','☀','أذكار الصباح',''],['adhkar_e','☾','أذكار المساء',''],['istighfar','∞','الاستغفار 100 مرة','من العدّاد'],['read','◎','خطوة تطوير','10 صفحات أو حاجة جديدة'],['income_step','◈','خطوة تزوّد دخلك','مكالمة، عرض، follow-up']];
+const PRAY=[['p_fajr','الفجر'],['p_dhuhr','الظهر'],['p_asr','العصر'],['p_maghrib','المغرب'],['p_isha','العشاء']];
+function buildSimple(){const sec=el('section','pnl simple');sec.id='simple';
+ const pr=PRAY.filter(x=>findItem(x[0]));const bs=BASICS.filter(x=>findItem(x[0]));
+ sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--mint);border-color:rgba(94,224,176,.35);background:rgba(94,224,176,.08)">✓</div><div><h2>النهارده ببساطة</h2><span class="en">THE BASICS · لو عملت دول بس، يومك كسبان</span></div><span class="cnt" id="smCnt"></span></div>'+
+  (pr.length?'<div class="smp">'+pr.map(x=>'<div class="it pd" data-id="'+x[0]+'" role="checkbox" tabindex="0"><span class="box">✓</span><span class="lbl">'+x[1]+'</span></div>').join('')+'</div>':'')+
+  '<div class="smb">'+bs.map(x=>'<div class="it sb" data-id="'+x[0]+'" role="checkbox" tabindex="0"><span class="box">✓</span><span class="si">'+x[1]+'</span><span class="lbl">'+x[2]+(x[3]?'<span class="hint">'+x[3]+'</span>':'')+'</span></div>').join('')+'</div>'+
+  '<div class="smq" id="smQ"></div>'+
+  '<button class="minibtn" id="smAll" type="button" style="width:100%;margin-top:10px"></button>';
+ const core=document.querySelector('.pnl.core');core.insertAdjacentElement('beforebegin',sec);
+ $('#smAll').addEventListener('click',()=>{const v=!LS.get('showAll');LS.set('showAll',v);applyPage();if(v){const m=$('#m-rooh');if(m)m.scrollIntoView({behavior:'smooth',block:'start'});}});}
+const SM_Q=[['أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ','الرعد 28'],['فَاذْكُرُونِي أَذْكُرْكُمْ','البقرة 152'],['وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا','العنكبوت 69'],['إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6'],['وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا','الطلاق 2'],['أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ','متفق عليه'],['وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ','البقرة 186']];
+function renderSimple(){if(!$('#simple'))return;const ids=PRAY.map(x=>x[0]).concat(BASICS.map(x=>x[0])).filter(id=>findItem(id));const n=ids.filter(id=>isDone(findItem(id),S.day)).length;
+ const c=$('#smCnt');c.textContent=n+'/'+ids.length;c.classList.toggle('full',n===ids.length);
+ const q=pick(SM_Q,7);$('#smQ').innerHTML=n===ids.length?'<b>ما شاء الله. الأساسيات كلها خلصت.</b> أي حاجة زيادة النهارده بركة.':'<div class="quran">'+q[0]+'</div><div class="ref">'+q[1]+'</div><small>مش مطلوب تبقى كامل. المطلوب متقطعش. حاجة صغيرة كل يوم أحسن من حاجة كبيرة مرة.</small>';
+ $('#smAll').textContent=LS.get('showAll')?'▲ خبّي باقي المهام (خلّيها بسيطة)':'▼ اعرض كل المهام ('+summarize(S.day).tot+')';}
+
+/* ---------- pages: one section per screen ---------- */
+const PAGES=[['today','☀','اليوم'],['soul','☾','الروح'],['money','◈','فلوسي'],['coach','✺','المرشد'],['more','⚙','المزيد']];
+const TASK_PANELS=['m-rooh','m-jasad','m-bayt','m-waqt','m-ilm','m-career','m-dakhl','m-week'];
+function pageOf(p){const id=p.id||'';
+ if(p.classList.contains('core')||id==='simple'||p.querySelector('#mission'))return 'today';
+ if(TASK_PANELS.indexOf(id)>=0)return 'tasks';
+ if(['rizq','counters','hifz','stories','mentor','dustur','m-prom','calm'].indexOf(id)>=0||/MARRIAGE/.test(p.textContent.slice(0,400)))return 'soul';
+ if(['money','savings'].indexOf(id)>=0)return 'money';
+ if(['coach','report','garden','badgesP','m-biz'].indexOf(id)>=0)return 'coach';
+ return 'more';}
+let PG=LS.get('page')||'today';if(!PAGES.some(x=>x[0]===PG))PG='today';
+function applyPage(){const all=!!LS.get('showAll');document.querySelectorAll('.grid .pnl').forEach(p=>{const pg=p.dataset.page||(p.dataset.page=pageOf(p));p.hidden=!(pg===PG||(pg==='tasks'&&PG==='today'&&all));});
+ document.querySelectorAll('#dock [data-pg]').forEach(b=>b.classList.toggle('on',b.dataset.pg===PG));
+ document.documentElement.dataset.page=PG;if(typeof renderSimple==='function')renderSimple();}
+function goPage(pg,keepScroll){PG=pg;LS.set('page',pg);applyPage();if(!keepScroll)window.scrollTo({top:0,behavior:'auto'});}
+function setupPages(){const d=$('#dock');const rev=$('#dockRev');
+ d.innerHTML=PAGES.map(x=>'<button type="button" data-pg="'+x[0]+'">'+x[1]+'<span>'+x[2]+'</span></button>').join('');d.appendChild(rev);
+ d.addEventListener('click',e=>{const b=e.target.closest('[data-pg]');if(b){goPage(b.dataset.pg);try{sTick();}catch(x){}}});
+ applyPage();}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildTaskEditor();renderBackup();initLock();persistStorage();buildQuick();buildSimple();setupPages();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
