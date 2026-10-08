@@ -995,6 +995,36 @@ html.locked .lock{display:grid}
 /* AI chat button, stacked above the quick-add button */
 .aifab.chatfab{bottom:calc(env(safe-area-inset-bottom,0px) + 150px);width:48px;height:48px;font-size:20px;border-radius:16px}
 @media (max-width:420px){.aifab.chatfab{bottom:calc(env(safe-area-inset-bottom,0px) + 142px);width:46px;height:46px}}
+/* ===== UX polish ===== */
+/* Arabic text must never get letter-spacing (it breaks the joined letters) */
+.ar{letter-spacing:0!important;font-family:var(--body)!important;text-transform:none!important;font-size:11.5px}
+/* compact header on every page except "today": no greeting/date/arc, a clear page title instead */
+html:not([data-page="today"]) .top .dates,html:not([data-page="today"]) .arc,html:not([data-page="today"]) #prev,html:not([data-page="today"]) #next{display:none!important}
+.pgtitle{display:none;align-items:center;gap:12px;margin:2px 0 14px}
+html:not([data-page="today"]) .pgtitle{display:flex}
+.pgtitle .pi2{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:21px;background:rgba(243,185,77,.1);border:1px solid rgba(243,185,77,.35);color:var(--gold)}
+.pgtitle h1{margin:0;font-family:var(--body);font-size:22px;font-weight:700;line-height:1.2}
+.pgtitle p{margin:2px 0 0;font-size:13px;color:var(--frost)}
+/* header: review button lives here now */
+.ib.rev{position:relative;color:var(--gold);border-color:rgba(243,185,77,.45)}
+.ib.rev .badge{position:absolute;top:-6px;inset-inline-end:-6px;min-width:17px;height:17px;border-radius:9px;background:var(--ember);color:#fff;font-family:var(--mono);font-size:10px;display:grid;place-items:center;padding:0 4px}
+.ib.rev.hot{animation:hot 1.8s ease-in-out infinite}
+/* dock: solid, with the quick-add button raised in the middle */
+.dock{background:rgba(9,14,26,.97)!important;align-items:flex-end}
+.dock .qadd{width:58px;height:58px;margin:-22px 4px 0;border-radius:20px;background:radial-gradient(circle at 30% 25%,#ffe3a6,#f3b94d 60%,#b9801f)!important;color:#1b1305!important;font-size:30px;font-weight:300;box-shadow:0 8px 24px rgba(243,185,77,.4),0 0 0 4px rgba(9,14,26,.97);display:grid;place-items:center;padding:0!important;min-width:0!important;line-height:1}
+.dock .qadd span{display:none}
+#aiFab{display:none!important}
+.aifab.chatfab{width:46px!important;height:46px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 96px)!important;font-size:19px!important;border-radius:15px!important}
+/* nothing important hides behind the dock at the end of a page */
+.wrap{padding-bottom:130px!important}
+/* calmer, smaller progress ring on phones */
+@media (max-width:600px){.core svg{width:min(100%,220px)!important}}
+/* bigger touch targets for checkboxes */
+.it{min-height:48px}
+.aifab.chatfab{transition:transform .25s ease,opacity .25s ease}
+.aifab.chatfab.away{transform:translateX(-80px);opacity:0;pointer-events:none}
+#aiSrc{display:none}
+#coach .aiask{margin-top:0}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1021,6 +1051,7 @@ html.locked .lock{display:grid}
     </div>
   </header>
   <div class="arc" id="arc" aria-hidden="true"></div>
+  <div class="pgtitle" id="pgTitle"></div>
 
   <div class="grid">
     <div class="col side">
@@ -2585,6 +2616,7 @@ function saveQuick(){const a=parseFloat($('#qA').value);if(!(a>0)){$('#qA').focu
 function buildQuick(){const fab=$('#aiFab');fab.innerHTML='＋<span class="pulse" aria-hidden="true"></span>';fab.setAttribute('aria-label','سجّل مصروف');fab.title='سجّل مصروف';fab.classList.add('qfab');
  fab.addEventListener('click',openQuick);
  $('#aiChatFab').addEventListener('click',()=>openChat());
+ {let t=0,lastY=scrollY;const f=$('#aiChatFab');window.addEventListener('scroll',()=>{const y=scrollY;if(Math.abs(y-lastY)>6)f.classList.add('away');lastY=y;clearTimeout(t);t=setTimeout(()=>f.classList.remove('away'),900);},{passive:true});}
  document.body.insertAdjacentHTML('beforeend','<div class="aisheet" id="qSheet" hidden role="dialog" aria-modal="true" aria-label="سجّل مصروف"><div class="bg" id="qBg"></div><div class="aicard qcard"><div class="aihead"><div class="av" style="background:radial-gradient(circle at 30% 25%,#ffe3a6,#f3b94d 60%,#b9801f)">◈</div><div><h3>سجّل مصروف</h3><small>SPENDING ASSISTANT · 🔒 ON THIS PHONE</small></div><button class="ib" id="qClose" type="button" aria-label="اقفل">✕</button></div>'+
   '<div class="qbody"><input id="qA" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" aria-label="المبلغ"><div class="sub" id="qHint" style="text-align:center"></div><div class="qcats" id="qCats"></div><input id="qN" maxlength="60" placeholder="على إيه؟ (اختياري)"><button class="minibtn gold" id="qSave" type="button" style="width:100%;padding:12px;font-size:16px">سجّل ✓</button><div id="qMsg"></div></div></div></div>');
  $('#qBg').addEventListener('click',closeQuick);$('#qClose').addEventListener('click',closeQuick);$('#qSave').addEventListener('click',saveQuick);
@@ -2616,6 +2648,7 @@ function renderSimple(){if(!$('#simple'))return;const ids=PRAY.map(x=>x[0]).conc
 
 /* ---------- pages: one section per screen ---------- */
 const PAGES=[['today','☀','اليوم'],['soul','☾','الروح'],['money','◈','فلوسي'],['coach','✺','المرشد'],['more','⚙','المزيد']];
+const PG_SUB={soul:'أدعية، أذكار، حفظ، وقصص',money:'ميزانيتك ومصاريفك وتحويشك · على موبايلك بس',coach:'دروس اليوم، المرشد، والتقارير',more:'الإعدادات، الأمان، ومهامك'};
 const TASK_PANELS=['m-rooh','m-jasad','m-bayt','m-waqt','m-ilm','m-career','m-dakhl','m-week'];
 function pageOf(p){const id=p.id||'';
  if(p.classList.contains('core')||id==='simple'||p.querySelector('#mission'))return 'today';
@@ -2627,12 +2660,20 @@ function pageOf(p){const id=p.id||'';
 let PG=LS.get('page')||'today';if(!PAGES.some(x=>x[0]===PG))PG='today';
 function applyPage(){const all=!!LS.get('showAll');document.querySelectorAll('.grid .pnl').forEach(p=>{const pg=p.dataset.page||(p.dataset.page=pageOf(p));p.hidden=!(pg===PG||(pg==='tasks'&&PG==='today'&&all));});
  document.querySelectorAll('#dock [data-pg]').forEach(b=>b.classList.toggle('on',b.dataset.pg===PG));
- document.documentElement.dataset.page=PG;if(typeof renderSimple==='function')renderSimple();}
+ document.documentElement.dataset.page=PG;{const t=$('#pgTitle'),x=PAGES.find(q=>q[0]===PG);if(t&&x)t.innerHTML=PG==='today'?'':'<div class="pi2">'+x[1]+'</div><div><h1>'+x[2]+'</h1><p>'+(PG_SUB[PG]||'')+'</p></div>';}if(typeof renderSimple==='function')renderSimple();}
 function goPage(pg,keepScroll){PG=pg;LS.set('page',pg);applyPage();if(!keepScroll)window.scrollTo({top:0,behavior:'auto'});}
+function fixArabicSpacing(root){(root||document).querySelectorAll('.ph .en,.rsub,.moti .k span,.msg .k,.qk,.aihead small,.ains .rsub').forEach(n=>{if(n.dataset.arx)return;n.dataset.arx=1;
+ [...n.childNodes].forEach(c=>{if(c.nodeType===3&&/[\u0600-\u06FF]/.test(c.nodeValue)){const sp=document.createElement('span');sp.innerHTML=c.nodeValue.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])).replace(/([\u0600-\u06FF][^·•]*)/g,'<span class="ar">$1</span>');c.replaceWith(...sp.childNodes);}});});}
 function setupPages(){const d=$('#dock');const rev=$('#dockRev');
- d.innerHTML=PAGES.map(x=>'<button type="button" data-pg="'+x[0]+'">'+x[1]+'<span>'+x[2]+'</span></button>').join('');d.appendChild(rev);
+ const btn=x=>'<button type="button" data-pg="'+x[0]+'">'+x[1]+'<span>'+x[2]+'</span></button>';
+ d.innerHTML=PAGES.slice(0,2).map(btn).join('')+'<button type="button" class="qadd" id="dockAdd" aria-label="سجّل مصروف" title="سجّل مصروف">＋<span>مصروف</span></button>'+PAGES.slice(2).map(btn).join('');
+ rev.className='ib rev';rev.innerHTML='◑<i class="badge" id="dockBadge" hidden>0</i>';rev.title='حساب آخر اليوم';rev.setAttribute('aria-label','حساب آخر اليوم');
+ const row=document.querySelector('.top .row');row.insertBefore(rev,$('#snd'));
+ $('#dockAdd').addEventListener('click',()=>{try{sTick();}catch(x){}openQuick();});
+ const biz=$('#m-biz'),gd=$('#garden'),bd=$('#badgesP');if(biz&&gd){biz.insertAdjacentElement('afterend',gd);if(bd)gd.insertAdjacentElement('afterend',bd);}
+ {const br=$('#aiBrief'),ask=document.querySelector('#coach .aiask'),ch=$('#aiChips');if(br&&ask){br.insertAdjacentElement('beforebegin',ask);if(ch)ask.insertAdjacentElement('afterend',ch);if(ch)ch.style.marginBottom='14px';}}
  d.addEventListener('click',e=>{const b=e.target.closest('[data-pg]');if(b){goPage(b.dataset.pg);try{sTick();}catch(x){}}});
- applyPage();}
+ applyPage();fixArabicSpacing();}
 
 /* ---------- lesson library: strong, sourced advice. Rotates daily, works offline ---------- */
 const LCAT={sales:['🤝','البيع والعملاء'],career:['▣','شغلك وكاريرك'],money:['◈','الفلوس'],self:['△','الانضباط والعادات'],mind:['◎','التفكير والنفس'],faith:['☾','القرب من ربنا'],home:['♡','البيت والناس']};
