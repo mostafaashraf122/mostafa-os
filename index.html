@@ -965,6 +965,28 @@ html.locked .lock{display:grid}
 .lims label{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--frost)}
 .lims label span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lims input{width:76px;flex:0 0 76px;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:6px;font:inherit;font-size:13px}
+/* lessons */
+.les{border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:10px;background:rgba(7,11,20,.35);display:grid;gap:6px}
+.les.done{border-color:rgba(94,224,176,.4)}
+.lk2{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.lk2 em{font-style:normal;color:var(--mint)}
+.les b{font-family:var(--display);font-size:17px;color:var(--gold2)}
+.les p{margin:0;font-size:14px;line-height:1.75}
+.les .la{font-size:13.5px;background:rgba(243,185,77,.07);border:1px solid rgba(243,185,77,.25);border-radius:10px;padding:7px 10px}
+.les .la span{color:var(--gold);font-weight:600}
+.les small{color:var(--dim);font-size:11.5px}
+.lfilt{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}
+.lfilt button{background:rgba(7,11,20,.5);border:1px solid var(--line2);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--frost);cursor:pointer}
+.lfilt button.on{border-color:var(--gold);color:var(--gold2)}
+.had{border:1px solid rgba(94,224,176,.3);border-radius:16px;padding:13px;margin-top:8px;background:rgba(94,224,176,.04);display:grid;gap:8px}
+.had .ht2{font-family:var(--quran);font-size:18px;line-height:1.9}
+.had .hm{font-size:12px;color:var(--mint)}
+.had p{font-size:13.5px;line-height:1.8;margin:8px 0}.had ul{margin:0;padding-inline-start:18px;font-size:13px;color:var(--frost)}
+.smles{width:100%;margin-top:10px;text-align:start;background:rgba(243,185,77,.07);border:1px solid rgba(243,185,77,.3);border-radius:14px;padding:10px 12px;color:var(--text);font:inherit;font-size:13.5px;cursor:pointer;display:flex;gap:6px;align-items:center}
+.smles b{color:var(--gold2)}.smles span{margin-inline-start:auto;color:var(--gold)}
+.fsl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fsl span{font-size:12px;background:rgba(7,11,20,.5);border:1px solid var(--line2);border-radius:8px;padding:4px 8px;direction:ltr}.fsl small{color:var(--dim)}
+.stp{display:grid;gap:4px;padding:12px;border:1px solid var(--line2);border-radius:14px;background:rgba(7,11,20,.4);margin-top:8px}.stp b{font-size:15px}.stp span{font-size:13px;color:var(--frost)}.stp button{justify-self:start;margin-top:4px}
+.stp.done{color:var(--mint);border-color:rgba(94,224,176,.4)}
+#cleanBody ul{margin:4px 0;padding-inline-start:20px;font-size:14px}#cleanBody p{margin:4px 0}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1148,7 +1170,7 @@ html.locked .lock{display:grid}
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
-<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p>مقفول. افتحه بالبصمة أو Face ID</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="أو الرقم السري" aria-label="الرقم السري"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p>مقفول. افتحه بالبصمة أو Face ID أو باسورد الموبايل</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="أو الرقم السري" aria-label="الرقم السري"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
 <script>
@@ -1439,7 +1461,7 @@ function buildMods(){const host=$('#mods');
   '<div class="field"><label>مكانك (مواعيد الصلاة بتتحسب عليه كل يوم لوحدها)</label><div class="days" id="cities"></div><div class="trow"><button class="minibtn gold" id="geoBtn" type="button">📍 حدّد مكاني تلقائيًا</button><span class="sub" id="locNow"></span></div></div>'+
   '<div class="field"><label for="revHour">حساب آخر اليوم يطلعلك الساعة كام؟ (17 لـ 23)</label><input id="revHour" type="number" min="17" max="23" step="1" style="width:110px"></div>'+
   '<div class="field"><label>🔐 قفل التطبيق بالبصمة / Face ID (البصمة بتفضل جوه موبايلك، والتطبيق مبيشوفهاش)</label><div id="lkSet"></div></div>'+
-  '<div class="field"><label>التخزين على الموبايل</label><span class="sub" id="stNow">…</span></div>'+
+  '<div class="field"><label>💾 ذاكرة الموبايل (ملفات وجداول)</label><span class="sub" id="stNow">…</span></div>'+
   '<div class="field"><label>نسخة احتياطية (بياناتك كلها على الموبايل ده بس. اعمل نسخة كل أسبوع وخزّنها في مكان آمن زي Google Drive أو الإيميل)</label><div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="minibtn gold" id="bkOut" type="button">⬇ صدّر نسخة</button><label class="minibtn" style="cursor:pointer">⬆ استرجع نسخة<input id="bkIn" type="file" accept=".json,application/json" hidden></label><span class="sub" id="bkNow"></span></div></div>'+
   '<div class="field"><label>نزّله كتطبيق على الموبايل (بيفتح من غير نت)</label><div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="minibtn" id="instBtn" type="button" hidden>📲 سطّبه دلوقتي</button><span class="sub" id="instHint">أندرويد: من قايمة كروم ⋮ اختار "Add to Home screen". آيفون: من Safari دوس مشاركة ⬆ واختار "Add to Home Screen".</span></div></div>'+
   '<p class="note">مواعيد الصلاة بتتحسب فلكيًا لمكانك كل يوم لوحدها (أم القرى للسعودية والخليج، الهيئة المصرية لمصر والشام)، تقريبية بدقيقة أو اتنين. وزرار ◐ فوق بيخفي الكلام ويحط مكانه الرموز.</p></details>';
@@ -1502,11 +1524,11 @@ function renderBackup(){const n=$('#bkNow');if(!n)return;const t=LS.get('lastBac
 const CAT_OUT=[['أكل','🍽'],['مواصلات','🚗'],['بيت وفواتير','🏠'],['أهل','👪'],['صحة','💊'],['لبس','👕'],['تعليم','📚'],['اشتراكات','📱'],['ترفيه','🎮'],['صدقة','🤲'],['تاني','•']];
 const CAT_IN=[['مرتب','💼'],['عمولة','📈'],['شغل حر','🛠'],['بزنس','✦'],['هدية','🎁'],['تاني','•']];
 const MN=Object.assign({list:[],goal:0,plan:{sal:0,fixed:[]},paid:{},extra:null},LS.get('money')||{});MN.plan=Object.assign({sal:0,fixed:[]},MN.plan||{});MN.paid=MN.paid||{};MN.view=null;MN.t='out';
-const saveMoney=()=>LS.set('money',{list:MN.list,goal:MN.goal,plan:MN.plan,paid:MN.paid,extra:MN.extra,lim:MN.lim});
+const saveMoney=()=>LS.set('money',{list:MN.list,goal:MN.goal,plan:MN.plan,paid:MN.paid,extra:MN.extra,lim:MN.lim,comm:MN.comm,arch:MN.arch});
 const monKey=d=>d.slice(0,7);
 const fmt=n=>Math.round(n).toLocaleString('en');
 const AR_MON=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-function monSum(mk){let i=0,o=0;const cats={};MN.list.forEach(x=>{if(monKey(x.d)!==mk)return;if(x.t==='in')i+=x.a;else{o+=x.a;cats[x.c]=(cats[x.c]||0)+x.a;}});return{i,o,net:i-o,rate:i>0?Math.round((i-o)*100/i):null,cats};}
+function monSum(mk){const ar=(MN.arch||{})[mk];let i=ar?ar.i:0,o=ar?ar.o:0;const cats=ar?Object.assign({},ar.cats):{};MN.list.forEach(x=>{if(monKey(x.d)!==mk)return;if(x.t==='in')i+=x.a;else{o+=x.a;cats[x.c]=(cats[x.c]||0)+x.a;}});return{i,o,net:i-o,rate:i>0?Math.round((i-o)*100/i):null,cats};}
 function budget(mk){const s=monSum(mk);const sl=MN.list.filter(x=>x.t==='in'&&x.c==='مرتب'&&monKey(x.d)===mk).reduce((a,x)=>a+x.a,0);
  const sal=Math.max(+MN.plan.sal||0,sl),extra=s.i-sl,inc=sal+extra;const fx=MN.plan.fixed||[];const fixed=fx.reduce((a,f)=>a+f.a,0);const paid=(MN.paid[mk]||[]).filter(id=>fx.some(f=>f.id===id));
  const save=+MN.goal||0;let saved=0;try{SV.goals.forEach(g=>g.moves.forEach(m=>{if(monKey(m.d)===mk)saved+=m.a;}));}catch(e){}
@@ -2037,7 +2059,7 @@ $('#sheetCard').addEventListener('click',e=>{const t=e.target;
   setTimeout(()=>{if(RB.rev==='today'&&!$('#sheet').hidden){const keep=$('#sheetCard').scrollTop;openReview('today');$('#sheetCard').scrollTop=keep;}},480);return;}
  const a=t.closest('[data-act]');if(!a)return;const act=a.dataset.act;
  if(act==='close'){LS.set('reviewed',todayKey());closeReview();}
- if(act==='ai'){closeReview();setTimeout(()=>sendLocal(6),360);}
+ if(act==='ai'){closeReview();setTimeout(()=>sendLocal(QUICK.findIndex(q=>q[2]==='day')),360);}
  if(act==='goy'){closeReview();go(keyOf(addDays(new Date(),-1)));window.scrollTo({top:0,behavior:'smooth'});}
  if(act==='notif'){try{Notification.requestPermission().then(r=>{if(r==='granted')toast('◑','تمام، هفكّرك','الساعة '+(S.settings.revHour||21)+' طول ما الصفحة مفتوحة');a.remove();});}catch(er){}}});
 $('#dockRev').addEventListener('click',()=>openReview('today'));
@@ -2217,11 +2239,12 @@ S.lastToday=todayKey();
 /* ================= AI COACH · المرشد =================
    Two brains: a local engine that reads your history on the phone (works offline),
    and a free, keyless online model (Pollinations) for planning and chat. Optional Gemini key = smarter. */
-const DEF_PROFILE='مصطفى أشرف سعيد، Technical Sales & Solutions Consultant في الرياض. +5 سنين في بيع وتسليم حلول تقنية للشركات والحكومة في السعودية ومصر: ERP وCRM، تطبيقات ويب وموبايل، منصات 3D تفاعلية (Unreal / Pixel Streaming)، VR للتدريب والسلامة، جولات 360 وMatterport digital twins. حاليًا Technical Sales Representative في MTC Technology (من 2024): بيدير دورة البيع كاملة من discovery وsolution design وPOC، للمناقصات والـ RFP والتفاوض، وبعدها متابعة التسليم. عملاؤه: GOSI، موانئ، وزارة التعليم، جامعة الملك سعود، جامعة نجران، مستشفيات SMC، وشركات تطوير عقاري (العجلان، أساس مكين، وكان، مهير). قبل كده مدير قسمي Software وMarketing في سحر الإبداع، وTechnical Sales Executive وبعدين WordPress Developer في Tracks Agency في القاهرة. معاه Certified Data Scientist Professional (Python، Pandas، Scikit-learn، ML، SQL، Streamlit) وبكالوريوس IT وعلوم حاسب من جامعة سيناء. هدفه المهني: دخل أعلى بالحلال وبزنس تقني خاص بيه قبل الـ 30.';
+const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYTEQ Technologies بالرياض من سبتمبر 2026 (في فترة التجربة أول 3 شهور، والعمولة نسبة على كل بيعة بتتصرف كل ربع سنة). خلفيته: +5 سنين بيع وتسليم حلول تقنية للشركات والحكومة في السعودية ومصر: ERP وCRM، تطبيقات ويب وموبايل، منصات 3D تفاعلية، VR و360 وdigital twins. قبل كده Technical Sales في MTC Technology مع عملاء زي GOSI وموانئ ووزارة التعليم وجامعة الملك سعود وشركات تطوير عقاري، ومدير قسمي Software وMarketing، وWordPress Developer. معاه Certified Data Scientist Professional (Python، ML، SQL) وبكالوريوس IT. هدفه: يتطور كإنسان، ويقرب من ربنا، ويزوّد دخله بالحلال، ويبني بزنس تقني خاص بيه قبل الـ 30.';
 const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-3.8-flash'},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
+if(!AI.cfg.profV){if(/^مصطفى أشرف سعيد، Technical Sales/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=2;try{LS.set('ai',AI.cfg);}catch(e){}}
 const saveAI=()=>LS.set('ai',AI.cfg);
 const MOD_TIP={rooh:'الصلاة والورد هما اللي بيشيلوا اليوم. ابدأ بالجاي في ميعاده',jasad:'جسمك هو رأس مالك. نوم ومية وتمرين قبل أي حاجة',bayt:'البيت الهادي وقود. 10 دقايق حلوين مع مراتك بيفرقوا',waqt:'الموبايل بيسرق اليوم. جلسة تركيز 25 دقيقة دلوقتي',ilm:'10 صفحات بس. الكتاب اللي بتقراه أهم من كورس جديد',career:'الدخل الكبير جاي من البيع. كلّم عميل واحد النهارده',dakhl:'خطوة دخل واحدة كل يوم: follow-up، عرض سعر، أو مهارة'};
 const SENS=STK.map(i=>i[0]);
@@ -2294,7 +2317,7 @@ function localBrief(){const d=S.day;const miss=missingFor(d);const pri=[];const 
  const p=progress(d);const h=new Date().getHours();
  const hl=p.pct>=80?'يومك قوي. خلّص الباقي بهدوء واقفل اليوم بحمد.':h<12?'صباح الخير يا مصطفى. 3 حاجات بس النهارده، والباقي بركة.':h<18?'لسه في وقت كتير. ركّز على الـ 3 دول وسيب الباقي.':'آخر اليوم. اختار حاجتين وخلّصهم قبل ما تنام.';
  const ins=localInsights().find(x=>x.c==='warn');
- return{headline:hl,top3:pri.slice(0,3),money:pick(MONEY_MOVES),growth:pick(GROWTH_MOVES,3),soul:pick(SOUL_MOVES,5),watch:ins?ins.t+'. '+ins.s:'',src:'local'};}
+ const LD=lessonsOfDay().map(x=>x[0]);return{headline:hl,top3:pri.slice(0,3),money:LD[0][1]+': '+LD[0][3],growth:LD[1][1]+': '+LD[1][3],soul:LD[2][1]+': '+LD[2][3],watch:ins?ins.t+'. '+ins.s:'',src:'local'};}
 
 /* ---------- context sent to the model ---------- */
 function sysPrompt(){return 'إنت "المرشد": مدرب ومستشار مهني لمصطفى في التطوير والنمو وزيادة الدخل بالحلال، جوه تطبيقه Mostafa OS.\n\n'+
@@ -2302,6 +2325,7 @@ function sysPrompt(){return 'إنت "المرشد": مدرب ومستشار مه
  'مهم: إنت مش شايف أي بيانات من التطبيق أو الموبايل بتاعه (مهام، صحة، بيت، فلوس شخصية). متفترضش حاجة عن حياته الشخصية، واعتمد على خلفيته المهنية واللي بيقوله في المحادثة بس.\n\n'+
  'أسلوبك:\n- اتكلم عامية مصرية، زي أخ كبير ناجح في البيزنس: دافي بس صريح، من غير مدح فاضي ولا كلام عام.\n- العملة ريال سعودي، والسوق السعودي هو الأساس. متخترعش أرقام أو أسعار مش متأكد منها، وقول "تقريبًا" لما تقدّر.\n- اختصر: من 4 لـ 10 سطور ونقاط قصيرة، إلا لو طلب تفصيل.\n- اختم دايمًا بسطر "خطوتك دلوقتي:" فيه حاجة واحدة يقدر يعملها في أقل من 30 دقيقة.\n'+
  '- في الفلوس: اديله أطر تفكير وأفكار دخل حلال مبنية على مهاراته (بيع B2G، VR/3D، CRM/ERP، داتا ساينس). متقولش اشتري سهم أو عملة معينة، ومتقترحش حاجة فيها ربا. لما الكلام يبقى استثمار قوله إنك مش مستشار مالي مرخّص.\n'+
+ '- نصايحك لازم تكون من مبادئ معروفة وقوية (كتب، قرآن، سنة، خبرة مثبتة). متألّفش خطوات غريبة أو مش منطقية، ومتخترعش حاجات عن عملاء أو شركات معينة. لو مش متأكد قول ده.\n- دروس النهارده في التطبيق: '+lessonsOfDay().map(x=>x[0][1]+' ('+x[0][4]+')').join('، ')+'. اربط كلامك بيها لما ينفع.\n'+
  '- لو احتاجت معلومة علشان تنصحه صح (زي أرقام أو ظروف)، اسأله الأول ومتخمّنش.\n- لو بان إنه في ضيق نفسي شديد: اهتم بيه بهدوء، وانصحه يكلم حد يثق فيه أو متخصص.';}
 
 /* ---------- transport ---------- */
@@ -2347,7 +2371,7 @@ function takeMem(t){const clean=String(t).replace(/\[\[[^\]]*\]\]/g,'').replace(
 /* ---------- daily brief ---------- */
 const BRIEF_ASK=()=>'النهارده '+AR_DAYS[new Date().getDay()]+'. من خلفيتي المهنية بس، اديني دفعة لليوم. رد بـ JSON بس من غير أي كلام قبله أو بعده، بالشكل ده بالظبط:\n{"headline":"جملة واحدة قوية تشحنني النهارده","money":"خطوة محددة النهارده تزوّد دخلي أو مبيعاتي، مبنية على شغلي","growth":"خطوة تطوير مهني أو مهارة النهارده","soul":"تذكير قصير للتوازن والبركة في الرزق"}\nكل قيمة جملة قصيرة عملية بالعامية المصرية.';
 function parseJSON(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<=a)return null;try{return JSON.parse(t.slice(a,b+1));}catch(e){return null;}}
-function renderBrief(){const box=$('#aiBrief');if(!box)return;const tk=todayKey();let b=AI.brief;
+function renderBrief(){const box=$('#aiBrief');if(!box)return;const tk=todayKey();let b=null;
  if(!b||b.date!==tk){const c=LS.get('aiBrief');b=c&&c.date===tk?c:null;AI.brief=b;}
  const loc=localBrief();const src=b?Object.assign({},loc,{headline:b.headline||loc.headline,money:b.money||loc.money,growth:b.growth||loc.growth,soul:b.soul||loc.soul}):loc;const isAI=!!b;
  const s=$('#aiSrc');s.textContent=isAI?(AI.cfg.gkey?'GEMINI':'AI')+' · '+(b.at||''):'LOCAL';s.classList.toggle('loc',!isAI);
@@ -2355,13 +2379,13 @@ function renderBrief(){const box=$('#aiBrief');if(!box)return;const tk=todayKey(
  const t3=(src.top3||[]).filter(Boolean).slice(0,3);
  box.innerHTML='<div class="aibrief">'+(src.headline?'<div class="aihl">'+esc(src.headline)+'</div>':'')+
   (t3.length?'<div class="sub" style="font-size:11.5px">🔒 أهم 3 حاجات · اتحسبت على موبايلك</div><ol class="aitop">'+t3.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':'')+
-  (src.money?'<div class="airow"><span class="k m">MONEY</span><span>'+esc(src.money)+'</span></div>':'')+
+  (src.money?'<div class="airow"><span class="k m">WORK</span><span>'+esc(src.money)+'</span></div>':'')+
   (src.growth?'<div class="airow"><span class="k g">GROW</span><span>'+esc(src.growth)+'</span></div>':'')+
   (src.soul?'<div class="airow"><span class="k s">SOUL</span><span>'+esc(src.soul)+'</span></div>':'')+
   (src.watch?'<div class="airow"><span class="k w">WATCH</span><span>🔒 '+esc(src.watch)+'</span></div>':'')+
-  '<div class="aibtns"><button class="minibtn ai" type="button" data-ai="brief">'+(isAI?'↻ دفعة جديدة':'✺ دفعة من المرشد')+'</button>'+(t3.length?'<button class="minibtn" type="button" data-ai="usetop">حطهم في أهم 3 ✓</button>':'')+'<button class="minibtn" type="button" data-ai="chat">افتح المحادثة</button></div>'+
+  '<div class="aibtns"><button class="minibtn ai" type="button" data-ai="lessons">📚 دروس اليوم بالتفصيل</button>'+(t3.length?'<button class="minibtn" type="button" data-ai="usetop">حطهم في أهم 3 ✓</button>':'')+'<button class="minibtn" type="button" data-ai="chat">افتح المحادثة</button></div>'+
   (b&&b.err?'<p class="note" style="color:#ffb9a3">'+esc(b.err)+'</p>':'')+'</div>';}
-async function makeBrief(silent){if(AI.busy)return;if(!navigator.onLine){if(!silent)toast('✺','مفيش نت','الخطة المحلية شغالة لحد ما النت يرجع');return;}
+async function makeBrief(silent){return;/* replaced by the lesson library */if(AI.busy)return;if(!navigator.onLine){if(!silent)toast('✺','مفيش نت','الخطة المحلية شغالة لحد ما النت يرجع');return;}
  AI.busy='brief';renderBrief();
  try{const t=await aiStream([{role:'user',content:BRIEF_ASK()}],null,{json:true,max:900});const j=parseJSON(takeMem(t).clean);
   if(!j||!(j.headline||j.money))throw new Error('الرد مكانش مظبوط. جرّب تاني.');
@@ -2382,6 +2406,8 @@ const QUICK=[
  ['▣ جهّزني لعميل','عندي مكالمة أو اجتماع مع عميل. جهّزني: أسئلة discovery أسألها، أكتر 3 اعتراضات متوقعة وأرد عليها إزاي، وإزاي أقفل بخطوة جاية واضحة. اسألني الأول العميل مين ومحتاج إيه.'],
  ['✦ البزنس قبل 30','اديني فكرتين بزنس تقني مناسبين لخبرتي في VR/3D والبيع للحكومة والعقارات في السعودية، وخطة 90 يوم واقعية أبدأ بيها وأنا لسه في وظيفتي.'],
  ['🔒 راجع أسبوعي',null,'week'],
+ ['🔒 صرفت كام؟','صرفت كام الشهر ده'],
+ ['🔒 حوّشت كام؟','حوشت كام الشهر ده'],
  ['💰 نظّم فلوسي','علّمني إطار بسيط أنظم بيه فلوسي: ميزانية، نسبة ادخار، صندوق طوارئ، وأبدأ أتعلم الاستثمار الحلال إزاي. اسألني عن الأرقام اللي محتاجها.'],
  ['🔒 حاسبني على اليوم',null,'day'],
  ['◎ أتعلم إيه','إيه أهم مهارة أتعلمها الشهر ده تزوّد دخلي كبياع تقني أو تقربني من البزنس؟ اديني خطة 30 يوم ليها بمصادر مجانية.'],
@@ -2395,12 +2421,13 @@ function localAnswer(kind){const p=progress(S.day);
  const verdict=p.pct>=80?'يوم قوي. الحمد لله.':p.pct>=50?'يوم كويس، بس إنت أقوى من كده.':p.pct>0?'اليوم كان تقيل. مش مشكلة، المهم بكرة.':'لسه مبدأتش. أصغر بند دلوقتي أحسن من ولا حاجة.';
  return '**حساب اليوم**\nخلّصت **'+p.on+'** من **'+p.tot+'** ('+p.pct+'%). '+verdict+'\n'+(n?'\n**لسه ناقص:**\n'+miss.map(g=>'- '+g.name+': '+g.list.slice(0,4).map(x=>strip(x.label)).join('، ')+(g.list.length>4?' …':'')).join('\n'):'\nمفيش حاجة ناقصة. ما شاء الله.')+'\n\nخطوتك دلوقتي: '+(n?'اختار حاجتين من اللي ناقص وخلّصهم قبل ما تنام.':'احمد ربنا ونام بدري.')+LOCAL_NOTE;}
 function sendLocal(i){const q=QUICK[i];const sh=$('#aiSheet');sh.hidden=false;AI.chat.push({role:'user',content:q[0].replace('🔒 ',''),local:1});AI.chat.push({role:'assistant',content:localAnswer(q[2]),local:1});renderChat();}
-function chatHTML(){if(!AI.chat.length)return '<div class="aiempty"><b>أهلًا يا مصطفى</b>أنا عارف خلفيتك المهنية بس، ومش شايف بيانات موبايلك. اسألني عن البيع والعملاء والدخل والمهارات والبزنس. الأزرار اللي عليها 🔒 بتتحسب على موبايلك ومبتتبعتش لحد.</div>';
+function chatHTML(){if(!AI.chat.length)return '<div class="aiempty"><b>أهلًا يا مصطفى</b>اسألني عن البيع والعملاء والدخل والمهارات والبزنس والحياة. ولو سألتني عن بياناتك (صرفت كام؟ حوّشت كام؟ صليت الفجر كام يوم؟ عملت إيه الأسبوع ده؟) هرد عليك من موبايلك نفسه، ومش هبعت حاجة على النت 🔒.</div>';
  return AI.chat.map(m=>'<div class="msg2 '+(m.role==='user'?'u':'a')+(m.err?' err':'')+'">'+(m.role==='user'?esc(m.content).replace(/\n/g,'<br>'):mdLite(m.content))+(m.mem&&m.mem.length?'<span class="mem">✓ المرشد افتكر: '+esc(m.mem.join(' · '))+'</span>':'')+'</div>').join('');}
 function renderChat(scroll){const box=$('#aiMsgs');if(!box)return;box.innerHTML=chatHTML();if(scroll!==false)box.scrollTop=box.scrollHeight;}
 function openChat(prefill){const sh=$('#aiSheet');sh.hidden=false;renderChat();const ta=$('#aiIn');if(prefill){ta.value='';send(prefill);}else setTimeout(()=>{try{ta.focus({preventScroll:true});}catch(e){}},250);}
 function closeChat(){$('#aiSheet').hidden=true;}
 async function send(text){text=String(text||'').trim();if(!text)return;
+ {const la=localData(text);if(la){$('#aiSheet').hidden=false;AI.chat.push({role:'user',content:text,local:1});AI.chat.push({role:'assistant',content:la,local:1});renderChat();return;}}
  if(!navigator.onLine){AI.chat.push({role:'user',content:text,queued:1,local:1});AI.chat.push({role:'assistant',content:'⏳ مفيش نت دلوقتي. حفظت سؤالك على الموبايل، وهبعته لوحدي أول ما النت يرجع.',queued:1,local:1});AI.pending.push(text);LS.set('aiPending',AI.pending);$('#aiSheet').hidden=false;renderChat();return;}if(AI.busy){toast('✺','استنى المرشد يخلّص الرد','');return;}
  const sh=$('#aiSheet');if(sh.hidden){sh.hidden=false;}
  AI.chat.push({role:'user',content:text});const ans={role:'assistant',content:''};AI.chat.push(ans);AI.busy='chat';AI.stopped=false;updSend();
@@ -2418,7 +2445,7 @@ function renderAIMem(){}
 let aiSig='';
 function renderCoach(){if(!$('#coach'))return;const sig=todayKey()+'|'+MN.list.length+'|'+JSON.stringify(SV).length+'|'+LS.get('lastBackup')+'|'+JSON.stringify(S.hist[todayKey()]||{})+'|'+S.view+'|'+(AI.brief&&AI.brief.at);if(sig===aiSig)return;aiSig=sig;renderBrief();renderInsights();}
 function buildCoach(){
- $('#aiChips').innerHTML=QUICK.slice(0,7).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
+ $('#aiChips').innerHTML=QUICK.slice(0,8).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  const P=$('#aiProfile');P.value=AI.cfg.profile;P.addEventListener('change',()=>{AI.cfg.profile=P.value.trim()||DEF_PROFILE;saveAI();toast('✓','المرشد حفظ الكلام عنك','');});
  [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.trim();saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
@@ -2428,7 +2455,7 @@ function buildCoach(){
  $('#aiGo').addEventListener('click',ask);$('#aiQ').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();ask();}});
  const chips=e=>{const b=e.target.closest('[data-q]');if(!b)return;const q=QUICK[+b.dataset.q];if(q[2])sendLocal(+b.dataset.q);else openChat(q[1]);};
  $('#aiChips').addEventListener('click',chips);$('#aiQuick').addEventListener('click',chips);
- $('#aiBrief').addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;if(a==='brief')makeBrief(false);if(a==='usetop')useTop();if(a==='chat')openChat();});
+ $('#aiBrief').addEventListener('click',e=>{const b=e.target.closest('[data-ai]');if(!b)return;const a=b.dataset.ai;if(a==='brief')makeBrief(false);if(a==='lessons'){const l=$('#lessons');if(l)l.scrollIntoView({behavior:'smooth',block:'start'});}if(a==='usetop')useTop();if(a==='chat')openChat();});
  $('#aiClose').addEventListener('click',closeChat);$('#aiBg').addEventListener('click',closeChat);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#aiSheet').hidden)closeChat();});
  const ta=$('#aiIn');const grow=()=>{ta.style.height='auto';ta.style.height=Math.min(120,ta.scrollHeight)+'px';};
@@ -2456,27 +2483,13 @@ async function bioCheck(){if(!LK.cred)return false;const a=await navigator.crede
  return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
 let lkFails=0,lkWait=0,hiddenAt=0;
 function showLock(){if(!LK.on)return;document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
- $('#lkBio').hidden=!LK.cred;if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
+ $('#lkBio').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!LK.pin;}if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
 function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;}
 async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الرقم السري.';}
  catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الرقم السري.';}}
 async function tryPin(){const v=$('#lkPin').value.trim();if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
  if(await pinHash(v,LK.salt)===LK.pin){unlock();return;}lkFails++;$('#lkPin').value='';
  if(lkFails>=5){lkWait=Date.now()+30000;lkFails=0;$('#lkMsg').textContent='غلط 5 مرات. استنى 30 ثانية.';}else $('#lkMsg').textContent='الرقم غلط';}
-function renderLockSet(){const box=$('#lkSet');if(!box)return;
- box.innerHTML=LK.on?'<div class="sub" style="color:var(--mint)">✓ القفل شغال'+(LK.cred?' بالبصمة / Face ID، والرقم السري احتياطي':' بالرقم السري')+'</div>'+
-  '<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px"><label class="sub">يقفل لوحده بعد <select id="lkAfter" class="lksel"><option value="0">ما أقفل الصفحة على طول</option><option value="1">دقيقة</option><option value="5">5 دقايق</option><option value="15">ربع ساعة</option></select></label>'+
-  '<button class="minibtn" id="lkNow" type="button">🔒 اقفل دلوقتي</button><button class="minibtn" id="lkOff" type="button">شيل القفل</button></div>'
- :'<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input id="lkNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="رقم سري احتياطي (4 أرقام أو أكتر)" style="flex:1;min-width:180px"><button class="minibtn gold" id="lkOn" type="button">🔐 فعّل القفل</button></div>';
- if(LK.on){const s=$('#lkAfter');s.value=String(LK.after);s.onchange=()=>{LK.after=+s.value;saveLock();};
-  $('#lkNow').onclick=()=>showLock();
-  $('#lkOff').onclick=async()=>{const p=prompt('اكتب الرقم السري علشان تشيل القفل');if(p==null)return;if(await pinHash(p.trim(),LK.salt)!==LK.pin){toast('✕','الرقم غلط','');return;}
-   LK.on=false;LK.cred='';LK.pin='';saveLock();renderLockSet();toast('🔓','القفل اتشال','');};}
- else $('#lkOn').onclick=async()=>{const p=$('#lkNew').value.trim();if(!/^\d{4,8}$/.test(p)){toast('✕','الرقم السري لازم 4 لـ 8 أرقام','');$('#lkNew').focus();return;}
-  LK.salt=b64(rnd(16));LK.pin=await pinHash(p,LK.salt);LK.cred='';
-  if(await bioAvailable()){try{LK.cred=await bioCreate();}catch(e){toast('⚠','البصمة متفعلتش','هيتقفل بالرقم السري بس. تقدر تجرّب تاني بعدين');}}
-  else toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','هيتقفل بالرقم السري');
-  LK.on=true;saveLock();renderLockSet();toast('🔐','القفل اتفعّل',LK.cred?'المرة الجاية هيفتح بالبصمة / Face ID':'بالرقم السري');};}
 function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkGo').addEventListener('click',tryPin);
  $('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
  document.addEventListener('visibilitychange',()=>{if(!LK.on)return;if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
@@ -2605,14 +2618,16 @@ function buildSimple(){const sec=el('section','pnl simple');sec.id='simple';
  sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--mint);border-color:rgba(94,224,176,.35);background:rgba(94,224,176,.08)">✓</div><div><h2>النهارده ببساطة</h2><span class="en">THE BASICS · لو عملت دول بس، يومك كسبان</span></div><span class="cnt" id="smCnt"></span></div>'+
   (pr.length?'<div class="smp">'+pr.map(x=>'<div class="it pd" data-id="'+x[0]+'" role="checkbox" tabindex="0"><span class="box">✓</span><span class="lbl">'+x[1]+'</span></div>').join('')+'</div>':'')+
   '<div class="smb">'+bs.map(x=>'<div class="it sb" data-id="'+x[0]+'" role="checkbox" tabindex="0"><span class="box">✓</span><span class="si">'+x[1]+'</span><span class="lbl">'+x[2]+(x[3]?'<span class="hint">'+x[3]+'</span>':'')+'</span></div>').join('')+'</div>'+
-  '<div class="smq" id="smQ"></div>'+
+  '<button type="button" class="smles" id="smLes"></button><div class="smq" id="smQ"></div>'+
   '<button class="minibtn" id="smAll" type="button" style="width:100%;margin-top:10px"></button>';
  const core=document.querySelector('.pnl.core');core.insertAdjacentElement('beforebegin',sec);
+ $('#smLes').addEventListener('click',()=>{goPage('coach');setTimeout(()=>{const l=$('#lessons');if(l)l.scrollIntoView({behavior:'smooth',block:'start'});},60);});
  $('#smAll').addEventListener('click',()=>{const v=!LS.get('showAll');LS.set('showAll',v);applyPage();if(v){const m=$('#m-rooh');if(m)m.scrollIntoView({behavior:'smooth',block:'start'});}});}
 const SM_Q=[['أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ','الرعد 28'],['فَاذْكُرُونِي أَذْكُرْكُمْ','البقرة 152'],['وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا','العنكبوت 69'],['إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6'],['وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا','الطلاق 2'],['أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ','متفق عليه'],['وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ','البقرة 186']];
 function renderSimple(){if(!$('#simple'))return;const ids=PRAY.map(x=>x[0]).concat(BASICS.map(x=>x[0])).filter(id=>findItem(id));const n=ids.filter(id=>isDone(findItem(id),S.day)).length;
  const c=$('#smCnt');c.textContent=n+'/'+ids.length;c.classList.toggle('full',n===ids.length);
  const q=pick(SM_Q,7);$('#smQ').innerHTML=n===ids.length?'<b>ما شاء الله. الأساسيات كلها خلصت.</b> أي حاجة زيادة النهارده بركة.':'<div class="quran">'+q[0]+'</div><div class="ref">'+q[1]+'</div><small>مش مطلوب تبقى كامل. المطلوب متقطعش. حاجة صغيرة كل يوم أحسن من حاجة كبيرة مرة.</small>';
+ {const L=lessonsOfDay();const nd=L.filter(x=>LSTATE.done[x[1]]).length;$('#smLes').innerHTML='📚 <b>دروس اليوم</b> ('+nd+'/3): '+esc(L[0][0][1])+' · '+esc(L[1][0][1])+' <span>‹</span>';}
  $('#smAll').textContent=LS.get('showAll')?'▲ خبّي باقي المهام (خلّيها بسيطة)':'▼ اعرض كل المهام ('+summarize(S.day).tot+')';}
 
 /* ---------- pages: one section per screen ---------- */
@@ -2623,7 +2638,7 @@ function pageOf(p){const id=p.id||'';
  if(TASK_PANELS.indexOf(id)>=0)return 'tasks';
  if(['rizq','counters','hifz','stories','mentor','dustur','m-prom','calm'].indexOf(id)>=0||/MARRIAGE/.test(p.textContent.slice(0,400)))return 'soul';
  if(['money','savings'].indexOf(id)>=0)return 'money';
- if(['coach','report','garden','badgesP','m-biz'].indexOf(id)>=0)return 'coach';
+ if(['coach','lessons','report','garden','badgesP','m-biz'].indexOf(id)>=0)return 'coach';
  return 'more';}
 let PG=LS.get('page')||'today';if(!PAGES.some(x=>x[0]===PG))PG='today';
 function applyPage(){const all=!!LS.get('showAll');document.querySelectorAll('.grid .pnl').forEach(p=>{const pg=p.dataset.page||(p.dataset.page=pageOf(p));p.hidden=!(pg===PG||(pg==='tasks'&&PG==='today'&&all));});
@@ -2635,7 +2650,292 @@ function setupPages(){const d=$('#dock');const rev=$('#dockRev');
  d.addEventListener('click',e=>{const b=e.target.closest('[data-pg]');if(b){goPage(b.dataset.pg);try{sTick();}catch(x){}}});
  applyPage();}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildTaskEditor();renderBackup();initLock();persistStorage();buildQuick();buildSimple();setupPages();booted=true;RB.firstRender=true;
+/* ---------- lesson library: strong, sourced advice. Rotates daily, works offline ---------- */
+const LCAT={sales:['🤝','البيع والعملاء'],career:['▣','شغلك وكاريرك'],money:['◈','الفلوس'],self:['△','الانضباط والعادات'],mind:['◎','التفكير والنفس'],faith:['☾','القرب من ربنا'],home:['♡','البيت والناس']};
+const LESSONS=[
+/* sales */
+['sales','اسأل أكتر ما تتكلم','البياعين الأقوى بيسألوا أسئلة بتكشف المشكلة وتمنها قبل ما يعرضوا حل: إيه الوضع دلوقتي؟ إيه اللي مضايقك فيه؟ ده بيكلفكم إيه؟ ولو اتحل يفرق معاكم بإيه؟ العميل بيقنع نفسه لما يقول المشكلة بلسانه.','في أول مكالمة النهارده اسأل 4 أسئلة بالترتيب ده (وضع، مشكلة، تأثير، قيمة الحل) قبل ما تقول أي حاجة عن المنتج.','SPIN Selling · Neil Rackham'],
+['sales','اكسب "ده صح" مش "أيوه"','"أيوه" ساعات معناها "سيبني في حالي". لما تلخص للعميل وضعه بكلامه لحد ما يقول "بالظبط، ده صح"، ساعتها بس هو حاسس إنك فاهمه وبيبدأ يثق فيك.','لخّص لعميل النهارده مشكلته في جملتين واستنى لحد ما يقول "بالظبط".','Never Split the Difference · Chris Voss'],
+['sales','الأسئلة المفتوحة بتفتح الباب','بدل "ينفع نوقّع الأسبوع ده؟" اسأل "إزاي نقدر نوصل لقرار قبل آخر الشهر؟" أو "إيه اللي ممكن يأخر الموضوع؟". الأسئلة اللي بتبدأ بإزاي وإيه بتخلي العميل يفكر معاك بدل ما يدافع.','حوّل سؤال إغلاق واحد عندك لسؤال يبدأ بـ "إزاي" أو "إيه".','Never Split the Difference · Chris Voss'],
+['sales','سمّي الإحساس','لما العميل يتردد قول "حاسس إن فيه حاجة قلقاك في الموضوع". تسمية الإحساس بتطلّع الاعتراض الحقيقي بدل ما يفضل مستخبي ويقتل الصفقة بعدين.','في أي تردد النهارده جرّب جملة: "شكلك قلقان من…" واسكت.','Never Split the Difference · Chris Voss'],
+['sales','الثقة معادلة','الثقة = (المصداقية + الالتزام بالكلام + الراحة في التعامل) ÷ التركيز على مصلحتك. كل ما العميل حس إنك بتفكر في عمولتك، الثقة بتقع مهما كنت شاطر.','قول لعميل حاجة في مصلحته حتى لو مش في مصلحة البيعة النهارده (زي "الباقة الأصغر كفاية ليكم").','The Trusted Advisor · David Maister'],
+['sales','الأرقام بتسبق النتيجة','اعرف أرقامك: كام مكالمة بتطلع كام اجتماع، وكام اجتماع بيطلع كام عرض، وكام عرض بيقفل. لو عارف نسبة التحويل هتعرف بالظبط محتاج كام نشاط علشان توصل للتارجت.','اكتب أرقام الأسبوع اللي فات: تواصل، اجتماعات، عروض، صفقات. واحسب النسبة بين كل مرحلة.','مبدأ إدارة الـ Pipeline'],
+['sales','المتابعة هي البيع','أغلب الصفقات مبتتقفلش في أول اجتماع. البياع اللي بيتابع بقيمة (معلومة، حالة مشابهة، فكرة جديدة) مش بـ "أي جديد؟" هو اللي بيكسب.','ابعت لـ 3 عملاء متابعة فيها حاجة مفيدة ليهم، مش سؤال عن القرار.','ممارسة البيع الاستشاري'],
+['sales','علّم العميل حاجة متعرفهاش','أقوى البياعين مش أكتر ناس لطافة، دول اللي بيعلّموا العميل حاجة جديدة عن بزنسه ويتحدّوا طريقة تفكيره بأدب. العميل بيحترم اللي بيضيفله.','جهّز معلومة أو رقم واحد عن سوق العميل يخليه يقول "مكنتش واخد بالي".','The Challenger Sale · Dixon & Adamson'],
+['sales','اعرف بديلك قبل التفاوض','قبل أي تفاوض اعرف هتعمل إيه لو الصفقة منجحتش (أفضل بديل ليك). اللي معندوش بديل بيتنازل كتير. واعرف كمان بديل العميل.','قبل التفاوض الجاي اكتب: أقل حاجة أقبلها، وبديلي لو رفض، وبديله لو رفضت.','Getting to Yes · Fisher & Ury'],
+['sales','اربط السعر بالقيمة مش بالتكلفة','العميل مش بيشتري ساعات شغل، بيشتري نتيجة: وقت متوفر، مبيعات زيادة، مخاطرة أقل. لما تعرض السعر جنب القيمة بالأرقام، السعر بيصغر في عينه.','في العرض الجاي اكتب سطر: "الحل ده هيوفرلكم تقريبًا … في السنة".','مبدأ البيع بالقيمة'],
+['sales','المعاملة بالمثل والدليل الاجتماعي','الناس بترد الجميل، وبتطمن لما تشوف ناس شبهها عملت كده قبلها. قدّم قيمة الأول، واذكر عميل مشابه نجح معاك.','اذكر في كلامك النهارده قصة نجاح حقيقية لعميل في نفس مجال العميل اللي قدامك.','Influence · Robert Cialdini'],
+['sales','حسابات العملاء الكبار بتتبني','Account Manager الشاطر بيعرف كل الناس المؤثرة عند العميل، مش شخص واحد. لو اتصالك الوحيد ساب الشركة، الحساب كله ممكن يروح.','ارسم خريطة لأهم عميل عندك: مين صاحب القرار، مين بيأثر، مين بيستخدم. واعرف مين ناقصك.','إدارة الحسابات الرئيسية'],
+['sales','"لأ" بداية الكلام','لما العميل يقول لأ، هو بيحس بالأمان وبيبدأ يتكلم بصراحة. سؤال زي "هل فكرة إننا نوفّرلكم الوقت ده مش مهمة دلوقتي؟" بيفتح كلام أصدق من سؤال يستنى أيوه.','جرّب تسأل سؤال إجابته الطبيعية "لأ" مع عميل متردد.','Never Split the Difference · Chris Voss'],
+['sales','العمولة بتتحسب بالعكس','لو العمولة نسبة صغيرة، يبقى الحجم هو اللعبة. احسب: محتاج تبيع بكام علشان العمولة تبقى رقم يفرق معاك؟ وبعدين اقسمه على شهور وصفقات.','افتح حاسبة العمولة في صفحة فلوسي، واحسب محتاج مبيعات قد إيه في الربع علشان توصل للعمولة اللي عايزها.','تخطيط التارجت'],
+/* career */
+['career','أول 90 يوم بيحددوا صورتك','في أي شغل جديد ركّز في الأول على مكسب صغير وسريع يبان للإدارة، وافهم إزاي النجاح بيتقاس، وابني علاقات مع الناس اللي بيأثروا. الانطباع اللي بيتبني في فترة التجربة بيفضل.','اسأل مديرك سؤال واحد: "إيه اللي لو عملته في أول 3 شهور تعتبره نجاح؟"','The First 90 Days · Michael Watkins'],
+['career','اتفق على التوقعات مكتوبة','أكتر سبب للمشاكل مع المدير إن كل واحد فاهم المطلوب بشكل مختلف. اكتب التارجت والأولويات وابعتها له: "عشان أتأكد إني فاهم صح…"','ابعت لمديرك ملخص من 3 نقاط بأولوياتك الشهر ده واطلب تأكيد.','The First 90 Days · Michael Watkins'],
+['career','خلّي شغلك يبان','الشغل الحلو اللي محدش عارف عنه مبيترقّاش. تقرير أسبوعي قصير بالأرقام (عملت إيه، هعمل إيه، محتاج إيه) بيخليك في دماغ الإدارة.','اكتب تقرير أسبوعك في 5 سطور وابعته يوم الخميس.','ممارسة إدارة المسار الوظيفي'],
+['career','اشتغل في حاجة صعبة كل يوم','ساعة شغل عميق من غير موبايل ولا مقاطعة على أهم حاجة بتطلع شغل أحسن من يوم كامل متقطع. القدرة على التركيز بقت نادرة، وعلشان كده بقت قيمة.','احجز ساعة الصبح للمكالمات الصعبة أو العروض المهمة، والموبايل في درج.','Deep Work · Cal Newport'],
+['career','اتعلم مهارة نادرة ومطلوبة','الدخل الكبير بييجي من إنك تبقى صعب الاستبدال. البيع + فهم تقني + داتا تركيبة نادرة. كل ما تعمّقها، كل ما سعرك يعلى.','اختار مهارة واحدة تكمّل تركيبتك (تفاوض، تحليل داتا المبيعات، عروض تقديمية) واتعلم فيها 20 دقيقة.','So Good They Can\'t Ignore You · Cal Newport'],
+['career','سمعتك هي رأس مالك','الناس بتنسى التفاصيل وبتفتكر إحساسها معاك: ملتزم ولا لأ، صادق ولا لأ. السمعة دي هي اللي هتجيب لك العملاء لما تبدأ البزنس بتاعك.','نفّذ النهارده وعد صغير قلته لحد في الشغل قبل ميعاده.','مبدأ مهني'],
+['career','شبكتك بتتبني قبل ما تحتاجها','اتواصل مع الناس وانت مش محتاج منهم حاجة: تهنئة، معلومة، تعريف بحد. لما تحتاج بعدين، هتلاقي ناس تساعدك.','ابعت رسالة لشخص من شغل قديم تسأل عليه أو تبعتله حاجة مفيدة.','Never Eat Alone · Keith Ferrazzi'],
+['career','البزنس بيبدأ من جوه الوظيفة','قبل ما تسيب أي وظيفة: افهم السوق، واعرف العملاء ومشاكلهم، ووفّر رأس مال، واقرا عقدك كويس (فترة الالتزام وأي شرط عدم منافسة). البداية الهادية أنجح من القفزة.','اكتب 3 مشاكل بتسمعها من العملاء بتتكرر. دي ممكن تبقى فكرة البزنس.','مبدأ ريادة الأعمال'],
+['career','قيس نفسك بنفسك','قارن نفسك بنسختك من 3 شهور، مش بزميل أو بحد على لينكدإن. المقارنة بالناس بتحبط، والمقارنة بنفسك بتحرك.','اكتب 3 حاجات بقيت أحسن فيها عن أول ما بدأت الشغل الجديد.','مبدأ النمو'],
+/* money */
+['money','ادفع لنفسك الأول','أول ما الدخل ينزل حوّل جزء ثابت للادخار قبل أي مصروف. اللي بيدّخر من الباقي آخر الشهر غالبًا مبيلاقيش باقي.','حدد نسبة (ولو 10%) وحوّلها في نفس يوم المرتب كل شهر.','The Richest Man in Babylon · George Clason'],
+['money','الغنى هو اللي مش باين','الثروة هي الفلوس اللي مصرفتهاش: العربية الغالية والهدوم الماركة بتبيّن إنك صرفت، مش إنك غني. اللي بيبني ثروة حقيقية غالبًا عايش أبسط من دخله.','قبل أي شرا كبير اسأل: ده هيزوّد ثروتي ولا هيبيّن إني غني؟','The Psychology of Money · Morgan Housel'],
+['money','سيب مساحة للغلط','أهم حاجة في الفلوس إنك متضطرش تبيع أو تستلف في وقت وحش. صندوق طوارئ يكفي 3-6 شهور بيخليك تاخد قرارات وانت هادي مش مزنوق.','احسب مصاريف شهر واحد ضروري، واضربها في 6. ده هدف صندوق الطوارئ.','The Psychology of Money · Morgan Housel'],
+['money','اعرف "كفاية" بتاعتك','أخطر حاجة إن الهدف يتحرك كل ما الدخل يزيد. لو مكتبتش رقم "كفاية"، هتفضل حاسس إنك ناقص مهما كسبت.','اكتب رقم الدخل الشهري اللي لو وصلته هتبقى مرتاح، وإيه اللي هتعمله بالزيادة عنه.','The Psychology of Money · Morgan Housel'],
+['money','الأصول بتحطلك فلوس','الأصل حاجة بتدخّل فلوس في جيبك، والالتزام حاجة بتطلّع. ابني أصول (مهارة، بزنس، استثمار حلال) قبل الكماليات.','بص على آخر 3 مشتريات كبيرة: أصول ولا التزامات؟','Rich Dad Poor Dad · Robert Kiyosaki'],
+['money','الزيادة متتصرفش كلها','لما الدخل يزيد (عمولة، علاوة)، الطبيعي إن المصاريف تزيد معاه من غير ما تحس. خصّص نص أي زيادة للادخار قبل ما تتعود عليها.','لو جالك دخل زيادة الشهر ده، حوّش نصه على طول من كارت الميزانية.','مبدأ تضخم نمط الحياة'],
+['money','الدَّين قيد','النبي ﷺ كان بيستعيذ من المغرم (الدَّين). الدين بيسرق راحة البال وبيقلل حريتك في القرار. تجنّب الاستلاف للكماليات تمامًا.','لو عليك دين، اكتب خطة سداد بأصغر دين الأول، وكل ما تخلص واحد حوّل قسطه للي بعده.','صحيح البخاري · الاستعاذة من المأثم والمغرم'],
+['money','الصدقة مش خسارة','"ما نقصت صدقة من مال". الصدقة بركة في الرزق، وبتعلّمك إن الفلوس وسيلة مش هدف. خليها بند ثابت في الميزانية.','سجّل صدقة صغيرة النهارده في تصنيف "صدقة"، ولو بريال.','صحيح مسلم'],
+['money','المركّب بيحتاج وقت','مبلغ صغير بيكبر بشكل مذهل مع الوقت والاستمرار. أهم متغير مش المبلغ، الوقت والاستمرار. ابدأ بدري حتى بمبلغ صغير.','زوّد التحويش الشهري ولو 100 ريال بس، واستمر عليه.','مبدأ النمو المركّب'],
+['money','قاعدة الـ 48 ساعة','أغلب الشرا العاطفي بيروح لو استنيت يومين. أي حاجة مش ضرورية فوق مبلغ معين، استنى عليها 48 ساعة.','حط حدك (مثلًا 300 ريال) واعمل بيه من النهارده.','مبدأ الصرف الواعي'],
+['money','اتعلم قبل ما تستثمر','متحطش فلوسك في حاجة مش فاهمها أو حد بيوعدك فيها بربح مضمون. اتعلم الأساسيات، وابحث عن الحلال (صناديق متوافقة مع الشريعة، صكوك، عقار)، واسأل مستشار مرخّص.','اتعلم 20 دقيقة عن الفرق بين الأسهم والصكوك والصناديق.','مبدأ مالي عام'],
+['money','الزكاة حق','لو عندك مدخرات وصلت النصاب وعدّى عليها سنة هجرية، عليها زكاة 2.5%. الزكاة بتطهّر المال وبتنمّيه.','اكتب تاريخ بداية مدخراتك علشان تحسب الزكاة لما تكمّل سنة، واسأل عن النصاب الحالي.','الفقه الإسلامي'],
+/* self */
+['self','1% كل يوم','لو اتحسنت 1% كل يوم، بعد سنة هتبقى تقريبًا 37 مرة أحسن. التغيير الكبير مجموع خطوات صغيرة مملة.','اختار حاجة واحدة وحسّنها 1% النهارده: 5 دقايق قراية زيادة، أو مكالمة زيادة.','Atomic Habits · James Clear'],
+['self','غيّر هويتك مش هدفك','بدل "عايز أبطّل الموبايل" قول "أنا واحد بيتحكم في وقته". كل مرة بتعمل الحاجة بتصوّت للشخص اللي عايز تبقاه.','اكتب جملة: "أنا واحد…" عن الشخص اللي عايز تبقاه، وعيش بيها النهارده.','Atomic Habits · James Clear'],
+['self','اربط العادة الجديدة بعادة قديمة','"بعد ما أصلي الفجر هقرا صفحتين". ربط العادة الجديدة بحاجة بتعملها كل يوم بيخليها تحصل لوحدها.','اكتب عادة واحدة بالشكل ده: "بعد [عادة موجودة] هعمل [العادة الجديدة]".','Atomic Habits · James Clear'],
+['self','قاعدة الدقيقتين','أي عادة جديدة ابدأها بنسخة متاخدش أكتر من دقيقتين: تلبس هدوم التمرين، تفتح المصحف. البداية هي الصعبة، والباقي بييجي.','اختار عادة مأجّلها واعمل منها دقيقتين بس النهارده.','Atomic Habits · James Clear'],
+['self','متفوتش مرتين','الغلط مرة عادي. الخطر إنك تفوّت مرتين ورا بعض، لأن ده بداية عادة جديدة وحشة. لو فاتك يوم، المهم ترجع بكرة.','لو فاتك حاجة امبارح، اعملها النهارده ولو بأصغر نسخة.','Atomic Habits · James Clear'],
+['self','البيئة أقوى من الإرادة','متعتمدش على الإرادة. خلّي الحاجة الكويسة سهلة وقدام عينك، والوحشة صعبة وبعيدة: الموبايل برّه الأوضة، والمصحف جنب السرير.','غيّر حاجة واحدة في مكانك النهارده تسهّل عادة كويسة أو تصعّب عادة وحشة.','Atomic Habits · James Clear'],
+['self','كُل الضفدعة الأول','ابدأ يومك بأصعب وأهم مهمة. بعدها كل اليوم بيبقى أسهل، وبتحس إنك كسبان.','حدد أصعب مهمة بكرة من النهارده بالليل، وابدأ بيها أول ما توصل.','Eat That Frog · Brian Tracy'],
+['self','الأهم ولا العاجل؟','أغلب يومنا بيروح في حاجات عاجلة مش مهمة. اللي بيبني حياتك (صحة، علم، بيت، بزنس) نادرًا ما يكون عاجل، فلازم تحجزله وقت.','احجز نص ساعة في جدول بكرة لحاجة مهمة مش عاجلة.','The 7 Habits · Stephen Covey'],
+['self','قول لأ أكتر','كل "أيوه" لحاجة مش مهمة هي "لأ" لحاجة مهمة. الناس الناجحة بتقول لأ كتير بأدب.','ارفض أو أجّل حاجة واحدة النهارده مش في أولوياتك.','Essentialism · Greg McKeown'],
+['self','النوم سلاح','قلة النوم بتقلل التركيز وضبط النفس وبتخلي القرارات أسوأ. النوم بدري مع الفجر بيكسبك اليوم كله.','الموبايل بعيد عن السرير، ونام قبل 11 النهارده.','Why We Sleep · Matthew Walker'],
+['self','الشغل بيتمدد على قد الوقت','لو اديت المهمة يوم هتاخد يوم، ولو اديتها ساعة غالبًا هتخلص في ساعة. حط وقت محدد لكل مهمة.','حدد وقت لأهم 3 مهام النهارده، وشغّل جلسة تركيز 25 دقيقة.','Parkinson\'s Law'],
+['self','الحركة بتصفّي الدماغ','مشي 20-30 دقيقة بيحسن المزاج والتركيز وبيقلل التوتر. مش لازم جيم، المهم تتحرك.','امشي 20 دقيقة النهارده، ولو في المكالمات.','مبدأ صحي عام'],
+/* mind */
+['mind','ركّز في اللي في إيدك','فيه حاجات في إيدك (مجهودك، كلامك، ردة فعلك)، وحاجات مش في إيدك (قرار العميل، الاقتصاد). التوتر بييجي من إنك تحاول تتحكم في اللي مش في إيدك.','اكتب حاجة قلقاك، وقسّمها: إيه اللي في إيدي فيها؟ واعمله، وسيب الباقي على ربنا.','Enchiridion · Epictetus'],
+['mind','العقلية اللي بتكبر','اللي شايف إن قدراته ثابتة بيخاف من الغلط. واللي شايف إنه بيتعلم بيشوف الغلط درس. "لسه مش شاطر فيها" غير "أنا مش شاطر".','حوّل جملة سلبية عن نفسك لجملة فيها "لسه".','Mindset · Carol Dweck'],
+['mind','المعنى بيشيلك','اللي عنده سبب يعيش علشانه بيقدر يستحمل أي حاجة. لما تعرف إنت بتتعب ليه (بيتك، رضا ربنا، حلمك)، التعب بيخف.','اكتب في سطر: أنا بتعب علشان مين وعلشان إيه؟','Man\'s Search for Meaning · Viktor Frankl'],
+['mind','بين الفعل وردة الفعل مساحة','بين اللي بيحصلك وردة فعلك فيه لحظة اختيار. اللي بيوقف ثانية قبل ما يرد بيكسب نفسه وعلاقاته.','النهارده لو حد استفزّك، خد نفس عميق قبل ما ترد.','The 7 Habits · Stephen Covey'],
+['mind','اكتب علشان تفكّر','الأفكار في الدماغ بتلف. لما تكتبها على ورق بتتنظم وبتبان الحلول. 5 دقايق كتابة كل يوم بتقلل القلق.','اكتب 5 دقايق قبل النوم: إيه اللي حصل، إيه اللي اتعلمته، وإيه بكرة.','ممارسة التأمل الكتابي'],
+['mind','القرار الكويس مش النتيجة الكويسة','ممكن تاخد قرار صح والنتيجة تيجي وحشة بسبب الحظ، والعكس. قيّم قراراتك بالمعلومات اللي كانت عندك ساعتها، مش بالنتيجة بس.','راجع قرار نتيجته كانت وحشة: كان قرار غلط فعلًا، ولا كان صح والظروف مساعدتش؟','Thinking in Bets · Annie Duke'],
+['mind','المخ بيستعجل','المخ عنده طريقة سريعة بتغلط، وطريقة بطيئة بتفكر. في القرارات الكبيرة (فلوس، شغل) متقررش وانت متضايق أو مستعجل.','أجّل أي قرار مهم النهارده لحد ما تنام عليه.','Thinking, Fast and Slow · Daniel Kahneman'],
+['mind','الامتنان بيغيّر النظرة','الناس اللي بتكتب 3 حاجات حلوة كل يوم بتبقى أهدى وأسعد. وربنا قال "لئن شكرتم لأزيدنكم".','اكتب 3 نعم في خانة الامتنان قبل ما تنام.','إبراهيم 7 · وأبحاث علم النفس الإيجابي'],
+['mind','الصمت قوة','اللي بيحكي كل خططه بيحس إنه أنجز قبل ما يعمل، وبيفتح باب للحسد والإحباط. اشتغل في صمت وخلّي النتيجة تتكلم.','متحكيش النهارده عن أي خطة لسه منفذتهاش.','من دستورك'],
+/* faith */
+['faith','القليل الدايم','"أحب الأعمال إلى الله أدومها وإن قل". صفحة قرآن كل يوم أحسن عند ربنا من جزء مرة في الشهر. القرب من ربنا بيتبني بالاستمرار مش بالحماس.','اختار عبادة صغيرة جدًا تقدر تعملها كل يوم مهما حصل، وابدأ النهارده.','صحيح البخاري ومسلم'],
+['faith','احرص واستعن ولا تعجز','"احرص على ما ينفعك، واستعن بالله، ولا تعجز". السعي مطلوب، والاستعانة بربنا مطلوبة، والاستسلام ممنوع. ده منهج حياة كامل.','قبل أهم مهمة النهارده قول "اللهم أعني"، واشتغل بكل جهدك.','صحيح مسلم'],
+['faith','التوكل مش تواكل','"لو أنكم توكلتم على الله حق توكله لرزقكم كما يرزق الطير، تغدو خماصًا وتروح بطانًا". الطير بيطلع يسعى كل يوم، والرزق بييجي مع السعي.','اسعَ النهارده في الرزق بكل جهدك، وسيب القلق من النتيجة.','سنن الترمذي'],
+['faith','حاسب نفسك','"حاسبوا أنفسكم قبل أن تحاسبوا". دقيقتين كل ليلة تراجع فيهم يومك بصراحة بيصلّحوا حاجات كتير.','استخدم "حساب آخر اليوم" في التطبيق النهارده، وكون صريح مع نفسك.','أثر عن عمر بن الخطاب'],
+['faith','إنت أيام','"يا ابن آدم، إنما أنت أيام، كلما ذهب يوم ذهب بعضك". كل يوم بيعدّي حتة من عمرك، فخليه يتحسب.','اسأل نفسك: لو النهارده آخر يوم، أكتر حاجة هتفرق معايا أعملها إيه؟','الحسن البصري'],
+['faith','اغتنم خمسًا قبل خمس','"شبابك قبل هرمك، وصحتك قبل سقمك، وغناك قبل فقرك، وفراغك قبل شغلك، وحياتك قبل موتك". إنت دلوقتي في أحسن وقت تبني فيه.','استغل وقت فاضي النهارده في حاجة تنفعك في دينك أو دنياك.','المستدرك للحاكم'],
+['faith','الفجر بركة اليوم','"بورك لأمتي في بكورها". الساعات الأولى بعد الفجر أكتر وقت صافي وفيه بركة. اللي بيكسبها بيكسب اليوم.','نام بدري النهارده علشان تصلي الفجر، وأول ساعة بعده من غير موبايل.','سنن أبي داود والترمذي'],
+['faith','الذنوب بتتقل القلب','قال ابن القيم إن للمعصية آثار: ظلمة في القلب، ووحشة بين العبد وربه، وقلة توفيق. ولما تحس إنك بعيد، أول خطوة توبة صادقة واستغفار.','استغفر 100 مرة النهارده بقلب حاضر، واترك ذنب واحد بتتكرر فيه.','الداء والدواء · ابن القيم'],
+['faith','أتقن شغلك عبادة','"إن الله يحب إذا عمل أحدكم عملًا أن يتقنه". شغلك بإتقان ونية صالحة (تكفي بيتك، تنفع الناس) بيتحول لعبادة.','جدّد نيتك في الشغل النهارده، واتقن حاجة واحدة زيادة عن المطلوب.','رواه الطبراني والبيهقي'],
+['faith','الغنى غنى النفس','"ليس الغنى عن كثرة العرض، ولكن الغنى غنى النفس". اسعَ للفلوس، بس متخليهاش تملك قلبك.','اكتب 3 حاجات عندك دلوقتي ناس كتير بتتمناها.','صحيح البخاري ومسلم'],
+['faith','البياع الصادق','"التاجر الصدوق الأمين مع النبيين والصديقين والشهداء". الصدق في البيع مش بس أخلاق، ده بيبني ثقة بتجيب لك صفقات بعدين.','متبالغش النهارده في أي وصف لمنتج. قول الحقيقة حتى لو هتخسر البيعة.','سنن الترمذي'],
+['faith','السماحة في المعاملة','"رحم الله رجلًا سمحًا إذا باع وإذا اشترى وإذا اقتضى". السماحة مع العملاء والزملاء بتجيب البركة والمحبة.','سامح أو سهّل على حد في معاملة النهارده.','صحيح البخاري'],
+['faith','اللي بيدوّر بيلاقي','"والذين جاهدوا فينا لنهدينهم سبلنا". لو حاسس إنك بعيد، مجرد إنك بتحاول ده جهاد، وربنا وعد يهديك.','اعمل خطوة واحدة صغيرة لربنا النهارده من غير ما تستنى تبقى كامل.','العنكبوت 69'],
+['faith','ربنا قريب','"وإذا سألك عبادي عني فإني قريب أجيب دعوة الداع إذا دعان". مفيش وسيط. اطلب منه كل حاجة، حتى الحاجات الصغيرة في شغلك.','ادعي في سجدة النهارده بالحاجة اللي شاغلاك بالاسم.','البقرة 186'],
+['faith','تفكّر في النعمة','"من أصبح منكم آمنًا في سربه، معافى في جسده، عنده قوت يومه، فكأنما حيزت له الدنيا". اللي عندك كتير.','احمد ربنا بصوت عالي على صحتك وأمانك وأكلك النهارده.','سنن الترمذي'],
+/* home */
+['home','5 لـ 1','العلاقات الناجحة فيها حوالي 5 مواقف حلوة قصاد كل موقف سلبي. الكلمة الحلوة والاهتمام الصغير بيعملوا رصيد بيشيل البيت وقت الخلاف.','قول لمراتك النهارده حاجتين حلوين وحاجة بتقدّرها فيها.','أبحاث John Gottman'],
+['home','رد على "النداءات" الصغيرة','لما شريكك يقولك "شوف ده" أو يحكي حاجة صغيرة، ده نداء للاهتمام. الأزواج اللي بيلتفتوا للنداءات دي بيستمروا أسعد بكتير.','النهارده لما مراتك تكلمك، سيب الموبايل وبص لها.','أبحاث John Gottman'],
+['home','خيركم لأهله','"خيركم خيركم لأهله، وأنا خيركم لأهلي". أخلاقك الحقيقية بتبان في البيت مش برّه.','ساعد في حاجة في البيت النهارده من غير ما حد يطلب.','سنن الترمذي'],
+['home','اسم الشخص أحلى كلمة','الناس بتحب تسمع اسمها، وبتحب اللي بيسمعها باهتمام. اسأل عن الناس وافتكر تفاصيلهم.','كلّم حد من أهلك النهارده واسأله عن حاجة حكاها لك قبل كده.','How to Win Friends · Dale Carnegie'],
+['home','الكلمة الطيبة صدقة','"والكلمة الطيبة صدقة". مع العملاء والزملاء والبيت. الكلمة الحلوة مبتكلفش حاجة وبتفتح قلوب.','قول كلمة شكر حقيقية لـ 3 أشخاص النهارده.','صحيح البخاري ومسلم'],
+['home','اتكلم لما تهدى','النقاش وانت متعصب نادرًا ما يحل حاجة. اتفقوا إن أي مشكلة تتناقش بعد ما الاتنين يهدوا، وابدأ بـ "أنا حاسس" مش "إنت دايمًا".','لو فيه موضوع معلّق، اختار وقت هادي واتكلم عن إحساسك.','أبحاث العلاقات الزوجية'],
+['home','بر الوالدين باب رزق','بر الوالدين من أعظم القربات، وكتير من الصالحين ربطوه بالبركة والتوفيق. اتصال قصير كل يوم بيفرّح قلوبهم.','كلّم أبوك وأمك النهارده، ولو 5 دقايق.','الإسراء 23'],
+['home','ابتسامتك في وش أخوك صدقة','"لا تحقرن من المعروف شيئًا، ولو أن تلقى أخاك بوجه طلق". الوش البشوش في الشغل والبيت بيفرق.','ابتسم وانت بتسلّم على كل حد النهارده.','صحيح مسلم']
+];
+const LSTATE=Object.assign({done:{},seen:{}},LS.get('lessons')||{});
+const saveL=()=>LS.set('lessons',LSTATE);
+function dayN(){const d=parseKey(todayKey());return Math.floor(d.getTime()/864e5);}
+function lessonsOfDay(){const n=dayN();const by=c=>LESSONS.map((l,i)=>[l,i]).filter(x=>x[0][0]===c);
+ const work=['sales','career','money'][n%3],grow=['self','mind'][n%2],soul=['faith','home','faith'][n%3];
+ const p=(c,o)=>{const a=by(c);return a[(Math.floor(n/3)+o)%a.length];};
+ return [p(work,0),p(grow,1),p(soul,2)];}
+function lessonCard(x,full){const l=x[0],i=x[1],c=LCAT[l[0]],d=LSTATE.done[i];
+ return '<div class="les'+(d?' done':'')+'" data-li="'+i+'"><div class="lk2"><span>'+c[0]+' '+c[1]+'</span>'+(d?'<em>✓ طبّقتها</em>':'')+'</div><b>'+esc(l[1])+'</b><p>'+esc(l[2])+'</p><div class="la"><span>طبّقها النهارده:</span> '+esc(l[3])+'</div><small>المصدر: '+esc(l[4])+'</small>'+
+  '<div class="aibtns"><button type="button" class="minibtn '+(d?'':'gold')+'" data-ldone="'+i+'">'+(d?'↺ لسه':'طبّقتها ✓')+'</button><button type="button" class="minibtn" data-lask="'+i+'">✺ اشرحلي وطبّقها على حالتي</button></div></div>';}
+function buildLessons(){const sec=el('section','pnl lessons');sec.id='lessons';
+ sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--gold2);border-color:rgba(243,185,77,.4);background:rgba(243,185,77,.08)">📚</div><div><h2>دروس اليوم</h2><span class="en">LESSONS · من أقوى الكتب والقرآن والسنة</span></div><span class="cnt" id="lCnt"></span></div>'+
+  '<div id="lToday"></div><div class="rsub" style="margin-top:16px">HADITH · حديث اليوم بشرحه</div><div id="hadD"></div>'+
+  '<details class="svnew" style="margin-top:14px"><summary class="minibtn" style="display:inline-block">📖 كل الدروس ('+LESSONS.length+')</summary><div class="lfilt" id="lFilt"><button type="button" data-lf="" class="on">الكل</button>'+Object.entries(LCAT).map(([k,v])=>'<button type="button" data-lf="'+k+'">'+v[0]+' '+v[1]+'</button>').join('')+'</div><div id="lAll"></div></details>';
+ $('#coach').insertAdjacentElement('afterend',sec);
+ let filt='';const all=()=>{$('#lAll').innerHTML=LESSONS.map((l,i)=>[l,i]).filter(x=>!filt||x[0][0]===filt).map(x=>lessonCard(x)).join('');};
+ sec.addEventListener('click',e=>{const t=e.target;
+  const f=t.closest('[data-lf]');if(f){filt=f.dataset.lf;$('#lFilt').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===f));all();return;}
+  const d=t.closest('[data-ldone]');if(d){const i=+d.dataset.ldone;if(LSTATE.done[i])delete LSTATE.done[i];else{LSTATE.done[i]=todayKey();sparks(e.clientX,e.clientY,12,['#f3b94d','#5ee0b0']);toast('📚','برافو. العلم بالتطبيق',LESSONS[i][1]);}saveL();renderLessons();if(sec.querySelector('details').open)all();return;}
+  const a=t.closest('[data-lask]');if(a){const l=LESSONS[+a.dataset.lask];openChat('الدرس ده: "'+l[1]+'" ('+l[4]+'). الفكرة: '+l[2]+'\nاشرحهولي أكتر بمثال عملي، وقولي أطبّقه إزاي في شغلي كـ Sales Account Manager وحياتي، في 3 خطوات.');return;}
+  const hr=t.closest('[data-hadnext]');if(hr){loadHadith(true);return;}});
+ sec.querySelector('details').addEventListener('toggle',e=>{if(e.target.open)all();});
+ renderLessons();loadHadith(false);}
+function renderLessons(){if(!$('#lToday'))return;$('#lToday').innerHTML=lessonsOfDay().map(x=>lessonCard(x)).join('');$('#lCnt').textContent=Object.keys(LSTATE.done).length+'/'+LESSONS.length;}
+/* hadith of the day from HadeethEnc (authentic, with explanation). cached for offline */
+async function loadHadith(next){const box=$('#hadD');if(!box)return;const tk=todayKey();let c=LS.get('hadith');
+ if(c&&c.date===tk&&!next){renderHadith(c);return;}
+ if(!navigator.onLine){if(c)renderHadith(c,true);else box.innerHTML='<div class="sub">حديث اليوم هيتجاب أول ما النت يرجع.</div>';return;}
+ box.innerHTML='<div class="aiload"><span class="aidots"><i></i><i></i><i></i></span>بجيب حديث اليوم…</div>';
+ try{const pg=((dayN()+(next?Math.floor(Math.random()*900)+1:0))%1000)+1;
+  const l=await fetch('https://hadeethenc.com/api/v1/hadeeths/list/?language=ar&category_id=5&page='+pg+'&per_page=1').then(r=>r.json());const id=l&&l.data&&l.data[0]&&l.data[0].id;if(!id)throw 0;
+  const h=await fetch('https://hadeethenc.com/api/v1/hadeeths/one/?language=ar&id='+encodeURIComponent(id)).then(r=>r.json());
+  c={date:tk,id,text:String(h.hadeeth||''),attr:String(h.attribution||''),grade:String(h.grade||''),expl:String(h.explanation||''),hints:(h.hints||[]).map(String).slice(0,4)};LS.set('hadith',c);renderHadith(c);}
+ catch(e){if(c)renderHadith(c,true);else box.innerHTML='<div class="sub">مقدرتش أجيب حديث اليوم دلوقتي. جرّب كمان شوية.</div>';}}
+function renderHadith(c,old){$('#hadD').innerHTML='<div class="had"><div class="ht2">'+esc(c.text)+'</div><div class="hm">'+esc(c.attr)+(c.grade?' · '+esc(c.grade):'')+(old?' · (آخر حديث محفوظ)':'')+'</div>'+
+ '<details><summary class="sub" style="cursor:pointer">الشرح والفوايد</summary><p>'+esc(c.expl)+'</p>'+(c.hints.length?'<ul>'+c.hints.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+'</details>'+
+ '<div class="aibtns"><button type="button" class="minibtn" data-hadnext="1">حديث تاني</button><a class="minibtn" href="https://hadeethenc.com/ar/browse/hadith/'+encodeURIComponent(c.id)+'" target="_blank" rel="noopener">المصدر ↗</a></div></div>';}
+/* ---------- ask about your own data: answered on this phone, nothing is sent ---------- */
+const nrm=s=>String(s).replace(/[ً-ْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[؟?!.,،]/g,' ').toLowerCase();
+const N0=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+function qScope(q){const t=todayKey();const td=parseKey(t);
+ if(/امبارح|امس/.test(q)){const k=keyOf(addDays(td,-1));return{from:k,to:k,lbl:'امبارح'};}
+ if(/النهارده|اليوم/.test(q))return{from:t,to:t,lbl:'النهارده'};
+ if(/الاسبوع اللي فات|الاسبوع الماضي/.test(q)){const st=addDays(parseKey(weekStartKey(t)),-7);return{from:keyOf(st),to:keyOf(addDays(st,6)),lbl:'الأسبوع اللي فات'};}
+ if(/الاسبوع|اسبوع/.test(q))return{from:weekStartKey(t),to:t,lbl:'الأسبوع ده'};
+ if(/الشهر اللي فات|الشهر الماضي/.test(q)){const m=shiftMon(monKey(t),-1);return{from:m+'-01',to:m+'-31',lbl:'الشهر اللي فات',mk:m};}
+ if(/السنه|سنه/.test(q))return{from:t.slice(0,4)+'-01-01',to:t,lbl:'السنة دي'};
+ const m=monKey(t);return{from:m+'-01',to:t,lbl:'الشهر ده',mk:m};}
+const inS=(d,sc)=>d>=sc.from&&d<=sc.to;
+function daysIn(sc){const out=[];let d=parseKey(sc.from);const e=parseKey(sc.to>todayKey()?todayKey():sc.to);while(d<=e){out.push(keyOf(d));d=addDays(d,1);}return out;}
+function histK(k){return k===S.day.date?summarize(S.day):S.hist[k];}
+function localData(raw){const q=nrm(N0(raw));
+ if(/ازاي|ازّاي|ليه|نصيحه|انصحني|اعمل ايه|افكار|فكره/.test(q))return null;
+ const ask=/كام|قد ايه|اد ايه|كم |بكام|مجموع|اجمالي|فاضل|المتاح|وريني|ورني|ملخص|احصائيات|وصلت|اخر|امتي|ايه اللي|فين|عامل ايه في|عملت ايه/.test(q)||/^(صرفت|حوشت|قبضت|ادخرت|صليت|خلصت|عملت|قريت|دفعت)/.test(q);
+ if(!ask)return null;const sc=qScope(q);const L=[];
+ const out=MN.list.filter(x=>x.t==='out'&&inS(x.d,sc)),inc=MN.list.filter(x=>x.t==='in'&&inS(x.d,sc));const sum=a=>a.reduce((s,x)=>s+x.a,0);
+ const cat=CAT_OUT.concat(CAT_IN).map(c=>c[0]).find(c=>q.indexOf(nrm(c))>=0);
+ // money
+ if(/صرف|مصروف|مصاريف|دفعت/.test(q)&&!/فاضل|المتاح|اقدر|ميزاني/.test(q)){const xs=cat?out.filter(x=>x.c===cat):out;const cats={};xs.forEach(x=>cats[x.c]=(cats[x.c]||0)+x.a);
+  L.push('**صرفت '+sc.lbl+(cat?' على '+cat:'')+': '+fmt(sum(xs))+' ريال** ('+xs.length+' مصروف)');
+  if(!cat&&xs.length)L.push(Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(c=>'- '+c[0]+': '+fmt(c[1])).join('\n'));
+  if(sc.mk){const b=budget(sc.mk);if(b.fixed)L.push('ومصاريف ثابتة: '+fmt(b.fixed)+' ريال ('+b.paid.length+' من '+b.fx.length+' اتدفعت)');if(cat&&MN.lim[cat])L.push('حدّك في '+cat+': '+fmt(MN.lim[cat])+' · '+(sum(xs)>MN.lim[cat]?'عدّيته':'فاضل '+fmt(MN.lim[cat]-sum(xs))));}
+  const big=xs.slice().sort((a,b)=>b.a-a.a)[0];if(big)L.push('أكبر مصروف: '+fmt(big.a)+' ('+big.c+(big.n?' · '+big.n:'')+') يوم '+big.d.slice(8)+'/'+big.d.slice(5,7));}
+ if(/دخل|قبضت|مرتب|عموله/.test(q)&&!/حاسب|لو بعت|لو بيعت/.test(q)){L.push('**الدخل المتسجل '+sc.lbl+': '+fmt(sum(inc))+' ريال**');if(inc.length)L.push(inc.slice(-5).map(x=>'- '+x.c+': '+fmt(x.a)+' ('+x.d.slice(8)+'/'+x.d.slice(5,7)+')').join('\n'));if(sc.mk){const b=budget(sc.mk);if(b.sal)L.push('الدخل المحسوب في الميزانية: '+fmt(b.inc)+' (ثابت '+fmt(b.sal)+(b.extra?' + زيادة '+fmt(b.extra):'')+')');}}
+ if(/عموله/.test(q)&&/[0-9]/.test(q)){const n=+(q.match(/[0-9][0-9,]*/)[0].replace(/,/g,''));const r=+(MN.comm||0);L.push(r?'لو بعت بـ '+fmt(n)+' ريال، العمولة ('+r+'%) = **'+fmt(n*r/100)+' ريال**':'حط نسبة عمولتك في "حاسبة العمولة" في صفحة فلوسي الأول.');}
+ if(/حوش|تحويش|ادخر|ادخار|محوش|هدف/.test(q)){let t=0;const per=SV.goals.map(g=>{const a=g.moves.filter(m=>inS(m.d,sc)).reduce((s,m)=>s+m.a,0);t+=a;return [g,a];});
+  L.push('**حوّشت '+sc.lbl+': '+fmt(t)+' ريال**');if(SV.goals.length)L.push(SV.goals.map(g=>'- '+g.ic+' '+g.n+': معاك '+fmt(gSaved(g))+' من '+fmt(g.target)+' ('+Math.min(100,Math.round(gSaved(g)*100/g.target))+'%)').join('\n'));
+  if(SV.ch){const s2=SV.ch.done.reduce((s,w)=>s+w*SV.ch.base,0);L.push('تحدي الـ 52 أسبوع: '+SV.ch.done.length+' أسبوع · '+fmt(s2)+' ريال');}
+  if(sc.mk&&MN.goal){const b=budget(sc.mk);L.push('هدف ادخار الشهر: '+fmt(MN.goal)+' · حوّشت منه '+fmt(b.saved));}}
+ if(/فاضل|المتاح|ميزاني|اصرف كام|اقدر اصرف/.test(q)){const b=budget(monKey(todayKey()));L.push(b.inc?'**المتاح تصرفه الشهر ده: '+(b.left<0?'− ':'')+fmt(Math.abs(b.left))+' ريال**'+(b.days&&b.left>0?' · يعني '+fmt(b.left/b.days)+' في اليوم لـ '+b.days+' يوم':''):'لسه مظبطتش الميزانية. افتح فلوسي ← ظبط ميزانية الشهر.');}
+ if(/جمعيه/.test(q)){L.push(SV.gm.length?SV.gm.map(g=>{const k=shiftMon(g.st,g.turn-1);const a=k.split('-');return '- '+g.n+': دفعت '+g.paid.length+' من '+g.c+' · هتقبض '+fmt(g.a*g.c)+' في '+AR_MON[+a[1]-1]+' '+a[0];}).join('\n'):'مفيش جمعيات متسجلة.');}
+ // deen + habits
+ const ds=daysIn(sc);const hs=ds.map(k=>[k,histK(k)]).filter(x=>x[1]);
+ if(/صلي|صلاه|الفجر|الظهر|العصر|المغرب|العشا/.test(q)){const pr=[['p_fajr','الفجر'],['p_dhuhr','الظهر'],['p_asr','العصر'],['p_maghrib','المغرب'],['p_isha','العشاء']];
+  if(sc.from===sc.to){const d=dayData(sc.from);L.push('**صلوات '+sc.lbl+':** '+pr.map(p=>(d.c[p[0]]?'✓ ':'✕ ')+p[1]).join(' · '));}
+  else{const cnt=pr.map(p=>[p[1],ds.filter(k=>dayData(k).c[p[0]]).length]);L.push('**الصلوات '+sc.lbl+' ('+ds.length+' يوم):**\n'+cnt.map(c=>'- '+c[0]+': '+c[1]+' يوم').join('\n'));}
+  L.push('سلسلة الفجر في الجامع: '+streak('fajr')+' يوم ورا بعض');}
+ if(/قران|ورد|حفظ|سوره/.test(q)){const qd=ds.filter(k=>dayData(k).c.quran).length;L.push('**الورد '+sc.lbl+': '+qd+' من '+ds.length+' يوم**');try{const hz=S.settings.hifz||{};const done=Object.keys(hz).filter(k=>hz[k]===2);L.push('الحفظ: '+done.length+' سورة محفوظة'+(Object.keys(hz).filter(k=>hz[k]===1).length?' · بتحفظ في '+Object.keys(hz).filter(k=>hz[k]===1).map(k=>SURAHS[k-1][0]).join('، '):''));}catch(e){}}
+ if(/استغفار|تسبيح|اذكار|ذكر/.test(q)){const d=dayData(todayKey());L.push('**النهارده:** استغفار '+(d.n.istighfar||0)+' · تسبيح '+(d.n.tasbih||0)+' · أذكار الصباح '+(d.c.adhkar_m?'✓':'✕')+' · أذكار المساء '+(d.c.adhkar_e?'✓':'✕'));}
+ if(/خلصت|انجزت|نسبه|تقدم|مهام|يومي|ملخص|احصائيات|عملت ايه/.test(q)){const p=progress(dayData(sc.to>todayKey()?todayKey():sc.to));
+  if(sc.from===sc.to)L.push('**'+sc.lbl+': خلّصت '+p.on+' من '+p.tot+' ('+p.pct+'%)**');else L.push('**متوسط إنجازك '+sc.lbl+': '+(hs.length?Math.round(hs.reduce((s,x)=>s+x[1].pct,0)/hs.length):0)+'%** في '+hs.length+' يوم متسجل');
+  const best=hs.slice().sort((a,b)=>b[1].pct-a[1].pct)[0];if(best&&hs.length>1)L.push('أحسن يوم: '+best[0].slice(8)+'/'+best[0].slice(5,7)+' ('+best[1].pct+'%)');
+  if(sc.from===sc.to&&sc.from===todayKey()){const miss=missingFor(S.day).reduce((a,g)=>a+g.list.length,0);L.push('لسه ناقص '+miss+' حاجة.');}}
+ if(/مود|مزاج|حاسس/.test(q)){const ms=hs.filter(x=>x[1].mood);L.push(ms.length?'**مودك '+sc.lbl+':** '+ms.map(x=>MOODS[x[1].mood-1][0]).join(' ')+' · المتوسط '+(ms.reduce((s,x)=>s+x[1].mood,0)/ms.length).toFixed(1)+'/5':'مسجلتش مود '+sc.lbl+'.');}
+ if(/شاشه|موبايل/.test(q)){const sc2=hs.filter(x=>x[1].screen!=null);L.push(sc2.length?'**وقت الشاشة '+sc.lbl+':** متوسط '+(sc2.reduce((s,x)=>s+x[1].screen,0)/sc2.length).toFixed(1)+' ساعة (هدفك '+S.settings.screenGoal+')':'مسجلتش وقت شاشة '+sc.lbl+'.');}
+ if(/تركيز|بومودورو/.test(q)){const f=ds.reduce((s,k)=>s+(dayData(k).focus||0),0);L.push('**جلسات التركيز '+sc.lbl+': '+f+'**');}
+ if(/تمرين|جري|رياضه/.test(q)){L.push('**التمرين '+sc.lbl+': '+ds.filter(k=>dayData(k).c.train).length+' مرة**');}
+ if(/مستوي|xp|نقاط|ليفل/.test(q)){const li=levelInfo();L.push('**مستواك '+li.lv+'** · '+fmt(li.xp)+' XP · فاضلك '+fmt(li.need)+' للمستوى الجاي');}
+ if(/بزنس|مراحل|ال 30|الثلاثين/.test(q)){const ms=MILES.filter(m=>S.settings.ms[m[0]]).length;const nx=MILES.find(m=>!S.settings.ms[m[0]]);L.push('**البزنس: '+ms+' من '+MILES.length+' مراحل**'+(nx?' · الجاية: '+nx[1]:''));}
+ if(/كتاب|قرايه|قريت/.test(q)){L.push('**القراية '+sc.lbl+': '+ds.filter(k=>dayData(k).c.read).length+' يوم**'+(S.settings.book?' · الكتاب الحالي: '+S.settings.book:''));}
+ if(/دروس|درس|طبقت/.test(q)){L.push('**الدروس اللي طبّقتها: '+Object.keys(LSTATE.done).length+' من '+LESSONS.length+'**');}
+ if(/امتنان|حمدت|نعم/.test(q)){const g=ds.map(k=>[k,dayData(k).grat]).filter(x=>x[1]&&x[1].trim());L.push(g.length?'**امتنانك '+sc.lbl+':**\n'+g.slice(-3).map(x=>'- '+x[0].slice(8)+'/'+x[0].slice(5,7)+': '+x[1].replace(/\n/g,' · ').slice(0,120)).join('\n'):'مكتبتش امتنان '+sc.lbl+'.');}
+ if(!L.length&&/ملخص|احصائيات|بياناتي/.test(q)){return localData('ملخص مهام صرفت حوشت صليت '+raw);}
+ if(!L.length)return null;
+ return L.join('\n\n')+'\n\n🔒 اتحسب على موبايلك من بياناتك، ومبيتبعتش لأي حد.';}
+function buildComm(){const host=$('#mPlanD');host.insertAdjacentHTML('afterend','<details class="svnew" id="mComm"><summary class="minibtn" style="display:inline-block;margin-top:8px">🧮 حاسبة العمولة</summary><div class="svform"><div class="mrow1"><input id="cR" type="number" inputmode="decimal" min="0" step="0.1" placeholder="نسبة العمولة %"><input id="cS" type="number" inputmode="numeric" min="0" placeholder="مبيعاتك (ريال)"></div><div class="sub" id="cOut"></div><input id="cT" type="number" inputmode="numeric" min="0" placeholder="عايز عمولة قد إيه في الربع؟"><div class="sub" id="cOut2"></div></div></details>');
+ const r=$('#cR'),sl=$('#cS'),tg=$('#cT');r.value=MN.comm||'';
+ const calc=()=>{const R=+r.value||0;if(R!==(+MN.comm||0)){MN.comm=R;saveMoney();}const S2=+sl.value||0,T=+tg.value||0;
+  $('#cOut').innerHTML=R&&S2?'العمولة: <b>'+fmt(S2*R/100)+'</b> ريال':'';
+  $('#cOut2').innerHTML=R&&T?'محتاج تبيع بـ <b>'+fmt(T*100/R)+'</b> ريال في الربع، يعني حوالي <b>'+fmt(T*100/R/3)+'</b> في الشهر':'';};
+ [r,sl,tg].forEach(i=>i.addEventListener('input',calc));}
+
+/* ---------- lock setup: one tap, the phone's own Face ID / fingerprint / passcode ---------- */
+function renderLockSet(){const box=$('#lkSet');if(!box)return;
+ if(LK.on){box.innerHTML='<div class="sub" style="color:var(--mint)">✓ القفل شغال'+(LK.cred?': بيفتح بالبصمة أو Face ID، ولو مشتغلوش بباسورد الموبايل':': بالرقم السري')+(LK.pin&&LK.cred?' · ومعاه رقم سري احتياطي':'')+'</div>'+
+  '<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px"><label class="sub">يقفل لوحده بعد <select id="lkAfter" class="lksel"><option value="0">ما أقفل الصفحة على طول</option><option value="1">دقيقة</option><option value="5">5 دقايق</option><option value="15">ربع ساعة</option></select></label>'+
+  '<button class="minibtn" id="lkNow" type="button">🔒 اقفل دلوقتي</button><button class="minibtn" id="lkOff" type="button">شيل القفل</button></div>';
+  const s=$('#lkAfter');s.value=String(LK.after);s.onchange=()=>{LK.after=+s.value;saveLock();};$('#lkNow').onclick=()=>showLock();
+  $('#lkOff').onclick=async()=>{let ok=false;try{if(LK.cred)ok=await bioCheck();}catch(e){}
+   if(!ok&&LK.pin){const p=prompt('اكتب الرقم السري علشان تشيل القفل');if(p!=null)ok=(await pinHash(p.trim(),LK.salt))===LK.pin;}
+   if(!ok){toast('✕','لازم تأكد إنك إنت الأول','');return;}LK.on=false;LK.cred='';LK.pin='';saveLock();renderLockSet();toast('🔓','القفل اتشال','');};return;}
+ box.innerHTML='<button class="minibtn gold" id="lkOn" type="button" style="width:100%;padding:11px;font-size:15px">🔐 فعّل القفل ببصمتك أو Face ID</button>'+
+  '<details style="margin-top:8px"><summary class="sub" style="cursor:pointer">رقم سري احتياطي (اختياري)</summary><input id="lkNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="4 لـ 8 أرقام" style="margin-top:6px;width:100%"></details>';
+ $('#lkOn').onclick=enableLock;}
+async function enableLock(){const pinIn=$('#lkNew');const p=pinIn?pinIn.value.trim():'';if(p&&!/^\d{4,8}$/.test(p)){toast('✕','الرقم السري لازم 4 لـ 8 أرقام','');return false;}
+ const bio=await bioAvailable();if(!bio&&!p){toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','اكتب رقم سري احتياطي وفعّل');const d=$('#lkSet details');if(d)d.open=true;return false;}
+ LK.salt=b64(rnd(16));LK.pin=p?await pinHash(p,LK.salt):'';LK.cred='';
+ if(bio){try{LK.cred=await bioCreate();}catch(e){if(!p){toast('⚠','البصمة متفعلتش','جرّب تاني');return false;}}}
+ LK.on=true;saveLock();renderLockSet();toast('🔐','القفل اتفعّل','من دلوقتي هيفتح بالبصمة أو Face ID لوحده');return true;}
+
+/* ---------- phone storage: persistent + text & table files in the app's own space on the phone ---------- */
+const FS={ok:false,dir:null,last:0,err:''};
+async function fsInit(){try{if(!navigator.storage||!navigator.storage.getDirectory)throw 0;const root=await navigator.storage.getDirectory();FS.dir=await root.getDirectoryHandle('mostafa-os',{create:true});
+  const t=await FS.dir.getFileHandle('.probe',{create:true});if(!t.createWritable)throw 0;const w=await t.createWritable();await w.write('ok');await w.close();FS.ok=true;}catch(e){FS.ok=false;FS.err='unsupported';}return FS.ok;}
+async function fsWrite(name,text){const h=await FS.dir.getFileHandle(name,{create:true});const w=await h.createWritable();await w.write(text);await w.close();}
+const csvCell=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+const toCSV=rows=>'﻿'+rows.map(r=>r.map(csvCell).join(',')).join('\n');
+function tables(){const t={};
+ t['masareef.csv']=toCSV([['التاريخ','النوع','التصنيف','المبلغ','ملاحظة']].concat(MN.list.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>[x.d,x.t==='in'?'دخل':'مصروف',x.c,x.a,x.n||''])));
+ t['tahwish.csv']=toCSV([['الهدف','التاريخ','المبلغ','المطلوب']].concat([].concat(...SV.goals.map(g=>g.moves.map(m=>[g.n,m.d,m.a,g.target])))));
+ const ks=Object.keys(S.hist).sort();t['ayami.csv']=toCSV([['التاريخ','النسبة %','خلصت','من','الفجر في الجامع','المود','وقت الشاشة']].concat(ks.map(k=>{const h=S.hist[k];return [k,h.pct,h.on,h.tot,h.fajr?'✓':'',h.mood||'',h.screen==null?'':h.screen];})));
+ const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('mos:')===0&&k!=='mos:lock')data[k.slice(4)]=localStorage.getItem(k);}
+ t['mostafa-os-data.json']=JSON.stringify({app:'mostafa-os',v:1,at:new Date().toISOString(),data});return t;}
+let fsTimer=0;function schedMirror(){if(!LS.get('fsOn'))return;clearTimeout(fsTimer);fsTimer=setTimeout(mirrorNow,4000);}
+async function mirrorNow(){if(!LS.get('fsOn'))return;if(!FS.ok&&!(await fsInit()))return;try{const t=tables();for(const n in t)await fsWrite(n,t[n]);FS.last=Date.now();renderStore();}catch(e){FS.err=String(e&&e.name||e);}}
+{const _set=LS.set;LS.set=function(k,v){_set.call(LS,k,v);if(k!=='fsOn')schedMirror();};}
+async function shareTables(){const t=tables();const files=Object.entries(t).map(([n,c])=>new File([c],n,{type:n.endsWith('.csv')?'text/csv':'application/json'}));
+ try{if(navigator.canShare&&navigator.canShare({files})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){await navigator.share({files,title:'Mostafa OS · جداولي'});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+ files.forEach((f,i)=>setTimeout(()=>{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);},i*400));}
+async function grantStorage(){let persisted=false;try{if(navigator.storage&&navigator.storage.persist)persisted=await navigator.storage.persist();}catch(e){}
+ let notif='unsupported';try{if('Notification' in window)notif=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;}catch(e){}
+ const files=await fsInit();LS.set('fsOn',true);if(files)await mirrorNow();renderStore();persistStorage();
+ toast('💾','تمام · '+(persisted?'التخزين بقى دائم':'التخزين اتفعّل'),(files?'وبيحفظ ملفات وجداول على الموبايل':'')+(notif==='granted'?' · والتنبيهات شغالة':''));return true;}
+async function renderStore(){const box=$('#fsBox');if(!box)return;const on=!!LS.get('fsOn');let used='',files=[];
+ try{const e=await navigator.storage.estimate();used=(e.usage/1048576).toFixed(1)+' من '+(e.quota/1073741824).toFixed(1)+' جيجا';}catch(e){}
+ if(on&&FS.ok){try{for await(const [n,h] of FS.dir.entries()){if(n[0]==='.')continue;const f=await h.getFile();files.push([n,f.size]);}}catch(e){}}
+ box.innerHTML=(on?'<div class="sub" style="color:var(--mint)">✓ مسموح للتطبيق يستخدم ذاكرة الموبايل'+(used?' · مستخدم '+used:'')+'</div>':'<button class="minibtn gold" id="fsGrant" type="button" style="width:100%;padding:10px">💾 اسمح للتطبيق يحفظ على ذاكرة الموبايل</button>')+
+  (files.length?'<div class="fsl">'+files.map(f=>'<span>📄 '+f[0]+' <small>'+(f[1]/1024).toFixed(1)+' KB</small></span>').join('')+'</div><div class="sub" style="font-size:11.5px">آخر حفظ: '+(FS.last?new Date(FS.last).toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'}):'—')+'</div>':(on&&!FS.ok?'<div class="sub" style="font-size:12px">المتصفح ده مش بيدعم الملفات، فبياناتك محفوظة في التخزين الدائم بتاعه.</div>':''))+
+  '<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="minibtn" id="fsShare" type="button">📄 شارك الجداول (Excel)</button><button class="minibtn" id="fsClean" type="button">🧹 نظّف القديم</button></div>';
+ const g=$('#fsGrant');if(g)g.onclick=grantStorage;$('#fsShare').onclick=shareTables;$('#fsClean').onclick=()=>openCleanup(true);}
+
+/* ---------- yearly cleanup: archive what's older than a year, keep the summaries ---------- */
+function cleanPlan(){const cut=keyOf(addDays(parseKey(todayKey()),-365));const days=[],weeks=[];
+ for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(/^mos:d-\d{4}-\d\d-\d\d$/.test(k)&&k.slice(6)<cut)days.push(k);if(/^mos:w-\d{4}-\d\d-\d\d$/.test(k)&&k.slice(6)<cut)weeks.push(k);}
+ const money=MN.list.filter(x=>x.d<cut);const moves=SV.goals.reduce((n,g)=>n+g.moves.filter(m=>m.d<cut&&!m.carry).length,0);
+ return{cut,days,weeks,money,moves,chat:AI.chat.length,total:days.length+weeks.length+money.length+moves};}
+function openCleanup(manual){const pl=cleanPlan();const sh=$('#cleanSheet');
+ $('#cleanBody').innerHTML=pl.total?'<p>فيه بيانات أقدم من سنة (قبل '+pl.cut+'):</p><ul><li>'+pl.days.length+' يوم بتفاصيله</li><li>'+pl.money.length+' مصروف ودخل</li><li>'+pl.moves+' حركة تحويش</li></ul><p class="sub">الحاجات المهمة هتفضل: ملخص كل يوم (النسبة والفجر والمود)، ومجموع فلوس كل شهر، وأرصدة أهداف التحويش، والحفظ، والإعدادات. التفاصيل القديمة بس هي اللي هتتمسح.</p>'+
+  '<div class="aibtns" style="flex-direction:column"><button class="minibtn gold" data-cl="arch" type="button" style="padding:11px">⬇ نزّل أرشيف وبعدين نضّف</button><button class="minibtn" data-cl="now" type="button">نضّف من غير أرشيف</button><button class="minibtn" data-cl="later" type="button">بعدين</button></div>'
+  :'<p>✓ مفيش بيانات أقدم من سنة. كل حاجة نضيفة.</p><div class="aibtns"><button class="minibtn" data-cl="later" type="button">تمام</button></div>';
+ if(!pl.total&&!manual)return;sh.hidden=false;}
+async function runCleanup(arch){const pl=cleanPlan();
+ if(arch){const data={};pl.days.concat(pl.weeks).forEach(k=>data[k.slice(4)]=localStorage.getItem(k));const blob=new Blob([JSON.stringify({app:'mostafa-os',archive:true,before:pl.cut,at:new Date().toISOString(),data,money:pl.money,savings:SV.goals.map(g=>({n:g.n,moves:g.moves.filter(m=>m.d<pl.cut)}))})],{type:'application/json'});
+  const name='mostafa-os-archive-'+pl.cut.slice(0,4)+'.json';try{const f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})&&/Android|iPhone|iPad/i.test(navigator.userAgent))await navigator.share({files:[f],title:name});else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1500);}}catch(e){if(e&&e.name==='AbortError')return;}}
+ pl.days.forEach(k=>{const date=k.slice(6);try{if(!S.hist[date])S.hist[date]=summarize(Object.assign(blankDay(date),JSON.parse(localStorage.getItem(k)||'{}')));}catch(e){}localStorage.removeItem(k);});
+ pl.weeks.forEach(k=>localStorage.removeItem(k));LS.set('hist',S.hist);
+ MN.arch=MN.arch||{};pl.money.forEach(x=>{const mk=monKey(x.d);const a=MN.arch[mk]=MN.arch[mk]||{i:0,o:0,cats:{}};if(x.t==='in')a.i+=x.a;else{a.o+=x.a;a.cats[x.c]=(a.cats[x.c]||0)+x.a;}});
+ MN.list=MN.list.filter(x=>x.d>=pl.cut);saveMoney();
+ SV.goals.forEach(g=>{const old=g.moves.filter(m=>m.d<pl.cut);if(!old.length)return;const sum=old.reduce((s,m)=>s+m.a,0);g.moves=[{a:sum,d:pl.cut,carry:1}].concat(g.moves.filter(m=>m.d>=pl.cut));});saveSV();
+ AI.chat=AI.chat.slice(-10);LS.set('aiChat',AI.chat.filter(m=>!m.err&&!m.local));LS.set('lastClean',new Date().getFullYear());
+ $('#cleanSheet').hidden=true;render();renderMoney();renderSave();renderStore();toast('🧹','اتنضّف '+pl.total+' عنصر قديم','الملخصات المهمة لسه موجودة');}
+
+/* ---------- first open: ask once for the lock + phone storage ---------- */
+function setupAsk(){if(LS.get('setupAsked'))return;const sh=$('#setupSheet');
+ $('#setupBody').innerHTML='<p>خطوتين علشان تطبيقك يبقى آمن وبياناتك محفوظة:</p>'+
+  (LK.on?'<div class="stp done">✓ القفل بالبصمة شغال</div>':'<div class="stp"><b>🔐 افتحه ببصمتك أو Face ID</b><span>محدش يفتح التطبيق غيرك. البصمة بتفضل جوه موبايلك.</span><button class="minibtn gold" data-st="lock" type="button">فعّل</button></div>')+
+  (LS.get('fsOn')?'<div class="stp done">✓ ذاكرة الموبايل مسموحة</div>':'<div class="stp"><b>💾 اسمح بذاكرة الموبايل والتنبيهات</b><span>بياناتك تتحفظ بشكل دائم كملفات وجداول على الموبايل، والمتصفح ميمسحهاش.</span><button class="minibtn gold" data-st="fs" type="button">وافق</button></div>')+
+  '<button class="minibtn" data-st="later" type="button" style="width:100%;margin-top:6px">بعدين</button>';
+ sh.hidden=false;}
+function initStore(){document.body.insertAdjacentHTML('beforeend','<div class="aisheet" id="setupSheet" hidden role="dialog" aria-modal="true" aria-label="تجهيز التطبيق"><div class="bg"></div><div class="aicard qcard"><div class="aihead"><div class="av">⚙</div><div><h3>جهّز تطبيقك</h3><small>ONE-TIME SETUP</small></div></div><div class="qbody" id="setupBody"></div></div></div>'+
+  '<div class="aisheet" id="cleanSheet" hidden role="dialog" aria-modal="true" aria-label="تنظيف السنة"><div class="bg"></div><div class="aicard qcard"><div class="aihead"><div class="av">🧹</div><div><h3>تنظيف البيانات القديمة</h3><small>YEARLY CLEANUP</small></div></div><div class="qbody" id="cleanBody"></div></div></div>');
+ $('#setupSheet').addEventListener('click',async e=>{const b=e.target.closest('[data-st]');if(!b){if(e.target.classList.contains('bg')){LS.set('setupAsked',1);$('#setupSheet').hidden=true;}return;}const a=b.dataset.st;
+  if(a==='later'){LS.set('setupAsked',1);$('#setupSheet').hidden=true;return;}
+  if(a==='lock'){if(await enableLock()){LS.set('setupAsked',1);setupAskRefresh();}}
+  if(a==='fs'){await grantStorage();LS.set('setupAsked',1);setupAskRefresh();}});
+ $('#cleanSheet').addEventListener('click',e=>{const b=e.target.closest('[data-cl]');if(!b){if(e.target.classList.contains('bg'))$('#cleanSheet').hidden=true;return;}const a=b.dataset.cl;
+  if(a==='later'){LS.set('cleanLater',todayKey());$('#cleanSheet').hidden=true;return;}runCleanup(a==='arch');});
+ const field=$('#stNow');if(field){field.insertAdjacentHTML('afterend','<div id="fsBox" style="margin-top:6px"></div>');}
+ if(LS.get('fsOn')){fsInit().then(()=>{renderStore();mirrorNow();});}else renderStore();
+ setTimeout(()=>{if(!$('#lock').hidden)return;setupAsk();},1800);
+ // once a year (or when told "later" a month ago), offer the cleanup
+ const y=new Date().getFullYear();const later=LS.get('cleanLater');
+ if((LS.get('lastClean')||0)<y&&!(later&&(parseKey(todayKey())-parseKey(later))/864e5<30)){let tries=0;const tryClean=()=>{if($('#setupSheet').hidden&&$('#lock').hidden&&$('#aiSheet').hidden)openCleanup(false);else if(++tries<12)setTimeout(tryClean,5000);};setTimeout(tryClean,4000);}}
+function setupAskRefresh(){LS.set('setupAsked',0);setupAsk();LS.set('setupAsked',1);if(LK.on&&LS.get('fsOn'))setTimeout(()=>{$('#setupSheet').hidden=true;},1200);}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();setupPages();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
