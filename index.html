@@ -870,6 +870,40 @@ html.locked .lock{display:grid}
 .lk small{color:var(--ember);min-height:1.2em;font-size:12.5px}
 .lksel{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:4px 6px;font:inherit;font-size:12.5px}
 #lkSet input{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit}
+/* savings */
+.svg{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;background:rgba(7,11,20,.35)}
+.svg.done{border-color:rgba(94,224,176,.45);background:rgba(94,224,176,.05)}
+.svh{display:flex;gap:12px;align-items:center}
+.svr{width:56px;height:56px;flex:0 0 56px;transform:rotate(-90deg)}
+.svr circle{fill:none;stroke-width:6}.svr .b{stroke:#1a2540}.svr .f{stroke:var(--mint);stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.svr text{transform:rotate(90deg);transform-origin:30px 30px;font-size:20px}
+.svt{flex:1;min-width:0;display:grid;gap:1px}
+.svt b{font-family:var(--display);font-size:16px}
+.svt span{font-size:13px;color:var(--frost)}.svt em{font-style:normal;color:var(--mint);font-family:var(--mono);font-weight:600}
+.svt small{font-size:12px;color:var(--frost)}.svt small b{font-family:var(--mono);color:var(--gold2);font-size:12.5px}
+.svx{background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;align-self:flex-start}
+.svx:hover{color:var(--ember)}
+.svbar{height:6px;border-radius:4px;background:#1a2540;margin:10px 0 8px;overflow:hidden}
+.svbar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--gold2));border-radius:4px}
+.svact{display:flex;gap:6px;align-items:center}
+.svact input,.svform input{flex:1;min-width:0;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;font-size:14px;width:100%}
+.svact input{font-family:var(--mono);direction:ltr;text-align:right}
+.svlast{font-size:11.5px;color:var(--dim);margin-top:6px}
+.svnew{margin-top:4px}.svnew summary{list-style:none;cursor:pointer}.svnew summary::-webkit-details-marker{display:none}
+.svform{display:grid;gap:8px;margin-top:10px;padding:12px;border:1px dashed var(--line2);border-radius:14px}
+.svic{display:flex;gap:4px;flex-wrap:wrap}
+.svic button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line2);background:var(--panel);font-size:17px;cursor:pointer}
+.svic button.on{border-color:var(--mint);background:rgba(94,224,176,.12)}
+.chg{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:4px;margin-top:8px}
+.chg button,.gmg button{aspect-ratio:1;border-radius:7px;border:1px solid var(--line2);background:rgba(7,11,20,.5);color:var(--dim);font-family:var(--mono);font-size:10.5px;cursor:pointer;padding:0}
+.chg button.on,.gmg button.on{background:var(--mint);border-color:var(--mint);color:#06231a;font-weight:700}
+.chg button.now,.gmg button.now{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 2px rgba(243,185,77,.25)}
+.chg button.on.now{color:#06231a}
+.chg button.miss{border-color:rgba(255,106,61,.35)}
+.gm{border:1px solid var(--line);border-radius:16px;padding:12px;margin:8px 0 10px;background:rgba(7,11,20,.35)}
+.gmg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-top:10px}
+.gmg button{aspect-ratio:auto;padding:7px 2px;font-family:var(--body);font-size:11.5px}
+.gmg button.turn{border-color:var(--gold2)}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -2144,9 +2178,10 @@ function localInsights(){const out=[];const all=lastDays(21);const d7=all.filter
   if(days>0){const left=MILES.length-ms;const per=left?Math.floor(days/left):0;const nx=MILES.find(m=>!S.settings.ms[m[0]]);out.push({i:'✦',c:left&&per<45?'warn':'',t:'البزنس: '+ms+'/'+MILES.length+' مراحل · فاضل '+days+' يوم على الـ 30',s:left?'محتاج تخلص مرحلة كل '+per+' يوم تقريبًا. الجاية: '+nx[1]+'.':'خلصت كل المراحل. ما شاء الله!'});}}
  else out.push({i:'✦',c:'',t:'البزنس: '+ms+'/'+MILES.length+' مراحل',s:'حط تاريخ ميلادك في الإعدادات علشان أحسبلك سرعة الإنجاز المطلوبة لحد الـ 30.'});
  const mi2=moneyInsight();if(mi2)out.push(mi2);
+ const si2=typeof saveInsight==='function'&&SV?saveInsight():null;if(si2)out.push(si2);
  const lb=LS.get('lastBackup');const lbd=lb?Math.floor((Date.now()-lb)/864e5):null;if(lbd==null||lbd>7)out.push({i:'⬇',c:'warn',t:lbd==null?'لسه معملتش نسخة احتياطية':'آخر نسخة احتياطية من '+lbd+' يوم',s:'بياناتك على الموبايل ده بس. من الإعدادات: صدّر نسخة.'});
  const fs=streak('fajr');if(fs>=2)out.push({i:'🔥',c:'good',t:'سلسلة الفجر: '+fs+' يوم',s:'متكسرهاش. نام بدري النهارده.'});
- return out.slice(0,9);}
+ return out.slice(0,10);}
 function localBrief(){const d=S.day;const miss=missingFor(d);const pri=[];const order=['career','dakhl','ilm','rooh','bayt','jasad','waqt'];
  (d.top||[]).forEach(t=>{if(t&&t.trim()&&pri.length<3)pri.push(strip(t));});
  const r7=modRates(lastDays(7));const weak=Object.entries(r7).filter(e=>e[1].t>0).sort((a,b)=>a[1].rate-b[1].rate).map(e=>e[0]);
@@ -2277,7 +2312,7 @@ function updSend(){const b=$('#aiSend');if(!b)return;b.textContent=AI.busy==='ch
 function renderInsights(){const box=$('#aiIns');if(!box)return;box.innerHTML=localInsights().map(x=>'<div class="ins '+x.c+'"><span class="ii">'+x.i+'</span><div><b>'+esc(x.t)+'</b>'+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</div></div>').join('');}
 function renderAIMem(){}
 let aiSig='';
-function renderCoach(){if(!$('#coach'))return;const sig=todayKey()+'|'+MN.list.length+'|'+LS.get('lastBackup')+'|'+JSON.stringify(S.hist[todayKey()]||{})+'|'+S.view+'|'+(AI.brief&&AI.brief.at);if(sig===aiSig)return;aiSig=sig;renderBrief();renderInsights();}
+function renderCoach(){if(!$('#coach'))return;const sig=todayKey()+'|'+MN.list.length+'|'+JSON.stringify(SV).length+'|'+LS.get('lastBackup')+'|'+JSON.stringify(S.hist[todayKey()]||{})+'|'+S.view+'|'+(AI.brief&&AI.brief.at);if(sig===aiSig)return;aiSig=sig;renderBrief();renderInsights();}
 function buildCoach(){
  $('#aiChips').innerHTML=QUICK.slice(0,7).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
@@ -2355,7 +2390,77 @@ async function flushPending(){if(!navigator.onLine||!AI.pending.length||AI.busy)
 async function persistStorage(){try{if(navigator.storage&&navigator.storage.persist){const already=await navigator.storage.persisted();const ok=already||await navigator.storage.persist();const n=$('#stNow');
   if(n){let used='';try{const e=await navigator.storage.estimate();used=' · مستخدم '+(e.usage/1048576).toFixed(1)+' ميجا';}catch(x){}n.textContent=(ok?'✓ التخزين دائم: المتصفح مش هيمسح بياناتك لوحده':'التخزين عادي. سطّب التطبيق على الشاشة الرئيسية علشان يبقى دائم')+used;n.style.color=ok?'var(--mint)':'var(--frost)';}}}catch(e){}}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildTaskEditor();renderBackup();initLock();persistStorage();booted=true;RB.firstRender=true;
+/* ---------- التحويش: goals, 52-week challenge, gam'eya. All on this phone ---------- */
+const SV=Object.assign({goals:[],ch:null,gm:[]},LS.get('save')||{});
+const saveSV=()=>LS.set('save',SV);
+const SV_IC=['🎯','🛡','🏠','🚗','🕋','💍','👶','✈','💼','📈','🎓','💻'];
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const gSaved=g=>g.moves.reduce((s,m)=>s+m.a,0);
+function avgSpend3(){const cur=monKey(todayKey());let t=0,n=0;for(let i=1;i<=3;i++){const s=monSum(shiftMon(cur,-i));if(s.o>0){t+=s.o;n++;}}if(!n){const s=monSum(cur);return s.o||0;}return t/n;}
+function needPace(g){if(!g.by)return '';const left=g.target-gSaved(g);if(left<=0)return '';const days=Math.ceil((parseKey(g.by)-parseKey(todayKey()))/864e5);
+ if(days<=0)return '<span style="color:var(--ember)">الميعاد عدّى · فاضل '+fmt(left)+'</span>';const m=days/30.44;
+ return 'محتاج تحوّش <b>'+fmt(left/Math.max(1,m))+'</b> في الشهر · <b>'+fmt(left/Math.max(1,days/7))+'</b> في الأسبوع';}
+function savedThisWeek(){const st=weekStartKey(todayKey());let t=0;SV.goals.forEach(g=>g.moves.forEach(m=>{if(m.a>0&&m.d>=st)t+=m.a;}));(SV.ch&&SV.ch.done||[]).forEach(()=>{});return t;}
+function markWeekSave(){try{if(S.view!==todayKey())return;const it=WEEK.find(i=>i[0]==='w_save');if(it&&!S.week.c.w_save){S.week.c.w_save=true;saveWeek();render();setTimeout(()=>toast('⟳','اتعلّم بند "حطيت مبلغ الادخار" في الأسبوع',''),900);}}catch(e){}}
+function buildSave(){const sec=el('section','pnl savings');sec.id='savings';
+ sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--mint);border-color:rgba(94,224,176,.4);background:rgba(94,224,176,.08)">🐷</div><div><h2>التحويش</h2><span class="en">SAVINGS · 🔒 على موبايلك بس</span></div><span class="cnt" id="svTot"></span></div>'+
+  '<div id="svGoals"></div>'+
+  '<details class="svnew"><summary class="minibtn gold" style="display:inline-block">+ هدف تحويش جديد</summary><div class="svform">'+
+   '<div class="svic" id="svIc">'+SV_IC.map((x,i)=>'<button type="button" data-ic="'+x+'"'+(i?'':' class="on"')+'>'+x+'</button>').join('')+'</div>'+
+   '<input id="svName" maxlength="40" placeholder="بتحوّش لإيه؟ (عربية، عمرة، رأس مال البزنس…)">'+
+   '<div class="mrow1"><input id="svTarget" type="number" inputmode="numeric" min="1" placeholder="المبلغ المطلوب (ريال)"><input id="svBy" type="date" aria-label="لحد إمتى (اختياري)"></div>'+
+   '<button class="minibtn gold" id="svAdd" type="button" style="width:100%;padding:9px">ابدأ التحويش</button><div class="sub" id="svSug"></div></div></details>'+
+  '<div class="rsub" style="margin-top:16px">52-WEEK CHALLENGE · تحدي الـ 52 أسبوع</div><div id="svCh"></div>'+
+  '<div class="rsub" style="margin-top:16px">GAM\'EYA · الجمعية</div><div id="svGm"></div>'+
+  '<p class="note">التحويش الصح: حوّل أول ما الدخل ينزل، مش من اللي فاضل آخر الشهر. ابدأ بصندوق طوارئ يكفي 6 شهور، وبعدين رأس مال البزنس.</p>';
+ $('#money').insertAdjacentElement('afterend',sec);
+ let ic='🎯';
+ $('#svIc').addEventListener('click',e=>{const b=e.target.closest('[data-ic]');if(!b)return;ic=b.dataset.ic;$('#svIc').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));});
+ $('#svAdd').addEventListener('click',()=>{const n=$('#svName').value.trim(),t=parseFloat($('#svTarget').value);if(!n){$('#svName').focus();return;}if(!(t>0)){$('#svTarget').focus();return;}
+  SV.goals.push({id:uid(),n:n.slice(0,40),ic,target:Math.round(t),by:$('#svBy').value||'',moves:[],at:todayKey()});saveSV();$('#svName').value='';$('#svTarget').value='';$('#svBy').value='';sec.querySelector('.svnew').open=false;renderSave();toast(ic,'بدأت تحوّش: '+n,fmt(t)+' ريال');});
+ sec.addEventListener('click',e=>{const t=e.target;
+  const sg=t.closest('[data-sug]');if(sg){const v=+sg.dataset.sug;SV.goals.unshift({id:uid(),n:'صندوق الطوارئ',ic:'🛡',target:v,by:'',moves:[],at:todayKey()});saveSV();sec.querySelector('.svnew').open=false;renderSave();toast('🛡','بدأت صندوق الطوارئ',fmt(v)+' ريال = 6 شهور مصاريف');return;}
+  const mv=t.closest('[data-mv]');if(mv){const card=mv.closest('[data-g]');const g=SV.goals.find(x=>x.id===card.dataset.g);const inp=card.querySelector('input');const a=parseFloat(inp.value);if(!(a>0)){inp.focus();return;}
+   const sign=mv.dataset.mv==='in'?1:-1;const before=gSaved(g);if(sign<0&&a>before){toast('✕','مينفعش تسحب أكتر من اللي محوّشه','');return;}
+   g.moves.push({a:sign*Math.round(a*100)/100,d:todayKey()});saveSV();inp.value='';
+   if(sign>0){sparks(e.clientX,e.clientY,14,['#5ee0b0','#ffdc93']);markWeekSave();if(before<g.target&&gSaved(g)>=g.target){burst(140);toast('🏆','ما شاء الله! وصلت هدف '+g.n,fmt(g.target)+' ريال');}else toast(g.ic,'حوّشت '+fmt(a)+' ريال',g.n+' · '+Math.min(100,Math.round(gSaved(g)*100/g.target))+'%');}
+   else toast('↩','سحبت '+fmt(a)+' ريال',g.n);renderSave();renderCoach();return;}
+  const del=t.closest('[data-gdel]');if(del){const g=SV.goals.find(x=>x.id===del.dataset.gdel);if(g&&confirm('أمسح هدف "'+g.n+'"؟ (المحوّش فيه '+fmt(gSaved(g))+' ريال)')){SV.goals=SV.goals.filter(x=>x!==g);saveSV();renderSave();}return;}
+  const chs=t.closest('[data-chstart]');if(chs){const base=Math.max(1,+($('#chBase').value||10));SV.ch={base,start:todayKey(),done:[]};saveSV();renderSave();toast('🔥','بدأت تحدي الـ 52 أسبوع','آخره '+fmt(base*1378)+' ريال');return;}
+  const cw=t.closest('[data-wk]');if(cw){const w=+cw.dataset.wk;const d=SV.ch.done;const i=d.indexOf(w);if(i>=0)d.splice(i,1);else{d.push(w);sparks(e.clientX,e.clientY,8,['#5ee0b0','#f3b94d']);markWeekSave();}saveSV();renderSave();renderCoach();return;}
+  if(t.closest('[data-chstop]')){if(confirm('توقف التحدي؟'))SV.ch=null;saveSV();renderSave();return;}
+  const gms=t.closest('[data-gmadd]');if(gms){const n=$('#gmName').value.trim()||'الجمعية',a=parseFloat($('#gmAmt').value),c=parseInt($('#gmCnt').value),turn=parseInt($('#gmTurn').value),st=$('#gmStart').value;
+   if(!(a>0)||!(c>1)||!(turn>=1&&turn<=c)||!st){toast('✕','كمّل بيانات الجمعية','القسط، وعدد الشهور، ودورك، وأول شهر');return;}
+   SV.gm.push({id:uid(),n:n.slice(0,30),a,c,turn,st,paid:[]});saveSV();renderSave();toast('🤝','الجمعية اتسجلت','هتقبض '+fmt(a*c)+' ريال في الشهر رقم '+turn);return;}
+  const gp=t.closest('[data-gmpay]');if(gp){const g=SV.gm.find(x=>x.id===gp.closest('[data-gm]').dataset.gm);const m=+gp.dataset.gmpay;const i=g.paid.indexOf(m);if(i>=0)g.paid.splice(i,1);else g.paid.push(m);saveSV();renderSave();return;}
+  const gd=t.closest('[data-gmdel]');if(gd){const g=SV.gm.find(x=>x.id===gd.dataset.gmdel);if(g&&confirm('أمسح "'+g.n+'"؟')){SV.gm=SV.gm.filter(x=>x!==g);saveSV();renderSave();}return;}});
+ sec.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-g] input')){e.preventDefault();e.target.closest('[data-g]').querySelector('[data-mv="in"]').click();}});
+ renderSave();}
+function renderSave(){if(!$('#savings'))return;const tot=SV.goals.reduce((s,g)=>s+gSaved(g),0)+(SV.ch?SV.ch.done.reduce((s,w)=>s+w*SV.ch.base,0):0);
+ $('#svTot').textContent=fmt(tot)+' ر.س';
+ const R=24,L=2*Math.PI*R;
+ $('#svGoals').innerHTML=SV.goals.length?SV.goals.map(g=>{const s=gSaved(g),f=Math.max(0,Math.min(1,s/g.target));const last=g.moves.slice(-1)[0];
+  return '<div class="svg'+(f>=1?' done':'')+'" data-g="'+g.id+'"><div class="svh"><svg viewBox="0 0 60 60" class="svr"><circle cx="30" cy="30" r="'+R+'" class="b"/><circle cx="30" cy="30" r="'+R+'" class="f" style="stroke-dasharray:'+L+';stroke-dashoffset:'+(L*(1-f)).toFixed(1)+'"/><text x="30" y="35" text-anchor="middle">'+g.ic+'</text></svg>'+
+   '<div class="svt"><b>'+esc(g.n)+'</b><span><em>'+fmt(s)+'</em> من '+fmt(g.target)+' ريال · '+Math.round(f*100)+'%</span>'+(f>=1?'<small style="color:var(--mint)">✓ وصلت الهدف. الحمد لله</small>':'<small>'+(needPace(g)||('فاضل '+fmt(g.target-s)+' ريال'))+'</small>')+'</div><button type="button" class="svx" data-gdel="'+g.id+'" aria-label="امسح الهدف">✕</button></div>'+
+   '<div class="svbar"><i style="width:'+(f*100).toFixed(1)+'%"></i></div>'+
+   '<div class="svact"><input type="number" inputmode="decimal" min="0" placeholder="المبلغ" aria-label="المبلغ"><button type="button" class="minibtn gold" data-mv="in">+ حوّشت</button><button type="button" class="minibtn" data-mv="out">− سحبت</button></div>'+
+   (last?'<div class="svlast">آخر حركة: '+(last.a>0?'+':'−')+fmt(Math.abs(last.a))+' · '+last.d.slice(8)+'/'+last.d.slice(5,7)+' · '+g.moves.length+' حركة</div>':'')+'</div>';}).join(''):'<div class="sub" style="margin-bottom:10px">لسه معندكش هدف تحويش. ابدأ بواحد، ولو صغير.</div>';
+ const av=avgSpend3();const hasEm=SV.goals.some(g=>g.ic==='🛡');$('#svSug').innerHTML=av>0&&!hasEm?'💡 اقتراح: صندوق طوارئ = 6 × متوسط مصروفك ('+fmt(av)+') = <b>'+fmt(av*6)+'</b> ريال. <button type="button" class="minibtn" data-sug="'+Math.round(av*6/100)*100+'">ابدأه</button>':'';
+ const ch=SV.ch;if(!ch)$('#svCh').innerHTML='<div class="sub">كل أسبوع بتحوّش زيادة: الأسبوع الأول 1×، والتاني 2×… لحد 52×. لو البداية 10 ريال، هتحوّش <b>13,780</b> ريال في سنة.</div><div class="svact" style="margin-top:8px"><input id="chBase" type="number" inputmode="numeric" min="1" value="10" aria-label="مبلغ الأسبوع الأول"><button type="button" class="minibtn gold" data-chstart="1">ابدأ التحدي</button></div>';
+ else{const wk=Math.min(52,Math.floor((parseKey(todayKey())-parseKey(ch.start))/864e5/7)+1);const saved=ch.done.reduce((s,w)=>s+w*ch.base,0);
+  let g='<div class="sub">الأسبوع <b>'+wk+'</b> من 52 · المطلوب النهارده: <b>'+fmt(wk*ch.base)+'</b> ريال · محوّش <b>'+fmt(saved)+'</b> من '+fmt(ch.base*1378)+'</div><div class="chg">';
+  for(let w=1;w<=52;w++){const d=ch.done.indexOf(w)>=0;g+='<button type="button" data-wk="'+w+'" class="'+(d?'on':'')+(w===wk?' now':'')+(w<wk&&!d?' miss':'')+'" title="الأسبوع '+w+': '+fmt(w*ch.base)+' ريال">'+w+'</button>';}
+  $('#svCh').innerHTML=g+'</div><button type="button" class="minibtn" data-chstop="1" style="margin-top:8px">وقّف التحدي</button>';}
+ const gmForm='<details class="svnew"><summary class="minibtn" style="display:inline-block">+ سجّل جمعية</summary><div class="svform"><input id="gmName" maxlength="30" placeholder="اسمها (جمعية الشغل…)"><div class="mrow1"><input id="gmAmt" type="number" inputmode="numeric" placeholder="القسط الشهري"><input id="gmCnt" type="number" inputmode="numeric" placeholder="عدد الشهور"></div><div class="mrow1"><input id="gmTurn" type="number" inputmode="numeric" placeholder="دورك رقم كام"><input id="gmStart" type="month" aria-label="أول شهر"></div><button type="button" class="minibtn gold" data-gmadd="1" style="width:100%;padding:9px">سجّل</button></div></details>';
+ $('#svGm').innerHTML=SV.gm.map(g=>{const cur=monKey(todayKey());let h='<div class="gm" data-gm="'+g.id+'"><div class="svh" style="gap:8px"><div class="svt"><b>🤝 '+esc(g.n)+'</b><span>'+fmt(g.a)+' × '+g.c+' شهر · هتقبض <em>'+fmt(g.a*g.c)+'</em> في '+(()=>{const k=shiftMon(g.st,g.turn-1);const a=k.split('-');return AR_MON[+a[1]-1]+' '+a[0];})()+'</span><small>دفعت '+g.paid.length+' من '+g.c+'</small></div><button type="button" class="svx" data-gmdel="'+g.id+'" aria-label="امسح">✕</button></div><div class="gmg">';
+  for(let i=1;i<=g.c;i++){const k=shiftMon(g.st,i-1);const a=k.split('-');const p=g.paid.indexOf(i)>=0;h+='<button type="button" data-gmpay="'+i+'" class="'+(p?'on':'')+(i===g.turn?' turn':'')+(k===cur?' now':'')+'" title="'+(i===g.turn?'دورك تقبض':'')+'">'+AR_MON[+a[1]-1].slice(0,3)+(i===g.turn?' 💰':'')+'</button>';}
+  return h+'</div></div>';}).join('')+gmForm;}
+function saveInsight(){if(!SV.goals.length&&!SV.ch)return null;const w=savedThisWeek()+(SV.ch?0:0);const wd=new Date().getDay();
+ if(SV.ch){const wk=Math.min(52,Math.floor((parseKey(todayKey())-parseKey(SV.ch.start))/864e5/7)+1);if(SV.ch.done.indexOf(wk)<0&&wd>=4)return{i:'🐷',c:'warn',t:'لسه محوّشتش أسبوع '+wk+' في التحدي ('+fmt(wk*SV.ch.base)+' ريال)',s:'الأسبوع خلاص بيخلص. حوّشه النهارده.'};}
+ if(SV.goals.length&&!w&&wd>=4)return{i:'🐷',c:'warn',t:'محوّشتش حاجة الأسبوع ده',s:'ولو 50 ريال. العادة أهم من المبلغ.'};
+ const g=SV.goals.filter(x=>gSaved(x)<x.target).sort((a,b)=>gSaved(b)/b.target-gSaved(a)/a.target)[0];if(g)return{i:g.ic,c:'good',t:'أقرب هدف: '+g.n+' ('+Math.round(gSaved(g)*100/g.target)+'%)',s:needPace(g).replace(/<[^>]+>/g,'')||('فاضل '+fmt(g.target-gSaved(g))+' ريال')};return null;}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildTaskEditor();renderBackup();initLock();persistStorage();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
