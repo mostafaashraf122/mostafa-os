@@ -1,4 +1,4 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="manifest" href="manifest.webmanifest"><script>try{var L=JSON.parse(localStorage.getItem("mos:lock")||"null");if(L&&L.on)document.documentElement.className+=" locked";}catch(e){}</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="icon-192.png"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="manifest" href="manifest.webmanifest"><script>document.documentElement.className+=" locked";</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="icon-192.png"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
 <style>
@@ -1171,7 +1171,7 @@ html.locked .lock{display:grid}
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
-<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p>مقفول. افتحه بالبصمة أو Face ID أو باسورد الموبايل</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="أو الرقم السري" aria-label="الرقم السري"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
 <script>
@@ -2438,7 +2438,11 @@ function buildCoach(){
  setTimeout(()=>{const c=LS.get('aiBrief');if(AI.cfg.auto&&navigator.onLine&&!(c&&c.date===todayKey()))makeBrief(true);},2500);}
 
 /* ---------- lock: Face ID / fingerprint via the phone's own authenticator, PIN as backup ---------- */
+const GATE={s:'TPzh3YPqRcgun0tlxtsqzA==',i:310000,h:'PJL+uppB0VYZHyicQh1IzjygwpHom8/WvZ9gz5mZSag='};
 const LK=Object.assign({on:false,cred:'',salt:'',pin:'',after:1},LS.get('lock')||{});
+const sb64=u=>btoa(String.fromCharCode(...new Uint8Array(u)));
+async function pbk(pw,salt,it){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']);return sb64(await crypto.subtle.deriveBits({name:'PBKDF2',salt:Uint8Array.from(atob(salt),c=>c.charCodeAt(0)),iterations:it,hash:'SHA-256'},k,256));}
+async function passOK(v){if(LK.pwH)return (await pbk(v,LK.pwS,GATE.i))===LK.pwH;if((await pbk(v,GATE.s,GATE.i))===GATE.h)return true;return !!(LK.pin&&(await pinHash(v,LK.salt))===LK.pin);}
 const saveLock=()=>LS.set('lock',LK);
 const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const unb64=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0));};
@@ -2451,18 +2455,20 @@ async function bioCreate(){const c=await navigator.credentials.create({publicKey
 async function bioCheck(){if(!LK.cred)return false;const a=await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(LK.cred),transports:['internal','hybrid']}],userVerification:'required',timeout:60000}});
  return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
 let lkFails=+(LK.fails||0),lkWait=+(LK.wait||0),hiddenAt=0;
-function showLock(){if(!LK.on)return;document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
- $('#lkBio').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!LK.pin;}if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
-function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;if(LK.fails||LK.wait||LK.lockouts){LK.fails=0;LK.wait=0;LK.lockouts=0;saveLock();}}
-async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الرقم السري.';}
- catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الرقم السري.';}}
-async function tryPin(){const v=$('#lkPin').value.trim();if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
- if(await pinHash(v,LK.salt)===LK.pin){unlock();return;}lkFails++;$('#lkPin').value='';
- LK.fails=lkFails;saveLock();if(lkFails>=5){lkWait=Date.now()+30000*Math.max(1,(LK.lockouts=(LK.lockouts||0)+1));lkFails=0;LK.fails=0;LK.wait=lkWait;saveLock();$('#lkMsg').textContent='غلط 5 مرات. استنى 30 ثانية.';}else $('#lkMsg').textContent='الرقم غلط';}
+function showLock(){document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
+ $('#lkBio').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=false;}$('#lkTxt').textContent=LK.cred?'مقفول. افتحه بالبصمة أو Face ID، أو اكتب الباسورد':'مقفول. اكتب الباسورد';
+ if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
+function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;if(!LS.get('setupAsked')&&typeof setupAsk==='function')setTimeout(setupAsk,700);if(LK.fails||LK.wait||LK.lockouts){LK.fails=0;LK.wait=0;LK.lockouts=0;saveLock();}}
+async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الباسورد.';}
+ catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الباسورد.';}}
+async function tryPin(){const v=$('#lkPin').value;if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
+ $('#lkGo').disabled=true;let ok=false;try{ok=await passOK(v);}catch(e){}$('#lkGo').disabled=false;
+ if(ok){unlock();return;}lkFails++;$('#lkPin').value='';
+ LK.fails=lkFails;saveLock();if(lkFails>=5){lkWait=Date.now()+30000*Math.max(1,(LK.lockouts=(LK.lockouts||0)+1));lkFails=0;LK.fails=0;LK.wait=lkWait;saveLock();$('#lkMsg').textContent='غلط 5 مرات. استنى شوية وجرّب تاني.';}else $('#lkMsg').textContent='الباسورد غلط';}
 function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkGo').addEventListener('click',tryPin);
  $('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
- document.addEventListener('visibilitychange',()=>{if(!LK.on)return;if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
- renderLockSet();if(LK.on)showLock();}
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
+ renderLockSet();showLock();}
 
 /* ---------- offline first: the phone is the server; the network is only for the coach ---------- */
 function netChip(){const s=$('#sync');if(!s)return;const on=navigator.onLine;s.textContent=on?'ONLINE':'OFFLINE';s.classList.toggle('on',on);
@@ -2472,7 +2478,7 @@ window.addEventListener('online',()=>{netChip();toast('📶','رجع النت','
 window.addEventListener('offline',()=>{netChip();toast('📴','النت فصل','كمّل عادي. كل حاجة بتتسجل على الموبايل');});
 async function flushPending(){if(!navigator.onLine||!AI.pending.length||AI.busy)return;const q=AI.pending.shift();LS.set('aiPending',AI.pending);
  const ix=AI.chat.findIndex(m=>m.queued&&m.content===q);if(ix>=0)AI.chat.splice(ix,2);await send(q);if(AI.pending.length)setTimeout(flushPending,1500);}
-async function persistStorage(){try{if(navigator.storage&&navigator.storage.persist){const already=await navigator.storage.persisted();const ok=already||await navigator.storage.persist();const n=$('#stNow');
+async function persistStorage(){try{if(navigator.storage&&navigator.storage.persist){const ok=await navigator.storage.persisted();const n=$('#stNow');
   if(n){let used='';try{const e=await navigator.storage.estimate();used=' · مستخدم '+(e.usage/1048576).toFixed(1)+' ميجا';}catch(x){}n.textContent=(ok?'✓ التخزين دائم: المتصفح مش هيمسح بياناتك لوحده':'التخزين عادي. سطّب التطبيق على الشاشة الرئيسية علشان يبقى دائم')+used;n.style.color=ok?'var(--mint)':'var(--frost)';}}}catch(e){}}
 
 /* ---------- التحويش: goals, 52-week challenge, gam'eya. All on this phone ---------- */
@@ -2813,22 +2819,19 @@ function buildComm(){const host=$('#mPlanD');host.insertAdjacentHTML('afterend',
 
 /* ---------- lock setup: one tap, the phone's own Face ID / fingerprint / passcode ---------- */
 function renderLockSet(){const box=$('#lkSet');if(!box)return;
- if(LK.on){box.innerHTML='<div class="sub" style="color:var(--mint)">✓ القفل شغال'+(LK.cred?': بيفتح بالبصمة أو Face ID، ولو مشتغلوش بباسورد الموبايل':': بالرقم السري')+(LK.pin&&LK.cred?' · ومعاه رقم سري احتياطي':'')+'</div>'+
+ box.innerHTML='<div class="sub" style="color:var(--mint)">✓ التطبيق مقفول بباسورد على أي جهاز يتفتح منه'+(LK.cred?'، وعلى الجهاز ده بيفتح بالبصمة أو Face ID':'')+'</div>'+
+  (LK.cred?'':'<button class="minibtn gold" id="lkOn" type="button" style="width:100%;padding:11px;font-size:15px;margin-top:8px">🔐 افتحه ببصمتك أو Face ID بدل الباسورد</button>')+
   '<div class="trow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px"><label class="sub">يقفل لوحده بعد <select id="lkAfter" class="lksel"><option value="0">ما أقفل الصفحة على طول</option><option value="1">دقيقة</option><option value="5">5 دقايق</option><option value="15">ربع ساعة</option></select></label>'+
-  '<button class="minibtn" id="lkNow" type="button">🔒 اقفل دلوقتي</button><button class="minibtn" id="lkOff" type="button">شيل القفل</button></div>';
-  const s=$('#lkAfter');s.value=String(LK.after);s.onchange=()=>{LK.after=+s.value;saveLock();};$('#lkNow').onclick=()=>showLock();
-  $('#lkOff').onclick=async()=>{let ok=false;try{if(LK.cred)ok=await bioCheck();}catch(e){}
-   if(!ok&&LK.pin){const p=prompt('اكتب الرقم السري علشان تشيل القفل');if(p!=null)ok=(await pinHash(p.trim(),LK.salt))===LK.pin;}
-   if(!ok){toast('✕','لازم تأكد إنك إنت الأول','');return;}LK.on=false;LK.cred='';LK.pin='';saveLock();renderLockSet();toast('🔓','القفل اتشال','');};return;}
- box.innerHTML='<button class="minibtn gold" id="lkOn" type="button" style="width:100%;padding:11px;font-size:15px">🔐 فعّل القفل ببصمتك أو Face ID</button>'+
-  '<details style="margin-top:8px"><summary class="sub" style="cursor:pointer">رقم سري احتياطي (اختياري)</summary><input id="lkNew" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="4 لـ 8 أرقام" style="margin-top:6px;width:100%"></details>';
- $('#lkOn').onclick=enableLock;}
-async function enableLock(){const pinIn=$('#lkNew');const p=pinIn?pinIn.value.trim():'';if(p&&!/^\d{4,8}$/.test(p)){toast('✕','الرقم السري لازم 4 لـ 8 أرقام','');return false;}
- const bio=await bioAvailable();if(bio&&!p&&!LS.get('lockWarned')){LS.set('lockWarned',1);if(!confirm('هيفتح ببصمتك أو Face ID، ولو مشتغلوش بباسورد الموبايل.\n\nمهم: لو مفتاح القفل اتمسح من الموبايل، مش هتعرف تفتح التطبيق. علشان كده اعمل نسخة احتياطية من الإعدادات كل فترة.\n\nتكمّل؟'))return false;}
- if(!bio&&!p){toast('ℹ','الموبايل ده مش بيدعم البصمة من المتصفح','اكتب رقم سري احتياطي وفعّل');const d=$('#lkSet details');if(d)d.open=true;return false;}
- LK.salt=b64(rnd(16));LK.pin=p?await pinHash(p,LK.salt):'';LK.cred='';
- if(bio){try{LK.cred=await bioCreate();}catch(e){if(!p){toast('⚠','البصمة متفعلتش','جرّب تاني');return false;}}}
- LK.on=true;saveLock();renderLockSet();toast('🔐','القفل اتفعّل','من دلوقتي هيفتح بالبصمة أو Face ID لوحده');return true;}
+  '<button class="minibtn" id="lkNow" type="button">🔒 اقفل دلوقتي</button>'+(LK.cred?'<button class="minibtn" id="lkOff" type="button">شيل البصمة</button>':'')+'</div>'+
+  '<details style="margin-top:8px"><summary class="sub" style="cursor:pointer">غيّر الباسورد على الجهاز ده</summary><div class="svform"><input id="pwOld" type="password" placeholder="الباسورد الحالي" dir="ltr" autocomplete="current-password"><input id="pwNew" type="password" placeholder="الباسورد الجديد (8 حروف أو أكتر)" dir="ltr" autocomplete="new-password"><button class="minibtn gold" id="pwSave" type="button">غيّر</button></div></details>';
+ const s=$('#lkAfter');s.value=String(LK.after);s.onchange=()=>{LK.after=+s.value;saveLock();};$('#lkNow').onclick=()=>showLock();
+ if($('#lkOn'))$('#lkOn').onclick=enableLock;
+ if($('#lkOff'))$('#lkOff').onclick=()=>{if(!confirm('أشيل البصمة؟ التطبيق هيفضل يفتح بالباسورد.'))return;LK.cred='';saveLock();renderLockSet();toast('🔓','البصمة اتشالت','هيفتح بالباسورد');};
+ $('#pwSave').onclick=async()=>{const o=$('#pwOld').value,n=$('#pwNew').value;if(!(await passOK(o))){toast('✕','الباسورد الحالي غلط','');return;}if(n.length<8){toast('✕','الباسورد الجديد لازم 8 حروف أو أكتر','');return;}
+  LK.pwS=sb64(rnd(16));LK.pwH=await pbk(n,LK.pwS,GATE.i);saveLock();$('#pwOld').value='';$('#pwNew').value='';toast('✓','الباسورد اتغيّر على الجهاز ده','الأجهزة التانية بتفضل بالباسورد الأصلي');};}
+async function enableLock(){if(!(await bioAvailable())){toast('ℹ','الجهاز ده مش بيدعم البصمة من المتصفح','هيفضل يفتح بالباسورد');return false;}
+ try{LK.cred=await bioCreate();}catch(e){toast('⚠','البصمة متفعلتش','جرّب تاني');return false;}
+ LK.on=true;saveLock();renderLockSet();toast('🔐','البصمة اتفعّلت','من دلوقتي هيفتح بالبصمة أو Face ID لوحده، والباسورد احتياطي');return true;}
 
 /* ---------- phone storage: persistent + text & table files in the app's own space on the phone ---------- */
 const FS={ok:false,dir:null,last:0,err:''};
@@ -2886,7 +2889,7 @@ async function runCleanup(arch){const pl=cleanPlan();
 /* ---------- first open: ask once for the lock + phone storage ---------- */
 function setupAsk(){if(LS.get('setupAsked'))return;const sh=$('#setupSheet');
  $('#setupBody').innerHTML='<p>خطوتين علشان تطبيقك يبقى آمن وبياناتك محفوظة:</p>'+
-  (LK.on?'<div class="stp done">✓ القفل بالبصمة شغال</div>':'<div class="stp"><b>🔐 افتحه ببصمتك أو Face ID</b><span>محدش يفتح التطبيق غيرك. البصمة بتفضل جوه موبايلك.</span><button class="minibtn gold" data-st="lock" type="button">فعّل</button></div>')+
+  (LK.cred?'<div class="stp done">✓ البصمة شغالة</div>':'<div class="stp"><b>🔐 افتحه ببصمتك أو Face ID بدل الباسورد</b><span>أسرع من الباسورد. البصمة بتفضل جوه موبايلك، والباسورد بيفضل احتياطي.</span><button class="minibtn gold" data-st="lock" type="button">فعّل</button></div>')+
   (LS.get('fsOn')?'<div class="stp done">✓ ذاكرة الموبايل مسموحة</div>':'<div class="stp"><b>💾 اسمح بذاكرة الموبايل والتنبيهات</b><span>بياناتك تتحفظ بشكل دائم كملفات وجداول على الموبايل، والمتصفح ميمسحهاش.</span><button class="minibtn gold" data-st="fs" type="button">وافق</button></div>')+
   '<button class="minibtn" data-st="later" type="button" style="width:100%;margin-top:6px">بعدين</button>';
  sh.hidden=false;}
@@ -2900,11 +2903,11 @@ function initStore(){document.body.insertAdjacentHTML('beforeend','<div class="a
   if(a==='later'){LS.set('cleanLater',todayKey());$('#cleanSheet').hidden=true;return;}runCleanup(a==='arch');});
  const field=$('#stNow');if(field){field.insertAdjacentHTML('afterend','<div id="fsBox" style="margin-top:6px"></div>');}
  if(LS.get('fsOn')){fsInit().then(()=>{renderStore();mirrorNow();});}else renderStore();
- setTimeout(()=>{if(!$('#lock').hidden)return;setupAsk();},1800);
+ setTimeout(()=>{if($('#lock').hidden)setupAsk();},1800);
  // once a year (or when told "later" a month ago), offer the cleanup
  const y=new Date().getFullYear();const later=LS.get('cleanLater');
  if((LS.get('lastClean')||0)<y&&!(later&&(parseKey(todayKey())-parseKey(later))/864e5<30)){let tries=0;const tryClean=()=>{if($('#setupSheet').hidden&&$('#lock').hidden&&$('#aiSheet').hidden)openCleanup(false);else if(++tries<12)setTimeout(tryClean,5000);};setTimeout(tryClean,4000);}}
-function setupAskRefresh(){LS.set('setupAsked',0);setupAsk();LS.set('setupAsked',1);if(LK.on&&LS.get('fsOn'))setTimeout(()=>{$('#setupSheet').hidden=true;},1200);}
+function setupAskRefresh(){LS.set('setupAsked',0);setupAsk();LS.set('setupAsked',1);if(LK.cred&&LS.get('fsOn'))setTimeout(()=>{$('#setupSheet').hidden=true;},1200);}
 
 buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();setupPages();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
