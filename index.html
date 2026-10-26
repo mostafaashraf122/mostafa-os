@@ -3463,10 +3463,10 @@ const CUE=(function(){
   azkar:(c,t)=>{const o=out(c,.3);[523,659,784].forEach((f,i)=>tone(c,o,t+i*.3,f,1.6,'sine',.12));},          /* gentle bells */
   dhikr:(c,t)=>{const o=out(c,.15);for(let i=0;i<3;i++){tone(c,o,t+i*.42,1400,.12,'triangle',.12);noise(c,o,t+i*.42,.05,2500,.12,4);}tone(c,o,t+1.4,660,1.4,'sine',.1);} /* beads clicking */
  };
- let voice=null;function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));voice=v.find(x=>/Daniel|Arthur|Google UK English Male|Alex|Aaron/i.test(x.name))||v.find(x=>/en-GB/i.test(x.lang))||v[0]||null;}catch(e){}}
+ let voice=null;function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));const MALE=/male|Daniel|Arthur|Aaron|Alex|Fred|Gordon|Oliver|Rishi|Thomas|James|Guy|Ryan|Christopher|Eric|rjs|gbd|gbb|iom|iol|tpd|tpc|sfg/i;voice=v.find(x=>MALE.test(x.name)&&!/female/i.test(x.name))||v.find(x=>/en-GB/i.test(x.lang))||v[0]||null;}catch(e){}}
  try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
- function arVoice(){try{return speechSynthesis.getVoices().find(x=>/^ar/i.test(x.lang))||null;}catch(e){return null;}}
- function say(txt,delay,ar){if(!txt||!('speechSynthesis' in window))return;setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);const v=ar?arVoice():voice;if(v)u.voice=v;u.lang=v?v.lang:(ar?'ar-SA':'en-GB');u.rate=ar?.9:.86;u.pitch=ar?.95:.72;u.volume=1;speechSynthesis.speak(u);}catch(e){}},delay||0);}
+ function arVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^ar/i.test(x.lang));return v.find(x=>/male|Maged|Tarik|Hamed|Shakir|Naayf|ard|are|arc/i.test(x.name)&&!/female/i.test(x.name))||v[0]||null;}catch(e){return null;}}
+ function say(txt,delay,ar){if(!txt||!('speechSynthesis' in window))return;setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);const v=ar?arVoice():voice;if(v)u.voice=v;u.lang=v?v.lang:(ar?'ar-SA':'en-GB');u.rate=ar?.88:.84;u.pitch=ar?.7:.6;u.volume=1;speechSynthesis.speak(u);}catch(e){}},delay||0);}
  const SND_OF=k=>['fajr','dhuhr','asr','maghrib','isha','friday'].includes(k)?'pray':(k==='azkar_m'||k==='azkar_e')?'azkar':k;
  function play(k,txt,force){const sk=SND_OF(k);if(!S[sk]||(!on()&&!force))return false;const c=ac();if(c.state!=='running'){try{c.resume();}catch(e){}}
   if(c.state!=='running'){pending={k,txt};return false;}
