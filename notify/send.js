@@ -51,6 +51,7 @@ async function buildState(S){
   const R=await remoteConfig(S);
   const sub=(R&&R.sub)||S.sub;
   const cfg=Object.assign({},Plan.DEF,S.cfg||{},(R&&R.cfg)||{});cfg.times=Object.assign({},cfg.times||{});
+  if(R&&R.t)cfg.lastOpen=R.t; /* the app re-syncs whenever it's opened (at most every 3h): that's the last visit */
   /* make sure today and tomorrow have official times */
   for(const off of [-1,0,1]){const p=Plan.partsIn(Date.now()+off*864e5,cfg.tz);const k=Plan.pkey(p.year,p.month,p.day);
     if(!cfg.times[k]){const t=await onlineTimes(cfg,p.year,p.month,p.day);if(t)cfg.times[k]=t;}}
