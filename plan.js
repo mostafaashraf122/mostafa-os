@@ -39,34 +39,34 @@ function prayers(y,m,d,c){const ov=c.times&&c.times[pkey(y,m,d)];if(ov&&isFinite
 /* ---------- messages (rotate every day so they never feel the same) ---------- */
 const PN={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
 const M={
- fajr:['صلّي الفجر: «من صلّى الصبح في جماعة فكأنما صلّى الليل كله».','صلّي الفجر: «من صلّى الصبح فهو في ذمة الله». ابدأ يومك في حماية ربنا.','صلّي الفجر: «ركعتا الفجر خير من الدنيا وما فيها». يبقى الفريضة نفسها أغلى بكتير.','صلّي الفجر: الصلاة خير من النوم. دقيقة شجاعة دلوقتي = يوم كامل فيه بركة.','صلّي الفجر: «بشّر المشّائين في الظُّلَم إلى المساجد بالنور التام يوم القيامة».'],
- dhuhr:['صلّي الظهر: هي الفاصل بين انشغالك بالدنيا ووصالك مع الآخرة. سيب الشغل 10 دقايق.','صلّي الظهر: ساعة بتتفتح فيها أبواب السما، وكان النبي ﷺ بيحب يطلع له فيها عمل صالح.','صلّي الظهر: نص اليوم عدّى. وقفة مع ربنا ترجعك أهدى وأركز.','صلّي الظهر: «من حافظ على أربع ركعات قبل الظهر وأربع بعدها حرّمه الله على النار».'],
- asr:['صلّي العصر: هي الصلاة الوسطى اللي ربنا وصّى عليها مخصوص: ﴿حافظوا على الصلوات والصلاة الوسطى﴾.','صلّي العصر: «من صلّى البردين دخل الجنة»، والبردين هما الفجر والعصر.','صلّي العصر: آخر اليوم بيجري والناس مشغولة. خليك من اللي بيلحقوها في وقتها.','صلّي العصر: «رحم الله امرأً صلّى قبل العصر أربعاً». ساعة بركة قبل ما النهار يخلص.'],
- maghrib:['صلّي المغرب: النهار خلص، اختمه بسجدة واستغفار عن كل اللي فات فيه.','صلّي المغرب: وقتها قصير، فبادر بيها أول ما يأذن. «لا تزال أمتي بخير ما لم يؤخروا المغرب».','صلّي المغرب: يوم جديد بيبدأ عند ربنا. ابدأه بصلاة وأذكار المسا.','صلّي المغرب: اقفل صفحة النهار بصلاة، وافتح صفحة الليل بذكر.'],
- isha:['صلّي العشاء: «من صلّى العشاء في جماعة فكأنما قام نصف الليل».','صلّي العشاء: «لو يعلمون ما في العشاء والفجر لأتوهما ولو حبواً».','صلّي العشاء: آخر صلاة في يومك. ختامها مسك، ومتنساش الوتر قبل ما تنام.','صلّي العشاء: سلّم يومك لربنا، ونام وإنت مطمّن إنك أديت اللي عليك.'],
+ fajr:["في جماعة = قيام الليل كله", "في ذمة الله", "خير من النوم"],
+ dhuhr:["الفاصل بين الدنيا والآخرة", "أبواب السما مفتوحة", "وقفة مع ربنا"],
+ asr:["الصلاة الوسطى", "البردين = الجنة", "قبل ما النهار يخلص"],
+ maghrib:["اختم النهار بسجدة", "بادر، وقتها قصير"],
+ isha:["في جماعة = قيام نص الليل", "ختامها مسك · والوتر"],
  prayer:['حيّ على الصلاة. سيب اللي في إيدك 10 دقايق ورجعله.','الصلاة في وقتها أحب الأعمال إلى الله. قوم دلوقتي.','وقفة مع ربنا وسط اليوم. هترجع أهدى وأركز.','ولا حاجة في الشغل أهم من الدقايق دي. صلّي وكمّل.'],
  wake:["The ones who win were awake first.", "Comfort is a quiet thief.", "Nobody's coming. Rise.", "The day bows to the early.", "Discipline speaks before the alarm."],
- azkar_m:['أذكار الصباح · 5 دقايق بتحميك اليوم كله. افتحها.','حصّن يومك قبل ما تخرج: أذكار الصباح جاهزة.','"فَاذْكُرُونِي أَذْكُرْكُمْ" · أذكار الصباح مستنياك.'],
+ azkar_m:["حصّن يومك", "5 دقايق قبل ما تخرج"],
  train:["Iron doesn't lie.", "Pain today, armor tomorrow.", "Sweat is the receipt.", "Built, not born."],
  walk:["Even rivers rest, but never stop.", "Slow is still forward."],
  breakfast:["Feed the fire, not the noise.", "Strong roots, tall trees."],
  leave:["Every road is a lesson in disguise.", "North never moves. Neither should you.", "The path pays those who walk it."],
  focus:["One arrow. One target.", "Empires are built in silence.", "Want less. Build more.", "Walls rise one brick at a time.", "Patience is a weapon.", "The enemy wears the mask of distraction.", "The summit doesn't care how you feel.", "Thirty is closer than it looks."],
  home:["The climb resumes at base camp.", "Recharge. The war isn't over."],
- azkar_e:['أذكار المساء ☾ قبل المغرب. 5 دقايق بس.','"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ" · أذكار المساء جاهزة.','اقفل نهارك بذكر ربنا. أذكار المساء مستنياك.'],
+ azkar_e:["قبل المغرب", "اقفل نهارك بذكر"],
  story:["Old lanterns light new roads.", "Every legend was once a story."],
  read:["Roots grow in silence.", "Ten leaves a day becomes a forest.", "The quiet ones read the map."],
  review:["Look the day in the eye.", "What you measure, you master."],
  wind:["Dusk belongs to the grateful.", "Slow the river before the night."],
  sleep:["Champions are made in the dark.", "Close the gate. Guard tomorrow.", "Rest is part of the climb."],
- friday:['جمعة مباركة 🕌 اقرا سورة الكهف وكتّر الصلاة على النبي ﷺ.','الجمعة: روح الصلاة بدري، وسورة الكهف، وساعة الإجابة آخر العصر.'],
+ friday:["الكهف · والصلاة على النبي ﷺ", "بكّر · الكهف · ساعة الإجابة"],
  moti:["Remember why the fire started.", "Embers die when ignored."],
- dhikr:['نسيت تستغفر النهارده؟ أستغفر الله ×100، دقيقة واحدة بس.','سبحان الله وبحمده ×100 · «حُطّت خطاياه وإن كانت مثل زبد البحر».','لا حول ولا قوة إلا بالله · كنز من كنوز الجنة.','صلّي على النبي ﷺ ×10 · «من صلّى عليّ صلاة صلّى الله عليه بها عشراً».','سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر · أحب الكلام إلى الله.','لسانك فاضي؟ خلّيه رطب بذكر الله. سبّح 33 واستغفر 33.'],
+ dhikr:["أستغفر الله ×100", "سبحان الله وبحمده ×100", "لا حول ولا قوة إلا بالله", "صلّي على النبي ﷺ ×10", "سبحان الله · الحمد لله · الله أكبر"],
  away:["The path remembers your footsteps.", "Silence is getting loud.", "The fire is fading.", "Your throne is empty.", "Come back before the trail goes cold."]
 };
 const CATS=[['prayer','🕌','الصلوات'],['wake','☀','الصحيان والنوم'],['azkar','📿','أذكار الصبح والمساء'],['body','💪','التمرين والفطار والنزول'],['focus','🎯','ركّز على هدفك'],['moti','⚡','التحفيز'],['story','📖','القصص والأحاديث'],['read','📚','القراية'],['review','◑','حساب آخر اليوم'],['dhikr','📿','استغفار وتسبيح'],['away','◌','لو غبت عن التطبيق']];
 const GO={fajr:'pray',prayer:'pray',wake:'day',azkar_m:'azkar_m',train:'day',walk:'day',breakfast:'day',leave:'day',focus:'goal',home:'moti',moti:'moti',azkar_e:'azkar_e',story:'story',read:'read',review:'review',wind:'gratitude',sleep:'day',friday:'day',dhikr:'dhikr',away:'day'};
-const TITLE={wake:'🌅 Dawn',azkar_m:'📿 أذكار الصباح',train:'🔥 Forge',walk:'🌊 Tide',breakfast:'🪵 Kindling',leave:'🧭 North',focus:'🏹 Arrow',home:'🏔 Basecamp',moti:'✨ Ember',azkar_e:'📿 أذكار المساء',story:'🕯 Lantern',read:'🌱 Roots',review:'🪞 Mirror',wind:'🌒 Dusk',sleep:'🌑 Night',friday:'🕌 يوم الجمعة',dhikr:'📿 فكّر ربنا',away:'🌫 Echo'};
+const TITLE={wake:'🌅 Dawn',azkar_m:'📿 أذكار الصباح',train:'🔥 Forge',walk:'🌊 Tide',breakfast:'🪵 Kindling',leave:'🧭 North',focus:'🏹 Arrow',home:'🏔 Basecamp',moti:'✨ Ember',azkar_e:'📿 أذكار المساء',story:'🕯 Lantern',read:'🌱 Roots',review:'🪞 Mirror',wind:'🌒 Dusk',sleep:'🌑 Night',friday:'🕌 الجمعة',dhikr:'📿 ذكر',away:'🌫 Echo'};
 const LBL={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء',wake:'الصحيان',azkar_m:'أذكار الصباح',train:'التمرين',walk:'مشي خفيف',breakfast:'الفطار',leave:'النزول للشغل',work:'الشغل',focus:'ركّز',home:'الرجوع للبيت',moti:'تحفيز',azkar_e:'أذكار المساء',story:'قصة وحديث',read:'القراية',review:'الحساب',wind:'الاستعداد للنوم',sleep:'النوم',friday:'الجمعة',dhikr:'ذكر',away:'غياب'};
 const ICON={fajr:'🌅',dhuhr:'☀',asr:'🌤',maghrib:'🌇',isha:'🌙',wake:'⏰',azkar_m:'📿',train:'💪',walk:'🚶',breakfast:'🍳',leave:'🚗',work:'💼',focus:'🎯',home:'🏠',moti:'⚡',azkar_e:'📿',story:'📖',read:'📚',review:'◑',wind:'🌙',sleep:'😴',friday:'🕌',dhikr:'📿',away:'◌'};
 
@@ -81,7 +81,7 @@ function day(y,m,d,cfg){const c=Object.assign({},DEF,cfg||{});const off=c.off||{
  const add=(min,k,cat,extra)=>{const msgs=M[k]||M.prayer;L.push(Object.assign({min:Math.round(min),k,cat,title:TITLE[k]||'Mostafa OS',body:rot(msgs,y,m,d,salt++),go:GO[k]||'day',label:LBL[k]||k,icon:ICON[k]||'•',notify:true},extra||{}));};
  /* prayers */
  ['fajr','dhuhr','asr','maghrib','isha'].forEach(p=>{const isF=p==='fajr';const jum=p==='dhuhr'&&wd===5;
-   add(P[p],p,'prayer',{title:'🕌 حان وقت '+(jum?'صلاة الجمعة':'صلاة '+PN[p]),body:jum?'صلّي الجمعة: روح الجامع بدري واسمع الخطبة. «من بكّر وابتكر» كان له بكل خطوة أجر سنة صيامها وقيامها.':rot(M[p]||M.prayer,y,m,d,salt++),go:'pray',label:jum?'الجمعة':PN[p],icon:ICON[p]});});
+   add(P[p],p,'prayer',{title:'🕌 '+(jum?'الجمعة':PN[p]),body:jum?'بكّر · واسمع الخطبة':rot(M[p]||M.prayer,y,m,d,salt++),go:'pray',label:jum?'الجمعة':PN[p],icon:ICON[p]});});
  /* morning */
  add(wake,'wake','wake');
  add(wake+5,'azkar_m','azkar');
