@@ -3322,6 +3322,7 @@ function autoHTML(){const pt=PTA.loc===locId()&&PTA.days[ymd(new Date())];
 buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();buildDayflow();buildNotifs();setupPages();initGo();autoInit();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
+window.MOS={PT,isRamadan,LK,enableLock,bioAvailable};
 })();
 </script>
 
@@ -3391,7 +3392,7 @@ body{font-variant-numeric:tabular-nums}
   isha:['#121842','#2f2e6a','#5c4380',0,.8]};
  const hx=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
  const mix=(a,b,t)=>{const A=hx(a),B=hx(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');};
- function times(){try{const d=new Date();const t=PT.compute(d,typeof isRamadan==='function'?isRamadan(d):false);return t;}catch(e){return {fajr:4.8,sunrise:6.1,dhuhr:11.8,asr:15.1,maghrib:17.5,isha:19};}}
+ function times(){try{const d=new Date();const M=window.MOS;const t=M.PT.compute(d,M.isRamadan(d));if(!t||!isFinite(t.fajr))throw 0;return t;}catch(e){return {fajr:4.8,sunrise:6.1,dhuhr:11.8,asr:15.1,maghrib:17.5,isha:19};}}
  function paint(){const t=times();const n=new Date();const h=n.getHours()+n.getMinutes()/60+n.getSeconds()/3600;
   const A=[[t.isha+1,'night'],[t.fajr-.4,'night'],[t.fajr,'fajr'],[t.sunrise,'sunrise'],[t.sunrise+1.2,'day'],[t.asr-.3,'day'],[t.asr+.3,'asr'],[t.maghrib-.6,'golden'],[t.maghrib,'maghrib'],[t.isha,'isha'],[t.isha+1,'night']];
   let a=A[0],b=A[1],f=0;
@@ -3515,5 +3516,25 @@ const CUE=(function(){
 .ico svg{width:100%;height:100%;display:block}
 .glyph .ico,.dock .ico,.ib .ico{width:1.15em;height:1.15em}
 </style>
+
+<div class="fidask" id="fidAsk" hidden role="dialog" aria-label="Face ID"><div class="fidc"><div class="fidi">🔐</div><b>خلّيه يفتح بوشك</b><span>الموبايل ده لسه مش متسجّل فيه Face ID، علشان كده طلب الباسورد. فعّله مرة واحدة ومن بعدها هيفتح بوشك لوحده.</span><button type="button" id="fidGo">فعّل Face ID</button><button type="button" class="fidl" id="fidLater">بعدين</button></div></div>
+<style>
+.fidask{position:fixed;inset:0;z-index:210;display:grid;place-items:end center;padding:16px;background:rgba(4,6,14,.55);backdrop-filter:blur(6px)}
+.fidask[hidden]{display:none}
+.fidc{width:min(100%,420px);display:grid;gap:10px;justify-items:center;text-align:center;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0px));border-radius:26px;background:color-mix(in srgb,var(--s1) 80%,#0a0f22);border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.fidi{font-size:30px}.fidc b{font-family:var(--display);font-size:20px}.fidc span{color:var(--frost);font-size:14px}
+#fidGo{width:100%;padding:13px;border:none;border-radius:16px;background:var(--gold);color:#1b1305;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.fidl{background:none;border:none;color:var(--frost);font:inherit;cursor:pointer;padding:6px}
+</style>
+<script>
+/* ---------- v15.1: no Face ID on this phone yet? offer it right after the password ---------- */
+(function(){const M=window.MOS;if(!M)return;const box=document.getElementById('fidAsk');let shown=false;
+ const later=()=>{try{const v=+localStorage.getItem('mos:fidLater')||0;return Date.now()-v<3*864e5;}catch(e){return false;}};
+ async function check(){if(shown||document.documentElement.classList.contains('locked')||M.LK.cred||later())return;
+  if(!(await M.bioAvailable()))return;shown=true;setTimeout(()=>{box.hidden=false;},600);}
+ document.getElementById('fidGo').onclick=async()=>{box.hidden=true;try{await M.enableLock();}catch(e){}};
+ document.getElementById('fidLater').onclick=()=>{box.hidden=true;try{localStorage.setItem('mos:fidLater',Date.now());}catch(e){}};
+ new MutationObserver(check).observe(document.documentElement,{attributes:true,attributeFilter:['class']});check();})();
+</script>
 
 </body></html>
