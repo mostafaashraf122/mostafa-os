@@ -1025,6 +1025,102 @@ html:not([data-page="today"]) .pgtitle{display:flex}
 .aifab.chatfab.away{transform:translateX(-80px);opacity:0;pointer-events:none}
 #aiSrc{display:none}
 #coach .aiask{margin-top:0}
+/* ---------- يومك · day timeline ---------- */
+.dayflow{overflow:hidden;border-color:rgba(243,185,77,.28);background:
+  radial-gradient(120% 90% at 100% 0%,rgba(243,185,77,.13),transparent 55%),
+  radial-gradient(90% 80% at 0% 100%,rgba(120,195,255,.10),transparent 60%),
+  linear-gradient(180deg,rgba(17,26,45,.95),rgba(13,20,36,.95))}
+.dayflow::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,220,147,.07) 45%,transparent 60%);background-size:250% 100%;animation:dfshine 7s ease-in-out infinite}
+@keyframes dfshine{0%{background-position:120% 0}60%,100%{background-position:-60% 0}}
+.df-head{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.df-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--gold);direction:ltr;display:block;text-align:right}
+.df-head h2{font-family:var(--display);font-size:26px;line-height:1.25;margin:2px 0 0;font-weight:600}
+.df-head p{margin:2px 0 0;color:var(--frost);font-size:13.5px}
+.df-ring{position:relative;width:62px;height:62px;flex:none}
+.df-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.df-ring .b{fill:none;stroke:var(--line);stroke-width:5}
+.df-ring .f{fill:none;stroke:var(--mint);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px rgba(94,224,176,.5))}
+.df-ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:13px;color:var(--mint)}
+.df-next{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(7,11,20,.55);border:1px solid var(--line2);border-radius:14px;padding:8px 12px;font-size:14px}
+.df-next>span:first-child{color:var(--dim);font-size:12px}
+.df-next b{font-weight:600}
+.df-next .mono{color:var(--frost);font-family:var(--mono);font-size:12.5px;direction:ltr}
+.df-next em{margin-inline-start:auto;font-style:normal;font-family:var(--mono);color:var(--ink);background:linear-gradient(90deg,var(--gold),var(--gold2));padding:2px 10px;border-radius:20px;font-size:12.5px;font-weight:600;direction:rtl}
+.df-bar{position:relative;height:6px;border-radius:6px;background:var(--line);margin:18px 4px 4px}
+.df-bar i{position:absolute;inset-block:0;inset-inline-start:0;border-radius:6px;background:linear-gradient(90deg,var(--sky),var(--gold),var(--ember));transition:width 1s}
+html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold),var(--ember))}
+.df-bar span{position:absolute;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--ink);border:1px solid var(--gold);box-shadow:0 0 12px rgba(243,185,77,.55);transition:inset-inline-start 1s}
+.df-bl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin:4px 2px 0}
+.df-line{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;padding:12px 2px 8px;margin:4px -16px 0;padding-inline:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent)}
+.df-line::-webkit-scrollbar{display:none}
+.dfp{flex:none;scroll-snap-align:center;min-width:78px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 8px 7px;border-radius:16px;border:1px solid var(--line);background:rgba(7,11,20,.5);color:var(--text);cursor:pointer;font:inherit;position:relative;transition:transform .2s,border-color .2s,opacity .2s}
+.dfp:active{transform:scale(.95)}
+.dfp i{font-style:normal;font-size:19px;line-height:1.2}
+.dfp b{font-size:12px;font-weight:500;white-space:nowrap}
+.dfp span{font-family:var(--mono);font-size:10.5px;color:var(--frost);direction:ltr;white-space:nowrap}
+.dfp small{position:absolute;top:2px;inset-inline-end:4px;font-size:9px;opacity:.7}
+.dfp.pr{border-color:rgba(94,224,176,.25)}
+.dfp.past{opacity:.42}
+.dfp.past::after{content:"✓";position:absolute;top:3px;inset-inline-start:6px;font-size:10px;color:var(--mint)}
+.dfp.next{border-color:rgba(120,195,255,.55);background:rgba(120,195,255,.08)}
+.dfp.now{border-color:var(--gold);background:linear-gradient(180deg,rgba(243,185,77,.22),rgba(243,185,77,.06));box-shadow:0 0 0 3px rgba(243,185,77,.12),0 6px 22px rgba(243,185,77,.25);transform:translateY(-3px)}
+.dfp.now::before{content:"NOW";position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:.15em;background:var(--gold);color:var(--ink);padding:0 6px;border-radius:8px;animation:dfpulse 1.6s ease-in-out infinite}
+@keyframes dfpulse{50%{box-shadow:0 0 0 5px rgba(243,185,77,0),0 0 10px rgba(243,185,77,.8)}}
+.df-goal{display:flex;align-items:center;gap:12px;width:100%;margin-top:10px;padding:12px;border-radius:16px;border:1px solid rgba(94,224,176,.3);background:linear-gradient(90deg,rgba(94,224,176,.10),rgba(94,224,176,.02));color:var(--text);font:inherit;text-align:start;cursor:pointer}
+.df-goal .gi{font-size:24px;width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:rgba(7,11,20,.5);flex:none}
+.df-goal .gt{flex:1;min-width:0}
+.df-goal .gt b{display:block;font-size:14.5px}
+.df-goal .gt small{display:block;font-size:12px;color:var(--frost);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.df-goal .gtr{display:block;height:5px;border-radius:5px;background:var(--line);margin-top:6px;overflow:hidden}
+.df-goal .gtr i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),#b6f5dc);border-radius:5px}
+.df-goal .gp{font-family:var(--mono);color:var(--mint);font-size:15px}
+.df-cta{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:10px;align-items:center;width:100%;margin-top:10px;padding:11px 14px;border-radius:16px;border:1px dashed rgba(243,185,77,.6);background:rgba(243,185,77,.08);color:var(--text);font:inherit;font-size:20px;text-align:start;cursor:pointer;animation:ctaglow 2.4s ease-in-out infinite}
+.df-cta b{grid-column:2;font-size:14.5px}.df-cta span{grid-column:2;grid-row:2;font-size:12px;color:var(--frost)}.df-cta em{grid-column:3;grid-row:1/3;font-style:normal;color:var(--gold)}
+.df-cta i{grid-row:1/3;font-style:normal}
+@keyframes ctaglow{50%{box-shadow:0 0 18px rgba(243,185,77,.25)}}
+.flash{animation:flashy 2s ease}
+@keyframes flashy{0%,40%{box-shadow:0 0 0 3px var(--gold),0 0 30px rgba(243,185,77,.45)}100%{box-shadow:0 0 0 0 transparent}}
+/* ---------- notifications panel ---------- */
+.notifs{border-color:rgba(243,185,77,.3)}
+.nfsteps{display:flex;gap:6px;margin:4px 0 12px}
+.nfsteps span{flex:1;text-align:center;font-size:12px;padding:5px 4px;border-radius:20px;border:1px solid var(--line2);color:var(--dim)}
+.nfsteps span.cur{border-color:var(--gold);color:var(--gold2);background:rgba(243,185,77,.08)}
+.nfsteps span.ok{border-color:rgba(94,224,176,.5);color:var(--mint);background:rgba(94,224,176,.08)}
+.nfsteps span.ok::before{content:"✓ "}
+.nfp{font-size:14px;color:var(--frost);margin:0 0 10px}
+.nfp b{color:var(--text)}
+.nfwarn{font-size:13.5px;padding:10px 12px;border-radius:12px;background:rgba(120,195,255,.08);border:1px solid rgba(120,195,255,.3);margin-bottom:10px}
+.nfbig{width:100%;padding:14px;border-radius:16px;border:0;font:inherit;font-size:16px;font-weight:600;color:var(--ink);background:linear-gradient(90deg,var(--gold),var(--gold2));cursor:pointer;box-shadow:0 8px 24px rgba(243,185,77,.3)}
+.nfbig:active{transform:scale(.98)}
+.nfol{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:none}
+.nfol li{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:rgba(7,11,20,.45)}
+.nfol li small{font-size:12.5px;color:var(--frost);flex:1;min-width:160px}
+.nfol code,.nfon code{font-family:var(--mono);background:rgba(243,185,77,.12);color:var(--gold2);padding:0 5px;border-radius:5px;direction:ltr;display:inline-block}
+.nfol a.minibtn,.nfrow a.minibtn{text-decoration:none;color:var(--text)}
+.minibtn.mint{border-color:rgba(94,224,176,.5);color:var(--mint)}
+.nfcode{width:100%;height:70px;margin-top:8px;font-family:var(--mono);font-size:11px;background:rgba(7,11,20,.6);color:var(--frost);border:1px solid var(--line2);border-radius:10px;direction:ltr}
+.nfon{padding:12px;border-radius:14px;background:rgba(94,224,176,.08);border:1px solid rgba(94,224,176,.35)}
+.nfon b{color:var(--mint);display:block}.nfon span{font-size:13px;color:var(--frost)}
+.nfrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.nfset{margin-top:12px;border-top:1px dashed var(--line2);padding-top:10px}
+.nfset summary{cursor:pointer;font-size:14.5px;font-weight:500}
+.nfset summary .sub{font-size:12px;color:var(--dim);margin-inline-start:6px}
+.nfgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.nfgrid label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--frost)}
+.nfgrid input{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;font-family:var(--mono);direction:ltr;min-width:0;width:100%}
+.nfl{font-size:12.5px;color:var(--frost);margin:12px 0 6px}
+.nfdays,.nfcats{display:flex;flex-wrap:wrap;gap:6px}
+.nfdays button,.nfcats button{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:20px;border:1px solid var(--line2);background:transparent;color:var(--dim);cursor:pointer}
+.nfdays button.on,.nfcats button.on{border-color:rgba(243,185,77,.6);color:var(--text);background:rgba(243,185,77,.1)}
+.nfcats i{font-style:normal;margin-inline-end:4px}
+.nftoday{display:grid;gap:4px;margin-top:10px;max-height:420px;overflow:auto}
+.nft{display:grid;grid-template-columns:66px 22px 1fr;column-gap:6px;align-items:baseline;padding:6px 4px;border-bottom:1px solid var(--line)}
+.nft .mono{font-family:var(--mono);font-size:11.5px;color:var(--gold);direction:ltr;text-align:right}
+.nft i{font-style:normal}
+.nft b{font-size:13px;font-weight:500}
+.nft small{grid-column:3;font-size:12px;color:var(--frost)}
+.nft.past{opacity:.45}.nft.mute{opacity:.35;text-decoration:line-through}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -1213,6 +1309,7 @@ html:not([data-page="today"]) .pgtitle{display:flex}
 <div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
+<script src="plan.js"></script>
 <script>
 (function(){
 "use strict";
@@ -2651,7 +2748,7 @@ function buildSimple(){const sec=el('section','pnl simple');sec.id='simple';
  $('#smLes').addEventListener('click',()=>{goPage('coach');setTimeout(()=>{const l=$('#lessons');if(l)l.scrollIntoView({behavior:'smooth',block:'start'});},60);});
  $('#smAll').addEventListener('click',()=>{const v=!LS.get('showAll');LS.set('showAll',v);applyPage();if(v){const m=$('#m-rooh');if(m)m.scrollIntoView({behavior:'smooth',block:'start'});}});}
 const SM_Q=[['أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ','الرعد 28'],['فَاذْكُرُونِي أَذْكُرْكُمْ','البقرة 152'],['وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا','العنكبوت 69'],['إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6'],['وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا','الطلاق 2'],['أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ','متفق عليه'],['وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ','البقرة 186']];
-function renderSimple(){if(!$('#simple'))return;const ids=PRAY.map(x=>x[0]).concat(BASICS.map(x=>x[0])).filter(id=>findItem(id));const n=ids.filter(id=>isDone(findItem(id),S.day)).length;
+function renderSimple(){if(!$('#simple'))return;if(typeof renderDayflow==='function'&&$('#dayflow'))try{renderDayflow();}catch(e){}const ids=PRAY.map(x=>x[0]).concat(BASICS.map(x=>x[0])).filter(id=>findItem(id));const n=ids.filter(id=>isDone(findItem(id),S.day)).length;
  const c=$('#smCnt');c.textContent=n+'/'+ids.length;c.classList.toggle('full',n===ids.length);
  const q=pick(SM_Q,7);$('#smQ').innerHTML=n===ids.length?'<b>ما شاء الله. الأساسيات كلها خلصت.</b> أي حاجة زيادة النهارده بركة.':'<div class="quran">'+q[0]+'</div><div class="ref">'+q[1]+'</div><small>مش مطلوب تبقى كامل. المطلوب متقطعش. حاجة صغيرة كل يوم أحسن من حاجة كبيرة مرة.</small>';
  {const L=lessonsOfDay();const nd=L.filter(x=>LSTATE.done[x[1]]).length;$('#smLes').innerHTML='📚 <b>دروس اليوم</b> ('+nd+'/3): '+esc(L[0][0][1])+' · '+esc(L[1][0][1])+' <span>‹</span>';}
@@ -2662,7 +2759,7 @@ const PAGES=[['today','☀','اليوم'],['soul','☾','الروح'],['money','
 const PG_SUB={soul:'أدعية، أذكار، حفظ، وقصص',money:'ميزانيتك ومصاريفك وتحويشك · على موبايلك بس',coach:'دروس اليوم، المرشد، والتقارير',more:'الإعدادات، الأمان، ومهامك'};
 const TASK_PANELS=['m-rooh','m-jasad','m-bayt','m-waqt','m-ilm','m-career','m-dakhl','m-week'];
 function pageOf(p){const id=p.id||'';
- if(p.classList.contains('core')||id==='simple'||p.querySelector('#mission'))return 'today';
+ if(p.classList.contains('core')||id==='simple'||id==='dayflow'||p.querySelector('#mission'))return 'today';
  if(TASK_PANELS.indexOf(id)>=0)return 'tasks';
  if(['rizq','counters','hifz','stories','mentor','dustur','m-prom','calm'].indexOf(id)>=0||/MARRIAGE/.test(p.textContent.slice(0,400)))return 'soul';
  if(['money','savings'].indexOf(id)>=0)return 'money';
@@ -2672,7 +2769,7 @@ let PG=LS.get('page')||'today';if(!PAGES.some(x=>x[0]===PG))PG='today';
 function applyPage(){const all=!!LS.get('showAll');document.querySelectorAll('.grid .pnl').forEach(p=>{const pg=p.dataset.page||(p.dataset.page=pageOf(p));p.hidden=!(pg===PG||(pg==='tasks'&&PG==='today'&&all));});
  document.querySelectorAll('#dock [data-pg]').forEach(b=>b.classList.toggle('on',b.dataset.pg===PG));
  document.documentElement.dataset.page=PG;{const t=$('#pgTitle'),x=PAGES.find(q=>q[0]===PG);if(t&&x)t.innerHTML=PG==='today'?'':'<div class="pi2">'+x[1]+'</div><div><h1>'+x[2]+'</h1><p>'+(PG_SUB[PG]||'')+'</p></div>';}if(typeof renderSimple==='function')renderSimple();}
-function goPage(pg,keepScroll){PG=pg;LS.set('page',pg);applyPage();if(!keepScroll)window.scrollTo({top:0,behavior:'auto'});}
+function goPage(pg,keepScroll){PG=pg;LS.set('page',pg);applyPage();if(pg==='today'&&typeof renderDayflow==='function')setTimeout(()=>{try{renderDayflow(true);}catch(e){}},30);if(!keepScroll)window.scrollTo({top:0,behavior:'auto'});}
 function fixArabicSpacing(root){(root||document).querySelectorAll('.ph .en,.rsub,.moti .k span,.msg .k,.qk,.aihead small,.ains .rsub').forEach(n=>{if(n.dataset.arx)return;n.dataset.arx=1;
  [...n.childNodes].forEach(c=>{if(c.nodeType===3&&/[\u0600-\u06FF]/.test(c.nodeValue)){const sp=document.createElement('span');sp.innerHTML=c.nodeValue.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])).replace(/([\u0600-\u06FF][^·•]*)/g,'<span class="ar">$1</span>');c.replaceWith(...sp.childNodes);}});});}
 function setupPages(){const d=$('#dock');const rev=$('#dockRev');
@@ -2970,7 +3067,166 @@ function initStore(){document.body.insertAdjacentHTML('beforeend','<div class="a
  if((LS.get('lastClean')||0)<y&&!(later&&(parseKey(todayKey())-parseKey(later))/864e5<30)){let tries=0;const tryClean=()=>{if($('#setupSheet').hidden&&$('#lock').hidden&&$('#aiSheet').hidden)openCleanup(false);else if(++tries<12)setTimeout(tryClean,5000);};setTimeout(tryClean,4000);}}
 function setupAskRefresh(){LS.set('setupAsked',0);setupAsk();LS.set('setupAsked',1);if(LK.cred&&LS.get('fsOn'))setTimeout(()=>{$('#setupSheet').hidden=true;},1200);}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();setupPages();booted=true;RB.firstRender=true;
+/* ---------- يومك: live day timeline + goal focus (Today page) ---------- */
+const NF=Object.assign({wake:'07:00',workStart:'09:00',workEnd:'17:00',commute:20,sleep:'23:00',workDays:[0,1,2,3,4],off:{}},LS.get('notif')||{});
+const saveNF=()=>{LS.set('notif',NF);nfMark();};
+const nfTZ=()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Asia/Riyadh';}catch(e){return 'Asia/Riyadh';}};
+function nfCfg(){return {lat:LOC.lat,lng:LOC.lng,m:LOC.m||'uq',tz:nfTZ(),wake:NF.wake,workStart:NF.workStart,workEnd:NF.workEnd,commute:+NF.commute||0,sleep:NF.sleep,
+  workDays:NF.workDays,train:(S.settings.train||[]).slice(),off:Object.assign({},NF.off)};}
+const hasPlan=()=>typeof MOSPlan!=='undefined';
+function planToday(){const d=new Date();return hasPlan()?MOSPlan.day(d.getFullYear(),d.getMonth()+1,d.getDate(),nfCfg()):[];}
+const NOWTXT={fajr:'وقت الفجر. قوم صلّي',dhuhr:'وقت الظهر',asr:'وقت العصر',maghrib:'وقت المغرب',isha:'وقت العشاء',wake:'صباح الخير. اشرب مية وابدأ',azkar_m:'أذكار الصباح',train:'وقت التمرين',walk:'مشي خفيف وإطالة',breakfast:'وقت الفطار',leave:'في الطريق للشغل',
+  work:'في الشغل. ركّز على هدفك',focus:'ساعة تركيز. أهم حاجة الأول',home:'رجعت البيت. اشحن نفسك',moti:'جرعة تحفيز',azkar_e:'أذكار المساء',story:'قصة وحديث',read:'وقت القراية',review:'حساب آخر اليوم',wind:'هدّي واستعد للنوم',sleep:'وقت النوم',friday:'جمعة مباركة'};
+const DF_FOCUS=['تحويش + تطوير في الشغل. ولا يوم من غير خطوة.','كل ريال مش محتاجه النهارده رايح لهدفك.','ساعتين شغل بتركيز النهارده أهم من 8 ساعات مشتتة.','اتعلّم حاجة واحدة جديدة في شغلك النهارده.','الصبر على الهدف هو اللي بيفرّق.'];
+function buildDayflow(){const sec=el('section','pnl dayflow');sec.id='dayflow';
+ sec.innerHTML='<div class="df-head"><div><span class="df-k">YOUR DAY · يومك</span><h2 id="dfNow">…</h2><p id="dfNowS"></p></div><div class="df-ring" id="dfRing"></div></div>'+
+  '<div class="df-next" id="dfNext"></div>'+
+  '<div class="df-bar"><i id="dfBar"></i><span id="dfSun">☀</span></div><div class="df-bl"><span id="dfBl1"></span><span id="dfBl2"></span></div>'+
+  '<div class="df-line" id="dfLine" role="list"></div>'+
+  '<button type="button" class="df-goal" id="dfGoal"></button>'+
+  '<button type="button" class="df-cta" id="dfCta" hidden></button>';
+ $('#simple').insertAdjacentElement('beforebegin',sec);
+ $('#dfLine').addEventListener('click',e=>{const p=e.target.closest('[data-go]');if(p){try{sTick();}catch(x){}handleGo(p.dataset.go,true);}});
+ $('#dfGoal').addEventListener('click',()=>handleGo('goal',true));
+ ['pointerdown','touchstart','wheel'].forEach(ev=>$('#dfLine').addEventListener(ev,()=>{dfTouch=Date.now();},{passive:true}));
+ $('#dfCta').addEventListener('click',()=>{goPage('more');setTimeout(()=>{const n=$('#notifs');if(n)n.scrollIntoView({behavior:'smooth',block:'start'});},60);});
+ renderDayflow(true);setInterval(()=>{if(!document.hidden&&PG==='today')renderDayflow();},20000);}
+let dfLastCur=null,dfTouch=0;
+function renderDayflow(scroll){if(!$('#dayflow')||!hasPlan())return;const L=planToday();const now=new Date();const nm=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+ const wake=MOSPlan.toMin(NF.wake),sl=MOSPlan.toMin(NF.sleep);
+ let cur=null;for(const e of L){if(e.min<=nm)cur=e;}
+ const wk=L.find(e=>e.k==='work');const inWork=wk&&nm>=wk.min&&nm<wk.end;
+ if(cur&&nm-cur.min>40&&!(inWork))cur=null;
+ if(inWork&&cur&&cur.k!=='work'&&nm-cur.min>=25)cur=wk;
+ const nxt=L.find(e=>e.min>nm&&e.k!=='work');
+ let title,sub;
+ if(nm<wake&&!(cur&&cur.k==='fajr'&&nm-cur.min<40)){title='🌙 لسه بدري';sub='الصحيان الساعة '+MOSPlan.fmt(wake)+'. نام كويس.';}
+ else if(nm>=sl){title='😴 وقت النوم';sub='اقفل الموبايل وقول أذكار النوم. بكره يوم جديد.';}
+ else if(cur&&cur.k!=='work'&&(!inWork||nm-cur.min<25)){title=cur.icon+' '+cur.label;sub=NOWTXT[cur.k]||'';}
+ else if(inWork||(cur&&cur.k==='work')){title='💼 في الشغل';sub='لحد '+MOSPlan.fmt(wk.end)+' · '+pick(DF_FOCUS,3);}
+ else{title='✨ وقت حر';sub='استغلّه في حاجة تقرّبك من هدفك.';}
+ $('#dfNow').textContent=title;$('#dfNowS').textContent=sub;
+ if(nxt){const left=Math.max(0,Math.round(nxt.min-nm));const h=Math.floor(left/60),m=left%60;
+  $('#dfNext').innerHTML='<span>الجاي</span><b>'+nxt.icon+' '+esc(nxt.label)+'</b><span class="mono">'+MOSPlan.fmt(nxt.min)+'</span><em class="mono">'+(h?h+'س ':'')+m+'د</em>';}
+ else $('#dfNext').innerHTML='<span>خلاص كده النهارده</span><b>تصبح على خير 🌙</b>';
+ const f=Math.max(0,Math.min(1,(nm-wake)/Math.max(1,sl-wake)));$('#dfBar').style.width=(f*100).toFixed(1)+'%';$('#dfSun').style.insetInlineStart='calc('+(f*100).toFixed(1)+'% - 9px)';$('#dfSun').textContent=f>=.62?'☾':'☀';
+ $('#dfBl1').textContent='⏰ '+MOSPlan.fmt(wake);$('#dfBl2').textContent=(f>0&&f<1?'عدّى '+Math.round(f*100)+'% من يومك · ':'')+'😴 '+MOSPlan.fmt(sl);
+ {const p=progress(S.day);const C=2*Math.PI*22;$('#dfRing').innerHTML='<svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" class="b"/><circle cx="28" cy="28" r="22" class="f" style="stroke-dasharray:'+C+';stroke-dashoffset:'+(C*(1-p.pct/100))+'"/></svg><b>'+p.pct+'%</b>';}
+ const ck=cur?cur.k+cur.min:'';
+ $('#dfLine').innerHTML=L.map(e=>{const st=cur&&e===cur?'now':(nxt&&e===nxt?'next':(e.min<nm?'past':''));
+  return '<button type="button" role="listitem" class="dfp '+st+(e.cat==='prayer'?' pr':'')+'" data-go="'+e.go+'"'+(e.notify?'':' data-mute="1"')+'><i>'+e.icon+'</i><b>'+esc(e.label)+'</b><span class="mono">'+MOSPlan.fmt(e.min).replace(' ',' ')+'</span>'+(e.notify||e.k==='work'?'':'<small>🔕</small>')+'</button>';}).join('');
+ if(scroll||ck!==dfLastCur||Date.now()-dfTouch>30000){dfLastCur=ck;const t=$('#dfLine .now')||$('#dfLine .next');if(t){const ln=$('#dfLine');requestAnimationFrame(()=>{const tr=t.getBoundingClientRect(),lr=ln.getBoundingClientRect();ln.scrollLeft+=(tr.left+tr.width/2)-(lr.left+lr.width/2);});}}
+ /* goal */
+ {const g=(typeof SV!=='undefined'&&SV.goals||[]).filter(x=>x&&x.target>0).sort((a,b)=>(gSaved(b)/b.target)-(gSaved(a)/a.target))[0];const gb=$('#dfGoal');
+  if(g){const s=gSaved(g),fr=Math.max(0,Math.min(1,s/g.target));gb.innerHTML='<span class="gi">'+esc(g.ic||'🎯')+'</span><span class="gt"><b>هدفك: '+esc(g.n||'')+'</b><small>'+Math.round(s).toLocaleString('en')+' من '+Math.round(g.target).toLocaleString('en')+' · '+pick(DF_FOCUS,1)+'</small><span class="gtr"><i style="width:'+(fr*100).toFixed(1)+'%"></i></span></span><span class="gp mono">'+Math.round(fr*100)+'%</span>';}
+  else gb.innerHTML='<span class="gi">🎯</span><span class="gt"><b>حدّد هدف التحويش بتاعك</b><small>الهدف المكتوب بيتحقق أسرع. دوس وابدأ.</small></span><span class="gp">‹</span>';}
+ nfCtaRender();}
+
+/* ---------- open the right place when you tap a notification ---------- */
+function flash(node){if(!node)return;node.classList.remove('flash');void node.offsetWidth;node.classList.add('flash');setTimeout(()=>node.classList.remove('flash'),2200);}
+function handleGo(go,inApp){go=String(go||'day');const T=(sel,fn)=>{setTimeout(()=>{const n=$(sel);if(!n)return;if(fn)fn(n);jump(sel);setTimeout(()=>flash(n),350);},80);};
+ if(!inApp){try{const sb=$('#setupSheet');if(sb)sb.hidden=true;}catch(e){}}
+ switch(go){
+  case 'pray':goPage('today');T('#simple .smp');break;
+  case 'azkar_m':T('#azM',n=>{n.open=true;});break;
+  case 'azkar_e':T('#azE',n=>{n.open=true;});break;
+  case 'moti':goPage('today');T('#moti',()=>{try{nextMoti();startMoti();}catch(e){}});break;
+  case 'story':T('#stories');break;
+  case 'read':goPage('today');T('#simple [data-id="read"]');break;
+  case 'goal':goPage('money');T($('#savings')?'#savings':'#money');break;
+  case 'review':goPage('today');setTimeout(()=>openReview('today'),250);break;
+  case 'gratitude':T('#grat');break;
+  default:goPage('today');T('#dayflow');}
+ if(!inApp)setTimeout(()=>toast('🔔','أهلاً يا مصطفى','فتحت من التنبيه. خطوة صغيرة دلوقتي وكمّل'),900);}
+function initGo(){try{const q=new URLSearchParams(location.search);const g=q.get('go');if(g){history.replaceState(null,'',location.pathname+location.hash);setTimeout(()=>handleGo(g,false),500);}}catch(e){}
+ if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{const d=e.data||{};if(d.type==='mos-go')handleGo(d.go,false);if(d.type==='mos-subchanged')nfRefresh();});}
+
+/* ---------- push notifications setup (More page) ---------- */
+const nfB64=u=>{let s='';const a=new Uint8Array(u);for(let i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');};
+const nfUnb64=s=>{s=String(s).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0));};
+const nfRepo=()=>{const h=location.hostname;const m=h.match(/^([a-z0-9-]+)\.github\.io$/i);const seg=location.pathname.split('/').filter(Boolean)[0];return m&&seg&&seg!=='index.html'?m[1]+'/'+seg:'mostafaashraf122/mostafa-os';};
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isStandalone=()=>!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
+const pushOK=()=>('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window);
+function nfCode(){const sub=LS.get('pushSub'),V=LS.get('vapid');if(!sub||!V)return '';const j={v:1,sub,pub:V.pub,priv:V.priv,cfg:nfCfg()};return nfB64(new TextEncoder().encode(JSON.stringify(j)));}
+const nfSig=c=>{let h=0;for(let i=0;i<c.length;i++)h=(h*31+c.charCodeAt(i))|0;return String(h);};
+function nfState(){if(!LS.get('pushSub'))return 0;const c=nfCode();return LS.get('pushSig')===nfSig(c)?2:1;}
+function nfMark(){nfRender();renderDayflow();}
+function nfCtaRender(){const b=$('#dfCta');if(!b)return;const st=nfState();b.hidden=st===2;
+ b.innerHTML=st===1?'<i>🔔</i><b>كمّل تشغيل الإشعارات</b><span>'+(LS.get('pushSig')?'عدّلت المواعيد: انسخ الكود الجديد لـ GitHub':'خطوة واحدة فاضلة: حط الكود في GitHub')+'</span><em>‹</em>':'<i>🔔</i><b>خلّي موبايلك يفكّرك بكل ده</b><span>صلاة، صحيان، تمرين، أذكار، تركيز على هدفك…</span><em>‹</em>';}
+async function nfEnable(){const msg=$('#nfMsg');const say=t=>{if(msg)msg.textContent=t;};
+ if(isIOS()&&!isStandalone()){say('على الآيفون لازم الأول: زرار المشاركة ⎋ ← "Add to Home Screen"، وافتح التطبيق من الأيقونة وارجع هنا.');return;}
+ if(!pushOK()){say('المتصفح ده مش بيدعم الإشعارات. افتح التطبيق من Chrome على أندرويد أو من أيقونة الشاشة الرئيسية على الآيفون (iOS 16.4 أو أحدث).');return;}
+ say('لحظة…');
+ try{const perm=await Notification.requestPermission();if(perm!=='granted'){say('الإشعارات مقفولة. افتح إعدادات الموبايل ← الإشعارات ← Mostafa OS واسمح بيها، وجرّب تاني.');return;}
+  const reg=await navigator.serviceWorker.ready;
+  let V=LS.get('vapid');if(!V){const kp=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);const j=await crypto.subtle.exportKey('jwk',kp.privateKey);
+   const pub=new Uint8Array(65);pub[0]=4;pub.set(nfUnb64(j.x),1);pub.set(nfUnb64(j.y),33);V={pub:nfB64(pub),priv:j.d};LS.set('vapid',V);}
+  let sub=await reg.pushManager.getSubscription();
+  if(sub){try{const k=sub.options&&sub.options.applicationServerKey;if(k&&nfB64(k)!==V.pub){await sub.unsubscribe();sub=null;}}catch(e){}}
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:nfUnb64(V.pub)});
+  LS.set('pushSub',sub.toJSON());say('');
+  try{await reg.showNotification('✅ Mostafa OS',{body:'تمام، الموبايل بقى يقدر يستقبل الإشعارات. فاضل خطوة GitHub.',icon:'icon-192.png',lang:'ar',dir:'rtl',tag:'mos-setup'});}catch(e){}
+  try{burst(60);}catch(e){}nfMark();}
+ catch(e){say('حصلت مشكلة: '+(e&&e.message||e)+'. جرّب تاني.');}}
+async function nfRefresh(){if(!pushOK())return;try{const reg=await navigator.serviceWorker.getRegistration();if(!reg)return;const sub=await reg.pushManager.getSubscription();const old=LS.get('pushSub');
+ if(sub&&(!old||old.endpoint!==sub.endpoint)&&LS.get('vapid')){LS.set('pushSub',sub.toJSON());nfMark();}
+ else if(!sub&&old&&Notification.permission!=='granted'){LS.set('pushSub',null);nfMark();}}catch(e){}}
+async function nfCopy(){const c=nfCode();if(!c)return;let ok=false;try{await navigator.clipboard.writeText(c);ok=true;}catch(e){}
+ if(!ok){const t=$('#nfCode');if(t){t.hidden=false;t.value=c;t.select();try{ok=document.execCommand('copy');}catch(e){}}}
+ const b=$('#nfCopyB');if(b){b.textContent=ok?'✓ اتنسخ':'انسخه من المربع';setTimeout(()=>{b.textContent='① انسخ الكود';},2200);}}
+const WD=['أحد','اتنين','تلات','أربع','خميس','جمعة','سبت'];
+function buildNotifs(){const sec=el('section','pnl notifs');sec.id='notifs';
+ sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--gold2);border-color:rgba(243,185,77,.45);background:rgba(243,185,77,.1)">🔔</div><div><h2>الإشعارات</h2><span class="en">NOTIFICATIONS · بتوصلك حتى والتطبيق مقفول</span></div><span class="cnt" id="nfCnt"></span></div>'+
+  '<div id="nfBody"></div>'+
+  '<details class="nfset"><summary>⏰ مواعيدك <span class="sub">الصحيان، الشغل، الطريق، النوم</span></summary>'+
+   '<div class="nfgrid">'+
+    '<label>بصحى<input type="time" data-nf="wake"></label><label>بنام بالكتير<input type="time" data-nf="sleep"></label>'+
+    '<label>الشغل بيبدأ<input type="time" data-nf="workStart"></label><label>الشغل بيخلص<input type="time" data-nf="workEnd"></label>'+
+    '<label>الطريق للشغل (دقيقة)<input type="number" min="0" max="180" inputmode="numeric" data-nf="commute"></label></div>'+
+   '<div class="nfl">أيام الشغل</div><div class="nfdays" id="nfDays"></div>'+
+   '<div class="nfl">نوع التنبيهات</div><div class="nfcats" id="nfCats"></div>'+
+  '</details>'+
+  '<details class="nfset"><summary>🗓 جدول تنبيهات النهارده <span class="sub" id="nfTodayN"></span></summary><div class="nftoday" id="nfToday"></div></details>';
+ const side=document.querySelector('.col.side');side.insertAdjacentElement('afterbegin',sec);
+ sec.querySelectorAll('[data-nf]').forEach(i=>{i.value=NF[i.dataset.nf];i.addEventListener('change',()=>{const k=i.dataset.nf;NF[k]=k==='commute'?Math.max(0,Math.min(180,+i.value||0)):(i.value||NF[k]);saveNF();});});
+ $('#nfDays').innerHTML=WD.map((d,i)=>'<button type="button" data-wd="'+i+'">'+d+'</button>').join('');
+ $('#nfDays').addEventListener('click',e=>{const b=e.target.closest('[data-wd]');if(!b)return;const i=+b.dataset.wd;const a=NF.workDays||[];NF.workDays=a.indexOf(i)>=0?a.filter(x=>x!==i):a.concat(i).sort();saveNF();});
+ $('#nfCats').innerHTML=(hasPlan()?MOSPlan.CATS:[]).map(c=>'<button type="button" data-cat="'+c[0]+'"><i>'+c[1]+'</i>'+c[2]+'</button>').join('');
+ $('#nfCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;const k=b.dataset.cat;NF.off=NF.off||{};if(NF.off[k])delete NF.off[k];else NF.off[k]=true;saveNF();});
+ sec.addEventListener('click',e=>{const a=e.target.closest('[data-nfa]');if(!a)return;const act=a.dataset.nfa;
+  if(act==='on')nfEnable();
+  if(act==='copy')nfCopy();
+  if(act==='done'){LS.set('pushSig',nfSig(nfCode()));try{burst(90);}catch(x){}toast('🔔','الإشعارات اتظبطت','هتوصلك التنبيهات في مواعيدها');nfMark();}
+  if(act==='test'){navigator.serviceWorker.ready.then(r=>r.showNotification('🔔 تجربة',{body:'لو شايف ده يبقى الموبايل مسموح فيه بالإشعارات.',icon:'icon-192.png',lang:'ar',dir:'rtl',tag:'mos-test',data:{go:'day'}})).catch(()=>{});}
+  if(act==='redo'){LS.set('pushSig',null);nfMark();}});
+ nfRender();nfRefresh();}
+function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo();const gh='https://github.com/'+repo;
+ $('#nfCnt').textContent=st===2?'شغّالة':'مقفولة';$('#nfCnt').classList.toggle('full',st===2);
+ const steps='<div class="nfsteps"><span class="'+(st>=1?'ok':'cur')+'">1 · الموبايل</span><span class="'+(st===2?'ok':st===1?'cur':'')+'">2 · GitHub</span><span class="'+(st===2?'ok':'')+'">3 · جاهز</span></div>';
+ let h=steps;
+ if(st===0){h+='<p class="nfp">التطبيق هيبعتلك تنبيهات على الموبايل: الصلوات في وقتها، الصحيان الساعة '+esc(hasPlan()?MOSPlan.fmt(MOSPlan.toMin(NF.wake)):NF.wake)+'، التمرين والفطار والنزول للشغل، أذكار الصبح والمساء، تركيز على هدفك وقت الشغل، التحفيز والقصص والقراية، والنوم قبل '+esc(hasPlan()?MOSPlan.fmt(MOSPlan.toMin(NF.sleep)):NF.sleep)+'.</p>'+
+   (isIOS()&&!isStandalone()?'<div class="nfwarn">📱 على الآيفون: دوس زرار المشاركة ⎋ ← <b>Add to Home Screen</b>، وافتح Mostafa OS من الأيقونة، وبعدين ارجع هنا.</div>':'')+
+   '<button type="button" class="nfbig" data-nfa="on">🔔 فعّل الإشعارات على الموبايل ده</button>';}
+ else if(st===1){const again=!!LS.get('pushSig');
+  h+='<p class="nfp">'+(again?'<b>عدّلت المواعيد أو الاشتراك اتجدد.</b> انسخ الكود الجديد وحطه مكان القديم في GitHub.':'آخر خطوة (مرة واحدة بس): الكود ده بيخلّي GitHub يبعتلك التنبيهات في مواعيدها حتى والموبايل مقفول.')+'</p>'+
+   '<ol class="nfol"><li><button type="button" class="minibtn gold" id="nfCopyB" data-nfa="copy">① انسخ الكود</button></li>'+
+   '<li><a class="minibtn" href="'+gh+'/settings/secrets/actions'+(again?'':'/new')+'" target="_blank" rel="noopener">② افتح GitHub</a><small>'+(again?'دوس ✎ جنب <code>MOS_PUSH</code> والصق الكود الجديد':'في Name اكتب <code>MOS_PUSH</code>، وفي Secret الصق الكود، ودوس Add secret')+'</small></li>'+
+   '<li><a class="minibtn" href="'+gh+'/actions/workflows/notify.yml" target="_blank" rel="noopener">③ جرّب</a><small>دوس <b>Run workflow</b> ← Run. هيوصلك إشعار تجربة خلال دقيقة</small></li>'+
+   '<li><button type="button" class="minibtn mint" data-nfa="done">④ وصلني الإشعار ✓</button></li></ol>'+
+   '<textarea id="nfCode" class="nfcode" readonly hidden></textarea>'+
+   '<p class="note">🔒 الكود فيه مفتاح خاص بموبايلك بس. حطه في GitHub Secrets (محدش يقدر يشوفه)، ومتبعتوش لحد.</p>';}
+ else{h+='<div class="nfon"><b>✓ الإشعارات شغالة</b><span>هتوصلك '+planToday().filter(e=>e.notify).length+' تنبيه النهارده في مواعيدها. لو غيّرت مواعيدك هنا، هقولك تنسخ الكود تاني.</span></div>'+
+   '<div class="nfrow"><button type="button" class="minibtn" data-nfa="test">جرّب إشعار على الجهاز</button><a class="minibtn" href="'+gh+'/actions/workflows/notify.yml" target="_blank" rel="noopener">إشعار من GitHub</a><button type="button" class="minibtn" data-nfa="redo">اعرض الكود تاني</button></div>';}
+ h+='<div class="sub" id="nfMsg" style="margin-top:8px;color:var(--ember)"></div>';
+ $('#nfBody').innerHTML=h;
+ document.querySelectorAll('#nfDays [data-wd]').forEach(b=>b.classList.toggle('on',(NF.workDays||[]).indexOf(+b.dataset.wd)>=0));
+ document.querySelectorAll('#nfCats [data-cat]').forEach(b=>b.classList.toggle('on',!(NF.off||{})[b.dataset.cat]));
+ if(!hasPlan())return;const L=planToday();$('#nfTodayN').textContent=L.filter(e=>e.notify).length+' تنبيه';
+ const nm=new Date().getHours()*60+new Date().getMinutes();
+ $('#nfToday').innerHTML=L.filter(e=>e.k!=='work').map(e=>'<div class="nft'+(e.min<nm?' past':'')+(e.notify?'':' mute')+'"><span class="mono">'+MOSPlan.fmt(e.min)+'</span><i>'+e.icon+'</i><b>'+esc(e.label)+'</b><small>'+esc(e.body||'')+'</small></div>').join('');}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();buildDayflow();buildNotifs();setupPages();initGo();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
