@@ -45,28 +45,28 @@ const M={
  maghrib:['صلّي المغرب: النهار خلص، اختمه بسجدة واستغفار عن كل اللي فات فيه.','صلّي المغرب: وقتها قصير، فبادر بيها أول ما يأذن. «لا تزال أمتي بخير ما لم يؤخروا المغرب».','صلّي المغرب: يوم جديد بيبدأ عند ربنا. ابدأه بصلاة وأذكار المسا.','صلّي المغرب: اقفل صفحة النهار بصلاة، وافتح صفحة الليل بذكر.'],
  isha:['صلّي العشاء: «من صلّى العشاء في جماعة فكأنما قام نصف الليل».','صلّي العشاء: «لو يعلمون ما في العشاء والفجر لأتوهما ولو حبواً».','صلّي العشاء: آخر صلاة في يومك. ختامها مسك، ومتنساش الوتر قبل ما تنام.','صلّي العشاء: سلّم يومك لربنا، ونام وإنت مطمّن إنك أديت اللي عليك.'],
  prayer:['حيّ على الصلاة. سيب اللي في إيدك 10 دقايق ورجعله.','الصلاة في وقتها أحب الأعمال إلى الله. قوم دلوقتي.','وقفة مع ربنا وسط اليوم. هترجع أهدى وأركز.','ولا حاجة في الشغل أهم من الدقايق دي. صلّي وكمّل.'],
- wake:["Round one. Get up.","The early version wins.","Sun's up. Your move.","Water. Face. Breathe. Go.","5 more minutes is the enemy."],
+ wake:["The ones who win were awake first.", "Comfort is a quiet thief.", "Nobody's coming. Rise.", "The day bows to the early.", "Discipline speaks before the alarm."],
  azkar_m:['أذكار الصباح · 5 دقايق بتحميك اليوم كله. افتحها.','حصّن يومك قبل ما تخرج: أذكار الصباح جاهزة.','"فَاذْكُرُونِي أَذْكُرْكُمْ" · أذكار الصباح مستنياك.'],
- train:["Engine's cold. Warm it up.","10 minutes. Just start.","The mirror is waiting.","Move. The body follows."],
- walk:["Easy day. Walk. Stretch.","Rest mode. Don't shut down."],
- breakfast:["Fuel up. Protein, not sugar.","Empty tank goes nowhere."],
- leave:["Launch window open.","Road = classroom. Press play.","Out the door. Learn something."],
- focus:["One hour. Zero noise.","Close one thing. Now.","Need it, or want it?","Patience is the hidden skill.","The number is waiting.","Learn one new trick today.","Will tomorrow-you say thanks?","Every coin saved is a brick."],
- home:["Back at base. Recharge first.","Mission done. Your dose is inside."],
+ train:["Iron doesn't lie.", "Pain today, armor tomorrow.", "Sweat is the receipt.", "Built, not born."],
+ walk:["Even rivers rest, but never stop.", "Slow is still forward."],
+ breakfast:["Feed the fire, not the noise.", "Strong roots, tall trees."],
+ leave:["Every road is a lesson in disguise.", "North never moves. Neither should you.", "The path pays those who walk it."],
+ focus:["One arrow. One target.", "Empires are built in silence.", "Want less. Build more.", "Walls rise one brick at a time.", "Patience is a weapon.", "The enemy wears the mask of distraction.", "The summit doesn't care how you feel.", "Thirty is closer than it looks."],
+ home:["The climb resumes at base camp.", "Recharge. The war isn't over."],
  azkar_e:['أذكار المساء ☾ قبل المغرب. 5 دقايق بس.','"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ" · أذكار المساء جاهزة.','اقفل نهارك بذكر ربنا. أذكار المساء مستنياك.'],
- story:["New file unlocked.","Tonight's story has your name on it.","3 minutes. One lesson."],
- read:["10 pages. Screen off.","Pick up where you left.","10 × 365 = a new you."],
- review:["Daily report. What's still open?","2 minutes. Change the score."],
- wind:["Descent started. Phone away.","Lights down. 3 things to be grateful for."],
- sleep:["System off. Sleep.","Early night, strong morning.","File closed. New page tomorrow."],
+ story:["Old lanterns light new roads.", "Every legend was once a story."],
+ read:["Roots grow in silence.", "Ten leaves a day becomes a forest.", "The quiet ones read the map."],
+ review:["Look the day in the eye.", "What you measure, you master."],
+ wind:["Dusk belongs to the grateful.", "Slow the river before the night."],
+ sleep:["Champions are made in the dark.", "Close the gate. Guard tomorrow.", "Rest is part of the climb."],
  friday:['جمعة مباركة 🕌 اقرا سورة الكهف وكتّر الصلاة على النبي ﷺ.','الجمعة: روح الصلاة بدري، وسورة الكهف، وساعة الإجابة آخر العصر.'],
- moti:["New dose inside.","Reload. Then continue."],
+ moti:["Remember why the fire started.", "Embers die when ignored."],
  dhikr:['نسيت تستغفر النهارده؟ أستغفر الله ×100، دقيقة واحدة بس.','سبحان الله وبحمده ×100 · «حُطّت خطاياه وإن كانت مثل زبد البحر».','لا حول ولا قوة إلا بالله · كنز من كنوز الجنة.','صلّي على النبي ﷺ ×10 · «من صلّى عليّ صلاة صلّى الله عليه بها عشراً».','سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر · أحب الكلام إلى الله.','لسانك فاضي؟ خلّيه رطب بذكر الله. سبّح 33 واستغفر 33.'],
- away:["Signal lost. Where'd you go?","Something's waiting inside.","Your day is still unwritten.","1 minute. That's all it takes.","Long time no see. Open up."]
+ away:["The path remembers your footsteps.", "Silence is getting loud.", "The fire is fading.", "Your throne is empty.", "Come back before the trail goes cold."]
 };
 const CATS=[['prayer','🕌','الصلوات'],['wake','☀','الصحيان والنوم'],['azkar','📿','أذكار الصبح والمساء'],['body','💪','التمرين والفطار والنزول'],['focus','🎯','ركّز على هدفك'],['moti','⚡','التحفيز'],['story','📖','القصص والأحاديث'],['read','📚','القراية'],['review','◑','حساب آخر اليوم'],['dhikr','📿','استغفار وتسبيح'],['away','◌','لو غبت عن التطبيق']];
 const GO={fajr:'pray',prayer:'pray',wake:'day',azkar_m:'azkar_m',train:'day',walk:'day',breakfast:'day',leave:'day',focus:'goal',home:'moti',moti:'moti',azkar_e:'azkar_e',story:'story',read:'read',review:'review',wind:'gratitude',sleep:'day',friday:'day',dhikr:'dhikr',away:'day'};
-const TITLE={wake:'◐ Rise',azkar_m:'📿 أذكار الصباح',train:'⚙ Engine',walk:'〰 Low mode',breakfast:'⛽ Fuel',leave:'🚀 Launch',focus:'◎ Target',home:'🔋 Base',moti:'⚡ Dose',azkar_e:'📿 أذكار المساء',story:'📜 Archive',read:'◫ 10 pages',review:'◑ Report',wind:'🌒 Descent',sleep:'⏻ OFF',friday:'🕌 يوم الجمعة',dhikr:'📿 فكّر ربنا',away:'◌ Hey Mostafa'};
+const TITLE={wake:'🌅 Dawn',azkar_m:'📿 أذكار الصباح',train:'🔥 Forge',walk:'🌊 Tide',breakfast:'🪵 Kindling',leave:'🧭 North',focus:'🏹 Arrow',home:'🏔 Basecamp',moti:'✨ Ember',azkar_e:'📿 أذكار المساء',story:'🕯 Lantern',read:'🌱 Roots',review:'🪞 Mirror',wind:'🌒 Dusk',sleep:'🌑 Night',friday:'🕌 يوم الجمعة',dhikr:'📿 فكّر ربنا',away:'🌫 Echo'};
 const LBL={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء',wake:'الصحيان',azkar_m:'أذكار الصباح',train:'التمرين',walk:'مشي خفيف',breakfast:'الفطار',leave:'النزول للشغل',work:'الشغل',focus:'ركّز',home:'الرجوع للبيت',moti:'تحفيز',azkar_e:'أذكار المساء',story:'قصة وحديث',read:'القراية',review:'الحساب',wind:'الاستعداد للنوم',sleep:'النوم',friday:'الجمعة',dhikr:'ذكر',away:'غياب'};
 const ICON={fajr:'🌅',dhuhr:'☀',asr:'🌤',maghrib:'🌇',isha:'🌙',wake:'⏰',azkar_m:'📿',train:'💪',walk:'🚶',breakfast:'🍳',leave:'🚗',work:'💼',focus:'🎯',home:'🏠',moti:'⚡',azkar_e:'📿',story:'📖',read:'📚',review:'◑',wind:'🌙',sleep:'😴',friday:'🕌',dhikr:'📿',away:'◌'};
 
