@@ -3147,6 +3147,7 @@ function handleGo(go,inApp){go=String(go||'day');const T=(sel,fn)=>{setTimeout((
   case 'goal':goPage('money');T($('#savings')?'#savings':'#money');break;
   case 'review':goPage('today');setTimeout(()=>openReview('today'),250);break;
   case 'gratitude':T('#grat');break;
+  case 'dhikr':T('#counters');break;
   default:goPage('today');T('#dayflow');}
  if(!inApp)setTimeout(()=>toast('🔔','أهلاً يا مصطفى','فتحت من التنبيه. خطوة صغيرة دلوقتي وكمّل'),900);}
 function initGo(){try{const q=new URLSearchParams(location.search);const g=q.get('go');if(g){history.replaceState(null,'',location.pathname+location.hash);setTimeout(()=>handleGo(g,false),500);}}catch(e){}
@@ -3281,7 +3282,7 @@ const syncOn=()=>!!(SY.tok&&LS.get('syncKey')&&LS.get('pushSub'));
 let syT=null,syBusy=false;
 function syncPayload(){return JSON.stringify({sub:LS.get('pushSub'),cfg:nfCfg()});}
 function syncSoon(ms){if(!syncOn())return;clearTimeout(syT);syT=setTimeout(syncNow,ms==null?4000:ms);}
-function syncCheck(){if(!syncOn())return;const h=nfSig(syncPayload());if(h!==SY.hash||Date.now()-SY.at>12*3600e3)syncSoon(SY.hash?4000:500);}
+function syncCheck(){if(!syncOn())return;const h=nfSig(syncPayload());if(h!==SY.hash||Date.now()-SY.at>3*3600e3)syncSoon(SY.hash?4000:500);}
 async function syncNow(){if(!syncOn()||syBusy||!navigator.onLine)return;syBusy=true;
  const repo=nfRepo(),br='push-config',api='https://api.github.com/repos/'+repo;const H={Authorization:'Bearer '+SY.tok,Accept:'application/vnd.github+json'};
  const gh=async(path,opt)=>{const r=await fetch(api+path,Object.assign({headers:H,cache:'no-store'},opt||{}));let j=null;try{j=await r.json();}catch(e){}return {s:r.status,j};};

@@ -45,28 +45,30 @@ const M={
  maghrib:['صلّي المغرب: النهار خلص، اختمه بسجدة واستغفار عن كل اللي فات فيه.','صلّي المغرب: وقتها قصير، فبادر بيها أول ما يأذن. «لا تزال أمتي بخير ما لم يؤخروا المغرب».','صلّي المغرب: يوم جديد بيبدأ عند ربنا. ابدأه بصلاة وأذكار المسا.','صلّي المغرب: اقفل صفحة النهار بصلاة، وافتح صفحة الليل بذكر.'],
  isha:['صلّي العشاء: «من صلّى العشاء في جماعة فكأنما قام نصف الليل».','صلّي العشاء: «لو يعلمون ما في العشاء والفجر لأتوهما ولو حبواً».','صلّي العشاء: آخر صلاة في يومك. ختامها مسك، ومتنساش الوتر قبل ما تنام.','صلّي العشاء: سلّم يومك لربنا، ونام وإنت مطمّن إنك أديت اللي عليك.'],
  prayer:['حيّ على الصلاة. سيب اللي في إيدك 10 دقايق ورجعله.','الصلاة في وقتها أحب الأعمال إلى الله. قوم دلوقتي.','وقفة مع ربنا وسط اليوم. هترجع أهدى وأركز.','ولا حاجة في الشغل أهم من الدقايق دي. صلّي وكمّل.'],
- wake:['النسخة اللي بتقوم دلوقتي هي اللي هتكسب. التانية لسه نايمة.','الجولة الأولى بدأت. الخصم اسمه "خمس دقايق كمان".','الشمس بدأت شغلها. دورك.','اللي فاكره بالليل اتنفّذ الصبح؟ قوم ونشوف.','مية. وش. نَفَس. وابدأ اللعبة.'],
- azkar_m:['الدرع لسه مش متشحّن. 5 دقايق وتخرج محمي.','قبل ما تفتح الباب: اقفل الدرع.','الحماية مش أوتوماتيك. شغّلها بإيدك.'],
- train:['المحرك بارد. سخّنه.','الجسم بيسمع الكلام لما تكلمه بالحديد.','عشر دقايق. مش أكتر. المهم الماكينة تدور.','الراجل اللي في المراية مستني حاجة منك النهارده.'],
- walk:['وضع الطيران الهادي: مشي، مطّ، نَفَس.','النهارده الماكينة بترتاح، بس متطفيهاش.'],
- breakfast:['تزوّد بالوقود قبل الإقلاع. بروتين مش سكر.','الخزان فاضي. اللي مش بيتزوّد مش بيوصل.'],
- leave:['الإقلاع بعد دقايق. السكة = فصل جديد في ودانك.','بوابة الخروج اتفتحت. خد معاك حاجة تسمعها.','الطريق مش وقت ضايع. ده كلاس متحرك.'],
- focus:['الرقم اللي في دماغك مستني منك خطوة.','كل حاجة مش محتاجها النهارده = طوبة في البيت اللي بتبنيه.','ساعة واحدة من غير ضوضاء. والباقي يستنى.','فيه مهارة جديدة في الشغل مستنياك تلقطها.','قبل ما تدفع: محتاجها ولا نفسك فيها؟','الصبر هو الشطارة اللي محدش بيشوفها.','حاجة واحدة تتقفل دلوقتي. اختارها.','بكره مصطفى هيشكر مصطفى النهارده؟'],
- home:['المهمة خلصت. اشحن البطارية قبل أي شاشة تانية.','وصلت القاعدة. خد جرعتك.'],
- azkar_e:['الدرع التاني قبل ما النور يطفي.','الشمس بتسلّم الوردية. سلّم إنت كمان.','اقفل النهار بالكود اللي إنت عارفه.'],
- story:['الأرشيف فيه ملف جديد. 3 دقايق.','حكاية الليلة مستنياك. فيها رسالة ليك إنت بالذات.','افتح الملف. فيه درس محدش هيقوله لك.'],
- read:['عشر صفحات. الشاشة تتقفل والعقل يتفتح.','الكتاب سابلك علامة. كمّل من عندها.','١٠ × ٣٦٥ = نسخة تانية منك.'],
- review:['التقرير اليومي: إيه اتقفل وإيه لسه مفتوح؟','دقيقتين حساب. لسه فيه وقت تغيّر النتيجة.'],
- wind:['بداية الهبوط. الموبايل بعيد، وتلات حاجات تحمد ربنا عليها.','النور يقل. الدماغ تهدى. بكره الساعة 7 جاية.'],
- sleep:['⏻ إغلاق النظام. الأذكار وتصبح على خير.','النوم بدري = فجر + صباح + محرك سخن بكره.','الملف ده اتقفل. بكره صفحة جديدة.'],
- friday:['الكهف مستنياك، والصلاة على النبي ﷺ.','يوم مختلف. بكّر، واقرا الكهف، وآخر ساعة قبل المغرب فيها كنز.'],
- moti:['جرعة جديدة. افتح واشحن.','الكلام اللي بيرجّعك للطريق مستنيك.']
+ wake:["Round one. Get up.","The early version wins.","Sun's up. Your move.","Water. Face. Breathe. Go.","5 more minutes is the enemy."],
+ azkar_m:['أذكار الصباح · 5 دقايق بتحميك اليوم كله. افتحها.','حصّن يومك قبل ما تخرج: أذكار الصباح جاهزة.','"فَاذْكُرُونِي أَذْكُرْكُمْ" · أذكار الصباح مستنياك.'],
+ train:["Engine's cold. Warm it up.","10 minutes. Just start.","The mirror is waiting.","Move. The body follows."],
+ walk:["Easy day. Walk. Stretch.","Rest mode. Don't shut down."],
+ breakfast:["Fuel up. Protein, not sugar.","Empty tank goes nowhere."],
+ leave:["Launch window open.","Road = classroom. Press play.","Out the door. Learn something."],
+ focus:["One hour. Zero noise.","Close one thing. Now.","Need it, or want it?","Patience is the hidden skill.","The number is waiting.","Learn one new trick today.","Will tomorrow-you say thanks?","Every coin saved is a brick."],
+ home:["Back at base. Recharge first.","Mission done. Your dose is inside."],
+ azkar_e:['أذكار المساء ☾ قبل المغرب. 5 دقايق بس.','"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ" · أذكار المساء جاهزة.','اقفل نهارك بذكر ربنا. أذكار المساء مستنياك.'],
+ story:["New file unlocked.","Tonight's story has your name on it.","3 minutes. One lesson."],
+ read:["10 pages. Screen off.","Pick up where you left.","10 × 365 = a new you."],
+ review:["Daily report. What's still open?","2 minutes. Change the score."],
+ wind:["Descent started. Phone away.","Lights down. 3 things to be grateful for."],
+ sleep:["System off. Sleep.","Early night, strong morning.","File closed. New page tomorrow."],
+ friday:['جمعة مباركة 🕌 اقرا سورة الكهف وكتّر الصلاة على النبي ﷺ.','الجمعة: روح الصلاة بدري، وسورة الكهف، وساعة الإجابة آخر العصر.'],
+ moti:["New dose inside.","Reload. Then continue."],
+ dhikr:['نسيت تستغفر النهارده؟ أستغفر الله ×100، دقيقة واحدة بس.','سبحان الله وبحمده ×100 · «حُطّت خطاياه وإن كانت مثل زبد البحر».','لا حول ولا قوة إلا بالله · كنز من كنوز الجنة.','صلّي على النبي ﷺ ×10 · «من صلّى عليّ صلاة صلّى الله عليه بها عشراً».','سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر · أحب الكلام إلى الله.','لسانك فاضي؟ خلّيه رطب بذكر الله. سبّح 33 واستغفر 33.'],
+ away:["Signal lost. Where'd you go?","Something's waiting inside.","Your day is still unwritten.","1 minute. That's all it takes.","Long time no see. Open up."]
 };
-const CATS=[['prayer','🕌','الصلوات'],['wake','☀','الصحيان والنوم'],['azkar','📿','أذكار الصبح والمساء'],['body','💪','التمرين والفطار والنزول'],['focus','🎯','ركّز على هدفك'],['moti','⚡','التحفيز'],['story','📖','القصص والأحاديث'],['read','📚','القراية'],['review','◑','حساب آخر اليوم']];
-const GO={fajr:'pray',prayer:'pray',wake:'day',azkar_m:'azkar_m',train:'day',walk:'day',breakfast:'day',leave:'day',focus:'goal',home:'moti',moti:'moti',azkar_e:'azkar_e',story:'story',read:'read',review:'review',wind:'gratitude',sleep:'day',friday:'day'};
-const TITLE={wake:'◐ البداية',azkar_m:'🛡 الدرع',train:'⚙ المحرك',walk:'〰 وضع هادي',breakfast:'⛽ الوقود',leave:'🚀 الإقلاع',focus:'◎ الهدف',home:'🔋 القاعدة',moti:'⚡ جرعة',azkar_e:'🛡 الدرع ·٢',story:'📜 الأرشيف',read:'◫ ١٠ صفحات',review:'◑ التقرير',wind:'🌒 الهبوط',sleep:'⏻ OFF',friday:'✦ الكهف'};
-const LBL={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء',wake:'الصحيان',azkar_m:'أذكار الصباح',train:'التمرين',walk:'مشي خفيف',breakfast:'الفطار',leave:'النزول للشغل',work:'الشغل',focus:'ركّز',home:'الرجوع للبيت',moti:'تحفيز',azkar_e:'أذكار المساء',story:'قصة وحديث',read:'القراية',review:'الحساب',wind:'الاستعداد للنوم',sleep:'النوم',friday:'الجمعة'};
-const ICON={fajr:'🌅',dhuhr:'☀',asr:'🌤',maghrib:'🌇',isha:'🌙',wake:'⏰',azkar_m:'📿',train:'💪',walk:'🚶',breakfast:'🍳',leave:'🚗',work:'💼',focus:'🎯',home:'🏠',moti:'⚡',azkar_e:'📿',story:'📖',read:'📚',review:'◑',wind:'🌙',sleep:'😴',friday:'🕌'};
+const CATS=[['prayer','🕌','الصلوات'],['wake','☀','الصحيان والنوم'],['azkar','📿','أذكار الصبح والمساء'],['body','💪','التمرين والفطار والنزول'],['focus','🎯','ركّز على هدفك'],['moti','⚡','التحفيز'],['story','📖','القصص والأحاديث'],['read','📚','القراية'],['review','◑','حساب آخر اليوم'],['dhikr','📿','استغفار وتسبيح'],['away','◌','لو غبت عن التطبيق']];
+const GO={fajr:'pray',prayer:'pray',wake:'day',azkar_m:'azkar_m',train:'day',walk:'day',breakfast:'day',leave:'day',focus:'goal',home:'moti',moti:'moti',azkar_e:'azkar_e',story:'story',read:'read',review:'review',wind:'gratitude',sleep:'day',friday:'day',dhikr:'dhikr',away:'day'};
+const TITLE={wake:'◐ Rise',azkar_m:'📿 أذكار الصباح',train:'⚙ Engine',walk:'〰 Low mode',breakfast:'⛽ Fuel',leave:'🚀 Launch',focus:'◎ Target',home:'🔋 Base',moti:'⚡ Dose',azkar_e:'📿 أذكار المساء',story:'📜 Archive',read:'◫ 10 pages',review:'◑ Report',wind:'🌒 Descent',sleep:'⏻ OFF',friday:'🕌 يوم الجمعة',dhikr:'📿 فكّر ربنا',away:'◌ Hey Mostafa'};
+const LBL={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء',wake:'الصحيان',azkar_m:'أذكار الصباح',train:'التمرين',walk:'مشي خفيف',breakfast:'الفطار',leave:'النزول للشغل',work:'الشغل',focus:'ركّز',home:'الرجوع للبيت',moti:'تحفيز',azkar_e:'أذكار المساء',story:'قصة وحديث',read:'القراية',review:'الحساب',wind:'الاستعداد للنوم',sleep:'النوم',friday:'الجمعة',dhikr:'ذكر',away:'غياب'};
+const ICON={fajr:'🌅',dhuhr:'☀',asr:'🌤',maghrib:'🌇',isha:'🌙',wake:'⏰',azkar_m:'📿',train:'💪',walk:'🚶',breakfast:'🍳',leave:'🚗',work:'💼',focus:'🎯',home:'🏠',moti:'⚡',azkar_e:'📿',story:'📖',read:'📚',review:'◑',wind:'🌙',sleep:'😴',friday:'🕌',dhikr:'📿',away:'◌'};
 
 function dayNum(y,m,d){return Math.floor(Date.UTC(y,m-1,d)/864e5);}
 function rot(arr,y,m,d,salt){return arr[(dayNum(y,m,d)*3+(salt||0))%arr.length];}
@@ -102,6 +104,11 @@ function day(y,m,d,cfg){const c=Object.assign({},DEF,cfg||{});const off=c.off||{
  add(Math.min(sl-90,toMin('21:30')),'review','review');
  add(sl-30,'wind','wake');
  add(sl,'sleep','wake');
+ /* dhikr nudges: istighfar / tasbih, 3 times a day, away from other reminders */
+ const free=mm=>{for(let i=0;i<6&&L.some(e=>Math.abs(e.min-mm)<15);i++)mm+=20;return mm;};
+ [Math.max(wake+195,toMin('10:00')),P.dhuhr+110,P.maghrib+25].forEach(mm=>add(free(Math.round(mm/5)*5),'dhikr','dhikr'));
+ /* haven't opened the app for a long time (the app syncs its last visit) */
+ if(c.lastOpen){[toMin('13:30'),toMin('20:15')].forEach(mm=>{const at=localToMs(y,m,d,mm,c.tz);if(at-c.lastOpen>20*3600e3)add(free(mm),'away','away');});}
  L.sort((a,b)=>a.min-b.min);
  L.forEach(e=>{if(off[e.cat])e.notify=false;});
  return L;}
