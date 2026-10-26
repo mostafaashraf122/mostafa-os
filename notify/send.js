@@ -72,7 +72,11 @@ async function send(sub,ev){
   let st=await buildState(S);
 
   if(String(process.env.TEST)==='true'){
-    const ok=await send(st.sub,{k:'test',cat:'test',title:'✅ Mostafa OS',body:'الإشعارات شغالة. هتوصلك تنبيهات الصلاة والصحيان والتركيز في مواعيدها.',go:'day'});
+    /* the test is one of your real code-word reminders, picked at random (tap it: sound + voice) */
+    const p=Plan.partsIn(Date.now(),st.cfg.tz);const pool=Plan.day(p.year,p.month,p.day,st.cfg).filter(e=>e.title&&!['prayer','azkar','dhikr'].includes(e.cat));
+    const ev=pool.length?pool[Math.floor(Math.random()*pool.length)]:{k:'test',cat:'test',title:'✅ Mostafa OS',body:'الإشعارات شغالة.',go:'day'};
+    log('test sample:',ev.k);
+    const ok=await send(st.sub,ev);
     if(!ok)process.exitCode=1;
     return;}
 
