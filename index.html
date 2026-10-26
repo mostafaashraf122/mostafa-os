@@ -3433,8 +3433,9 @@ body{font-variant-numeric:tabular-nums}
 /* ---------- v15: each code-word reminder has its own sound + the line spoken when you open it ---------- */
 const CUE=(function(){
  const LS={get:k=>{try{return JSON.parse(localStorage.getItem('mos:'+k));}catch(e){return null;}},set:(k,v)=>{try{localStorage.setItem('mos:'+k,JSON.stringify(v));}catch(e){}}};
- const LBL={wake:'🌅 Dawn',train:'🔥 Forge',walk:'🌊 Tide',breakfast:'🪵 Kindling',leave:'🧭 North',focus:'🏹 Arrow',home:'🏔 Basecamp',moti:'✨ Ember',story:'🕯 Lantern',read:'🌱 Roots',review:'🪞 Mirror',wind:'🌒 Dusk',sleep:'🌑 Night',away:'🌫 Echo'};
- const SAMPLE={wake:"Nobody's coming. Rise.",train:"Iron doesn't lie.",walk:'Slow is still forward.',breakfast:'Feed the fire, not the noise.',leave:'North never moves. Neither should you.',focus:'One arrow. One target.',home:"Recharge. The war isn't over.",moti:'Remember why the fire started.',story:'Old lanterns light new roads.',read:'Roots grow in silence.',review:'Look the day in the eye.',wind:'Dusk belongs to the grateful.',sleep:'Champions are made in the dark.',away:'The fire is fading.'};
+ const LBL={wake:'🌅 Dawn',train:'🔥 Forge',walk:'🌊 Tide',breakfast:'🪵 Kindling',leave:'🧭 North',focus:'🏹 Arrow',home:'🏔 Basecamp',moti:'✨ Ember',story:'🕯 Lantern',read:'🌱 Roots',review:'🪞 Mirror',wind:'🌒 Dusk',sleep:'🌑 Night',away:'🌫 Echo',fajr:'🕌 الفجر',dhuhr:'🕌 الظهر',asr:'🕌 العصر',maghrib:'🕌 المغرب',isha:'🕌 العشاء',azkar_m:'📿 أذكار الصباح',azkar_e:'📿 أذكار المساء',dhikr:'📿 ذكر',friday:'🕌 الجمعة'};
+ const AR={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء',azkar_m:'أذكار الصباح',azkar_e:'أذكار المساء',dhikr:'',friday:'الجمعة'};
+ const SAMPLE={wake:"Nobody's coming. Rise.",train:"Iron doesn't lie.",walk:'Slow is still forward.',breakfast:'Feed the fire, not the noise.',leave:'North never moves. Neither should you.',focus:'One arrow. One target.',home:"Recharge. The war isn't over.",moti:'Remember why the fire started.',story:'Old lanterns light new roads.',read:'Roots grow in silence.',review:'Look the day in the eye.',wind:'Dusk belongs to the grateful.',sleep:'Champions are made in the dark.',away:'The fire is fading.',fajr:'في جماعة، كأنك قمت الليل كله',dhuhr:'الفاصل بين الدنيا والآخرة',asr:'الصلاة الوسطى',maghrib:'اختم النهار بسجدة',isha:'ختامها مسك، والوتر',azkar_m:'حصّن يومك',azkar_e:'اقفل نهارك بذكر',dhikr:'أستغفر الله العظيم',friday:'بكّر، واقرا الكهف'};
  let ctx=null,pending=null;const on=()=>LS.get('cueOn')!==false;
  const ac=()=>{if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();return ctx;};
  function out(c,wet){const g=c.createGain();g.connect(c.destination);if(wet){const d=c.createDelay(1);d.delayTime.value=wet;const fb=c.createGain();fb.gain.value=.38;const lp=c.createBiquadFilter();lp.frequency.value=2200;g.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(c.destination);}return g;}
@@ -3457,16 +3458,21 @@ const CUE=(function(){
   review:(c,t)=>{const o=out(c,.15);[1046,1318,1568,2093].forEach((f,i)=>tone(c,o,t+i*.05,f,1.4,'sine',.07));},       /* glass shimmer */
   wind:(c,t)=>{const o=out(c,.3);[523,440,349,294].forEach((f,i)=>tone(c,o,t+i*.28,f,1.2,'sine',.13));},             /* descending */
   sleep:(c,t)=>{const o=out(c,.4);tone(c,o,t,82,3.2,'sine',.4);tone(c,o,t,164,2.4,'sine',.12);tone(c,o,t,247,1.6,'sine',.05);}, /* gong */
-  away:(c,t)=>{const o=out(c,.33);tone(c,o,t,740,.35,'sine',.22);tone(c,o,t+.9,554,.35,'sine',.12);}                /* echo ping */
+  away:(c,t)=>{const o=out(c,.33);tone(c,o,t,740,.35,'sine',.22);tone(c,o,t+.9,554,.35,'sine',.12);},               /* echo ping */
+  pray:(c,t)=>{const o=out(c,.38);[[392,0],[440,.35],[466,.7],[440,1.05],[392,1.5]].forEach(([f,d])=>tone(c,o,t+d,f,d===1.5?1.8:.6,'sine',.17));tone(c,o,t,196,3.2,'sine',.06);}, /* calm maqam-like call */
+  azkar:(c,t)=>{const o=out(c,.3);[523,659,784].forEach((f,i)=>tone(c,o,t+i*.3,f,1.6,'sine',.12));},          /* gentle bells */
+  dhikr:(c,t)=>{const o=out(c,.15);for(let i=0;i<3;i++){tone(c,o,t+i*.42,1400,.12,'triangle',.12);noise(c,o,t+i*.42,.05,2500,.12,4);}tone(c,o,t+1.4,660,1.4,'sine',.1);} /* beads clicking */
  };
  let voice=null;function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));voice=v.find(x=>/Daniel|Arthur|Google UK English Male|Alex|Aaron/i.test(x.name))||v.find(x=>/en-GB/i.test(x.lang))||v[0]||null;}catch(e){}}
  try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
- function say(txt,delay){if(!txt||!('speechSynthesis' in window))return;setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);if(voice)u.voice=voice;u.lang=voice?voice.lang:'en-GB';u.rate=.86;u.pitch=.72;u.volume=1;speechSynthesis.speak(u);}catch(e){}},delay||0);}
- function play(k,txt,force){if(!S[k]||(!on()&&!force))return false;const c=ac();if(c.state!=='running'){try{c.resume();}catch(e){}}
+ function arVoice(){try{return speechSynthesis.getVoices().find(x=>/^ar/i.test(x.lang))||null;}catch(e){return null;}}
+ function say(txt,delay,ar){if(!txt||!('speechSynthesis' in window))return;setTimeout(()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);const v=ar?arVoice():voice;if(v)u.voice=v;u.lang=v?v.lang:(ar?'ar-SA':'en-GB');u.rate=ar?.9:.86;u.pitch=ar?.95:.72;u.volume=1;speechSynthesis.speak(u);}catch(e){}},delay||0);}
+ const SND_OF=k=>['fajr','dhuhr','asr','maghrib','isha','friday'].includes(k)?'pray':(k==='azkar_m'||k==='azkar_e')?'azkar':k;
+ function play(k,txt,force){const sk=SND_OF(k);if(!S[sk]||(!on()&&!force))return false;const c=ac();if(c.state!=='running'){try{c.resume();}catch(e){}}
   if(c.state!=='running'){pending={k,txt};return false;}
-  S[k](c,c.currentTime+.05);say(txt||SAMPLE[k],k==='sleep'||k==='walk'?900:650);pending=null;return true;}
+  S[sk](c,c.currentTime+.05);const ar=k in AR;const line=txt||SAMPLE[k];say(ar?[AR[k],line].filter(Boolean).join('، '):line,sk==='pray'?2600:(k==='sleep'||k==='walk'?900:650),ar);pending=null;return true;}
  function locked(){return document.documentElement.classList.contains('locked');}
- function queue(k,txt){if(!S[k]||!on())return;pending={k,txt};flush();}
+ function queue(k,txt){if(!S[SND_OF(k)]||!on())return;pending={k,txt};flush();}
  function flush(){if(pending&&!locked()){const p=pending;try{const c=ac();c.resume().then(()=>{if(pending===p&&c.state==='running')play(p.k,p.txt);}).catch(()=>{});}catch(e){}}}
  ['pointerdown','touchend','keydown'].forEach(ev=>addEventListener(ev,()=>{if(pending&&!locked()){const p=pending;play(p.k,p.txt);}},{capture:true}));
  new MutationObserver(flush).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
@@ -3478,11 +3484,12 @@ const CUE=(function(){
   const d=document.createElement('details');d.className='nfset';d.id='cueSet';
   d.innerHTML='<summary>🔊 الأصوات <span class="sub">كل تنبيه ليه صوته، والجملة بتتقال لما تفتحه</span></summary>'+
    '<label class="cuesw"><input type="checkbox" id="cueOn"'+(on()?' checked':'')+'> شغّل الصوت والكلام لما أفتح من الإشعار</label>'+
-   '<div class="cuegrid">'+Object.keys(LBL).map(k=>'<button type="button" data-cue="'+k+'">'+LBL[k]+'</button>').join('')+'</div>'+
+   '<div class="cuegrid">'+Object.keys(LBL).filter(k=>!(k in AR)).map(k=>'<button type="button" data-cue="'+k+'">'+LBL[k]+'</button>').join('')+'</div>'+
+   '<div class="cuegrid ar" style="margin-top:8px">'+['dhuhr','azkar_m','dhikr'].map(k=>'<button type="button" data-cue="'+k+'" style="direction:rtl">'+({dhuhr:'🕌 الصلاة',azkar_m:'📿 الأذكار',dhikr:'📿 الاستغفار'})[k]+'</button>').join('')+'</div>'+
    '<p class="note">على الآيفون صوت الإشعار نفسه بيفضل صوت الموبايل العادي؛ الصوت ده والجملة بيشتغلوا أول ما تفتح التطبيق من الإشعار.</p>';
   host.appendChild(d);
   d.querySelector('#cueOn').onchange=e=>LS.set('cueOn',e.target.checked);
-  d.querySelector('.cuegrid').addEventListener('click',e=>{const b=e.target.closest('[data-cue]');if(b)play(b.dataset.cue,null,true);});}
+  d.addEventListener('click',e=>{const b=e.target.closest('[data-cue]');if(b)play(b.dataset.cue,null,true);});}
  ui();setTimeout(ui,1500);
  return {play,queue,LBL};
 })();
