@@ -2,6 +2,8 @@
 # Every 3 hours a run starts, works out the reminders due in the next 3 hours
 # (prayers, wake-up, azkar, workout, focus on your goals, stories, reading, sleep)
 # and sends each one at its exact minute. Free for public repos.
+# Settings you change in the app sync on their own (encrypted, branch push-config),
+# and prayer times come from the internet every day.
 name: Notifications
 
 on:
@@ -38,5 +40,6 @@ jobs:
       - name: Send reminders
         env:
           MOS_PUSH: ${{ secrets.MOS_PUSH }}
+          GH_TOKEN: ${{ github.token }}
           TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test }}
         run: node notify/send.js
