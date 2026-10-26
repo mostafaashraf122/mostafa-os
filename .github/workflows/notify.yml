@@ -1,0 +1,42 @@
+# Mostafa OS · sends your daily reminders as push notifications from the app.
+# Every 3 hours a run starts, works out the reminders due in the next 3 hours
+# (prayers, wake-up, azkar, workout, focus on your goals, stories, reading, sleep)
+# and sends each one at its exact minute. Free for public repos.
+name: Notifications
+
+on:
+  schedule:
+    - cron: '50 2-23/3 * * *'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'ابعت إشعار تجربة دلوقتي'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-save --no-audit --no-fund web-push@3.6.7
+      # GitHub pauses scheduled workflows after 60 days without repo activity; this keeps it switched on.
+      - name: Keep the schedule alive
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/notify.yml/enable" || true
+      - name: Send reminders
+        env:
+          MOS_PUSH: ${{ secrets.MOS_PUSH }}
+          TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test }}
+        run: node notify/send.js
