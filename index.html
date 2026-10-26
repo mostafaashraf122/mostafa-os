@@ -1315,7 +1315,7 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
-<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بـ Face ID / البصمة</button><button class="lkalt" id="lkAlt" type="button" hidden>استخدم الباسورد</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة</button><button class="lkalt" id="lkAlt" type="button" hidden>استخدم الباسورد</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
 <script src="plan.js"></script>
@@ -2608,13 +2608,13 @@ async function bioCheck(){if(!LK.cred)return false;const a=await navigator.crede
  return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
 let lkFails=+(LK.fails||0),lkWait=+(LK.wait||0),hiddenAt=0;
 function showLock(){document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
- $('#lkBio').hidden=!LK.cred;$('#lkAlt').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!!LK.cred;}$('#lkTxt').textContent=LK.cred?'افتحه بـ Face ID أو البصمة':'مقفول. اكتب الباسورد';
+ $('#lkBio').hidden=!LK.cred;$('#lkAlt').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!!LK.cred;}$('#lkTxt').textContent=LK.cred?'افتحه ببصمتك':'مقفول. اكتب الباسورد';
  if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
 function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;if(!LS.get('setupAsked')&&typeof setupAsk==='function')setTimeout(setupAsk,700);if(LK.fails||LK.wait||LK.lockouts){LK.fails=0;LK.wait=0;LK.lockouts=0;saveLock();}}
 let bioBusy=false;
 async function tryBio(){if(!LK.cred||$('#lock').hidden||bioBusy)return;bioBusy=true;$('#lkMsg').textContent='';
  try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. المس الشاشة وجرّب تاني، أو استخدم الباسورد.';}
- catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'المس الشاشة علشان يفتح بـ Face ID':'Face ID مش متاح دلوقتي. استخدم الباسورد.';}
+ catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'المس الشاشة علشان يفتح بالبصمة':'البصمة مش متاحة دلوقتي. استخدم الباسورد.';}
  finally{bioBusy=false;}}
 function lkShowPin(){const pr=document.querySelector('.lkpin');if(pr)pr.hidden=false;$('#lkAlt').hidden=true;setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},50);}
 async function tryPin(){const v=$('#lkPin').value;if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
@@ -3322,7 +3322,7 @@ function autoHTML(){const pt=PTA.loc===locId()&&PTA.days[ymd(new Date())];
 buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();buildDayflow();buildNotifs();setupPages();initGo();autoInit();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
-window.MOS={PT,isRamadan,LK,enableLock,bioAvailable};
+window.MOS={PT,isRamadan,LK,LS,enableLock,bioAvailable,nfEnable,askLoc,grantStorage};
 })();
 </script>
 
@@ -3517,24 +3517,68 @@ const CUE=(function(){
 .glyph .ico,.dock .ico,.ib .ico{width:1.15em;height:1.15em}
 </style>
 
-<div class="fidask" id="fidAsk" hidden role="dialog" aria-label="Face ID"><div class="fidc"><div class="fidi">🔐</div><b>خلّيه يفتح بوشك</b><span>الموبايل ده لسه مش متسجّل فيه Face ID، علشان كده طلب الباسورد. فعّله مرة واحدة ومن بعدها هيفتح بوشك لوحده.</span><button type="button" id="fidGo">فعّل Face ID</button><button type="button" class="fidl" id="fidLater">بعدين</button></div></div>
+<div class="fidask" id="permAsk" hidden role="dialog" aria-label="الصلاحيات"><div class="fidc">
+ <b>اسمح للتطبيق يشتغل صح</b><span>كل حاجة بتتطلب مرة واحدة بس، ومفيش حاجة بتطلع برا موبايلك.</span>
+ <div class="prow" data-p="bio"><i>🔐</i><div><b>البصمة</b><small>يفتح ببصمتك بدل الباسورد</small></div><button type="button">اسمح</button></div>
+ <div class="prow" data-p="notif"><i>🔔</i><div><b>الإشعارات</b><small>الصلاة والتنبيهات توصلك والتطبيق مقفول</small></div><button type="button">اسمح</button></div>
+ <div class="prow" data-p="loc"><i>📍</i><div><b>الموقع</b><small>مواعيد الصلاة تتظبط لوحدها لو سافرت</small></div><button type="button">اسمح</button></div>
+ <div class="prow" data-p="store"><i>💾</i><div><b>ذاكرة الموبايل</b><small>بياناتك تتحفظ ومتتمسحش</small></div><button type="button">اسمح</button></div>
+ <small class="pmsg" id="permMsg"></small>
+ <button type="button" class="fidl" id="permLater">بعدين</button></div></div>
 <style>
-.fidask{position:fixed;inset:0;z-index:210;display:grid;place-items:end center;padding:16px;background:rgba(4,6,14,.55);backdrop-filter:blur(6px)}
+.fidask{position:fixed;inset:0;z-index:210;display:grid;place-items:end center;padding:16px;background:rgba(4,6,14,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .fidask[hidden]{display:none}
-.fidc{width:min(100%,420px);display:grid;gap:10px;justify-items:center;text-align:center;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0px));border-radius:26px;background:color-mix(in srgb,var(--s1) 80%,#0a0f22);border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.fidi{font-size:30px}.fidc b{font-family:var(--display);font-size:20px}.fidc span{color:var(--frost);font-size:14px}
-#fidGo{width:100%;padding:13px;border:none;border-radius:16px;background:var(--gold);color:#1b1305;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.fidc{width:min(100%,440px);display:grid;gap:10px;text-align:center;padding:22px 16px calc(16px + env(safe-area-inset-bottom,0px));border-radius:26px;background:color-mix(in srgb,var(--s1) 80%,#0a0f22);border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.fidc>b{font-family:var(--display);font-size:20px}.fidc>span{color:var(--frost);font-size:13.5px}
+.prow{display:flex;align-items:center;gap:12px;text-align:start;padding:11px 12px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.prow>i{font-style:normal;font-size:20px;width:26px;display:grid;place-items:center;color:var(--gold)}
+.prow>div{flex:1;min-width:0;display:grid}.prow b{font-size:15px}.prow small{color:var(--frost);font-size:12px}
+.prow button{border:none;border-radius:12px;padding:8px 14px;background:var(--gold);color:#1b1305;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.prow.ok button{background:rgba(94,224,176,.15);color:var(--mint);pointer-events:none}
+.prow.na{opacity:.45}.prow.na button{background:rgba(255,255,255,.08);color:var(--frost);pointer-events:none}
+.pmsg{color:var(--gold2);min-height:1em;font-size:12.5px}
 .fidl{background:none;border:none;color:var(--frost);font:inherit;cursor:pointer;padding:6px}
 </style>
 <script>
-/* ---------- v15.1: no Face ID on this phone yet? offer it right after the password ---------- */
-(function(){const M=window.MOS;if(!M)return;const box=document.getElementById('fidAsk');let shown=false;
- const later=()=>{try{const v=+localStorage.getItem('mos:fidLater')||0;return Date.now()-v<3*864e5;}catch(e){return false;}};
- async function check(){if(shown||document.documentElement.classList.contains('locked')||M.LK.cred||later())return;
-  if(!(await M.bioAvailable()))return;shown=true;setTimeout(()=>{box.hidden=false;},600);}
- document.getElementById('fidGo').onclick=async()=>{box.hidden=true;try{await M.enableLock();}catch(e){}};
- document.getElementById('fidLater').onclick=()=>{box.hidden=true;try{localStorage.setItem('mos:fidLater',Date.now());}catch(e){}};
- new MutationObserver(check).observe(document.documentElement,{attributes:true,attributeFilter:['class']});check();})();
+/* ---------- v15.2: ask once for everything the phone needs to allow (Face ID, notifications, location, storage) ---------- */
+(function(){const M=window.MOS;if(!M)return;const box=document.getElementById('permAsk'),msg=document.getElementById('permMsg');let shown=false;
+ const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const standalone=!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
+ async function geo(){try{if(navigator.permissions){return (await navigator.permissions.query({name:'geolocation'})).state;}}catch(e){}return 'prompt';}
+ async function state(){const s={};
+  s.bio=M.LK.cred?'ok':((await M.bioAvailable())?'ask':'na');
+  const pushOK=('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window);
+  s.notif=!pushOK?(iOS&&!standalone?'ask':'na'):(Notification.permission==='granted'&&M.LS.get('pushSub')?'ok':(Notification.permission==='denied'?'denied':'ask'));
+  s.loc=!navigator.geolocation?'na':((await geo())==='granted'?'ok':((await geo())==='denied'?'denied':'ask'));
+  let pers=false;try{pers=navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():false;}catch(e){}
+  s.store=(M.LS.get('fsOn')||pers)?'ok':(navigator.storage&&navigator.storage.persist?'ask':'na');return s;}
+ async function paint(){const s=await state();box.querySelectorAll('.prow').forEach(r=>{const v=s[r.dataset.p];r.classList.toggle('ok',v==='ok');r.classList.toggle('na',v==='na');
+   r.querySelector('button').textContent=v==='ok'?'✓ تمام':v==='na'?'مش متاح':v==='denied'?'من الإعدادات':'اسمح';});
+  return s;}
+ const later=()=>{try{return Date.now()-(+localStorage.getItem('mos:permLater')||0)<3*864e5;}catch(e){return false;}};
+ async function check(force){if(!force&&(shown||document.documentElement.classList.contains('locked')||later()))return;
+  const s=await paint();const need=Object.values(s).some(v=>v==='ask');if(!need&&!force)return;
+  shown=true;try{localStorage.setItem('mos:setupAsked','1');const o=document.getElementById('setupSheet');if(o)o.hidden=true;}catch(e){}
+  setTimeout(()=>{box.hidden=false;},force?0:700);}
+ box.addEventListener('click',async e=>{const r=e.target.closest('.prow');if(!r||!e.target.closest('button'))return;const p=r.dataset.p;msg.textContent='';
+  try{
+   if(p==='bio')await M.enableLock();
+   if(p==='notif'){if(iOS&&!standalone){msg.textContent='على الآيفون: زرار المشاركة ← Add to Home Screen، وافتح التطبيق من الأيقونة.';return;}
+    if(Notification.permission==='denied'){msg.textContent='الإشعارات مقفولة: إعدادات الموبايل ← الإشعارات ← Mostafa OS ← اسمح.';return;}
+    await M.nfEnable();}
+   if(p==='loc'){if((await geo())==='denied'){msg.textContent='الموقع مقفول: إعدادات الموبايل ← الخصوصية ← خدمات الموقع ← اسمح.';return;}
+    await new Promise(res=>{navigator.geolocation.getCurrentPosition(()=>{try{M.askLoc();}catch(x){}res();},()=>res(),{timeout:15000});});}
+   if(p==='store')await M.grantStorage();
+  }catch(x){}
+  const s=await paint();if(!Object.values(s).some(v=>v==='ask')){msg.textContent='كله تمام ✓';setTimeout(()=>{box.hidden=true;},1200);}});
+ box.addEventListener('click',e=>{if(e.target===box)box.hidden=true;});
+ document.getElementById('permLater').onclick=()=>{box.hidden=true;try{localStorage.setItem('mos:permLater',Date.now());}catch(e){}};
+ new MutationObserver(()=>check()).observe(document.documentElement,{attributes:true,attributeFilter:['class']});check();
+ /* also reachable any time from More → Notifications */
+ function link(){const n=document.getElementById('notifs');if(!n||document.getElementById('permOpen'))return;const b=document.createElement('button');b.type='button';b.id='permOpen';b.className='minibtn';b.style.cssText='width:100%;margin-top:10px';b.textContent='🛡 الصلاحيات: البصمة، الإشعارات، الموقع، الذاكرة';b.onclick=()=>check(true);n.appendChild(b);}
+ link();setTimeout(link,1500);
+})();
 </script>
+
 
 </body></html>
