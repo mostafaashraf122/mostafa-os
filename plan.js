@@ -24,8 +24,9 @@ const fix=(a,b)=>{a=a-b*Math.floor(a/b);return a<0?a+b:a;};
 function julian(y,m,d){if(m<=2){y-=1;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;}
 function sun(jd){const D=jd-2451545;const g=fix(357.529+0.98560028*D,360),q=fix(280.459+0.98564736*D,360);const L=fix(q+1.915*sin(g)+0.02*sin(2*g),360);const e=23.439-0.00000036*D;const RA=fix(atan2(cos(e)*sin(L),cos(L))/15,24);return{decl:asin(sin(e)*sin(L)),eqt:q/15-RA};}
 function isRamadan(y,m,d){try{return parseInt(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{month:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(y,m-1,d,12))),10)===9;}catch(e){return false;}}
-/* returns minutes-of-day (local) for each prayer */
-function prayers(y,m,d,c){const LAT=c.lat,LNG=c.lng;const TZ=offsetMin(localToMs(y,m,d,720,c.tz),c.tz)/60;const FA=c.m==='eg'?19.5:18.5;const jd=julian(y,m,d)-LNG/(15*24);
+const pkey=(y,m,d)=>y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+/* returns minutes-of-day (local) for each prayer. Uses the official times fetched from the internet when we have them. */
+function prayers(y,m,d,c){const ov=c.times&&c.times[pkey(y,m,d)];if(ov&&isFinite(ov.fajr)&&isFinite(ov.isha))return Object.assign({},ov);const LAT=c.lat,LNG=c.lng;const TZ=offsetMin(localToMs(y,m,d,720,c.tz),c.tz)/60;const FA=c.m==='eg'?19.5:18.5;const jd=julian(y,m,d)-LNG/(15*24);
  const mid=t=>fix(12-sun(jd+t).eqt,24);
  const at=(a,t,ccw)=>{const s=sun(jd+t);const v=(-sin(a)-sin(s.decl)*sin(LAT))/(cos(s.decl)*cos(LAT));const T=acos(v)/15;return mid(t)+(ccw?-T:T);};
  const asr=(f,t)=>{const s=sun(jd+t);return at(-acot(f+tan(Math.abs(LAT-s.decl))),t);};
@@ -108,6 +109,6 @@ function events(fromMs,toMs,cfg){const c=Object.assign({},DEF,cfg||{});const out
    day(Y,Mo,D,c).forEach(e=>{if(!e.notify)return;const at=localToMs(Y,Mo,D,e.min,c.tz);if(at>=fromMs&&at<toMs)out.push(Object.assign({at,date:Y+'-'+Mo+'-'+D},e));});}
  return out.sort((a,b)=>a.at-b.at);}
 
-const api={DEF,CATS,day,events,prayers,fmt,toMin,partsIn,localToMs,offsetMin};
+const api={DEF,CATS,day,events,prayers,fmt,toMin,partsIn,localToMs,offsetMin,pkey};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.MOSPlan=api;
 })(typeof self!=='undefined'?self:this);

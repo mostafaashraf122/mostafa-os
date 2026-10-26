@@ -1,6 +1,6 @@
 /* Mostafa OS service worker: opens without internet + shows the push notifications.
    Page = network first (so updates land fast), cached copy when offline. */
-const CACHE='mos-v11';
+const CACHE='mos-v12';
 const CORE=['./','./index.html','./plan.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});

@@ -1121,6 +1121,14 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
 .nft b{font-size:13px;font-weight:500}
 .nft small{grid-column:3;font-size:12px;color:var(--frost)}
 .nft.past{opacity:.45}.nft.mute{opacity:.35;text-decoration:line-through}
+.nfauto{margin-top:14px;border-top:1px dashed var(--line2);padding-top:10px;display:grid;gap:8px}
+.nfa{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:rgba(7,11,20,.45)}
+.nfa>i{font-style:normal;font-size:18px;flex:none}
+.nfa>span{flex:1;min-width:0;font-size:12.5px;color:var(--frost)}
+.nfa>span b{display:block;font-size:13.5px;color:var(--text);font-weight:500}
+.nfa .er{color:var(--ember)}
+.nfa>em{font-style:normal;color:var(--dim);font-size:14px}.nfa>em.ok{color:var(--mint)}
+.sytok{flex:1;min-width:0;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit;font-family:var(--mono);font-size:12px;direction:ltr}
 </style>
 
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -3072,7 +3080,7 @@ const NF=Object.assign({wake:'07:00',workStart:'09:00',workEnd:'17:00',commute:2
 const saveNF=()=>{LS.set('notif',NF);nfMark();};
 const nfTZ=()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Asia/Riyadh';}catch(e){return 'Asia/Riyadh';}};
 function nfCfg(){return {lat:LOC.lat,lng:LOC.lng,m:LOC.m||'uq',tz:nfTZ(),wake:NF.wake,workStart:NF.workStart,workEnd:NF.workEnd,commute:+NF.commute||0,sleep:NF.sleep,
-  workDays:NF.workDays,train:(S.settings.train||[]).slice(),off:Object.assign({},NF.off)};}
+  workDays:NF.workDays,train:(S.settings.train||[]).slice(),off:Object.assign({},NF.off),times:ptTimes(45)};}
 const hasPlan=()=>typeof MOSPlan!=='undefined';
 function planToday(){const d=new Date();return hasPlan()?MOSPlan.day(d.getFullYear(),d.getMonth()+1,d.getDate(),nfCfg()):[];}
 const NOWTXT={fajr:'وقت الفجر. قوم صلّي',dhuhr:'وقت الظهر',asr:'وقت العصر',maghrib:'وقت المغرب',isha:'وقت العشاء',wake:'صباح الخير. اشرب مية وابدأ',azkar_m:'أذكار الصباح',train:'وقت التمرين',walk:'مشي خفيف وإطالة',breakfast:'وقت الفطار',leave:'في الطريق للشغل',
@@ -3120,7 +3128,7 @@ function renderDayflow(scroll){if(!$('#dayflow')||!hasPlan())return;const L=plan
  {const g=(typeof SV!=='undefined'&&SV.goals||[]).filter(x=>x&&x.target>0).sort((a,b)=>(gSaved(b)/b.target)-(gSaved(a)/a.target))[0];const gb=$('#dfGoal');
   if(g){const s=gSaved(g),fr=Math.max(0,Math.min(1,s/g.target));gb.innerHTML='<span class="gi">'+esc(g.ic||'🎯')+'</span><span class="gt"><b>هدفك: '+esc(g.n||'')+'</b><small>'+Math.round(s).toLocaleString('en')+' من '+Math.round(g.target).toLocaleString('en')+' · '+pick(DF_FOCUS,1)+'</small><span class="gtr"><i style="width:'+(fr*100).toFixed(1)+'%"></i></span></span><span class="gp mono">'+Math.round(fr*100)+'%</span>';}
   else gb.innerHTML='<span class="gi">🎯</span><span class="gt"><b>حدّد هدف التحويش بتاعك</b><small>الهدف المكتوب بيتحقق أسرع. دوس وابدأ.</small></span><span class="gp">‹</span>';}
- nfCtaRender();}
+ nfCtaRender();autoTick();}
 
 /* ---------- open the right place when you tap a notification ---------- */
 function flash(node){if(!node)return;node.classList.remove('flash');void node.offsetWidth;node.classList.add('flash');setTimeout(()=>node.classList.remove('flash'),2200);}
@@ -3148,9 +3156,10 @@ const nfRepo=()=>{const h=location.hostname;const m=h.match(/^([a-z0-9-]+)\.gith
 const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isStandalone=()=>!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
 const pushOK=()=>('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window);
-function nfCode(){const sub=LS.get('pushSub'),V=LS.get('vapid');if(!sub||!V)return '';const j={v:1,sub,pub:V.pub,priv:V.priv,cfg:nfCfg()};return nfB64(new TextEncoder().encode(JSON.stringify(j)));}
+function nfCode(){const sub=LS.get('pushSub'),V=LS.get('vapid');if(!sub||!V)return '';const cfg=nfCfg();delete cfg.times;const j={v:2,pub:V.pub,priv:V.priv,ek:LS.get('syncKey')||'',repo:nfRepo(),branch:'push-config',sub,cfg};return nfB64(new TextEncoder().encode(JSON.stringify(j)));}
+function nfKeySig(){const V=LS.get('vapid')||{};return nfSig((V.pub||'')+'|'+(V.priv||'')+'|'+(LS.get('syncKey')||'')+'|'+nfRepo());}
 const nfSig=c=>{let h=0;for(let i=0;i<c.length;i++)h=(h*31+c.charCodeAt(i))|0;return String(h);};
-function nfState(){if(!LS.get('pushSub'))return 0;const c=nfCode();return LS.get('pushSig')===nfSig(c)?2:1;}
+function nfState(){if(!LS.get('pushSub'))return 0;if(LS.get('pushSigK')!==nfKeySig())return 1;return (SY.tok&&!SY.err)||LS.get('pushSig')===nfSig(nfCode())?2:1;}
 function nfMark(){nfRender();renderDayflow();}
 function nfCtaRender(){const b=$('#dfCta');if(!b)return;const st=nfState();b.hidden=st===2;
  b.innerHTML=st===1?'<i>🔔</i><b>كمّل تشغيل الإشعارات</b><span>'+(LS.get('pushSig')?'عدّلت المواعيد: انسخ الكود الجديد لـ GitHub':'خطوة واحدة فاضلة: حط الكود في GitHub')+'</span><em>‹</em>':'<i>🔔</i><b>خلّي موبايلك يفكّرك بكل ده</b><span>صلاة، صحيان، تمرين، أذكار، تركيز على هدفك…</span><em>‹</em>';}
@@ -3162,6 +3171,7 @@ async function nfEnable(){const msg=$('#nfMsg');const say=t=>{if(msg)msg.textCon
   const reg=await navigator.serviceWorker.ready;
   let V=LS.get('vapid');if(!V){const kp=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);const j=await crypto.subtle.exportKey('jwk',kp.privateKey);
    const pub=new Uint8Array(65);pub[0]=4;pub.set(nfUnb64(j.x),1);pub.set(nfUnb64(j.y),33);V={pub:nfB64(pub),priv:j.d};LS.set('vapid',V);}
+  if(!LS.get('syncKey'))LS.set('syncKey',nfB64(crypto.getRandomValues(new Uint8Array(32))));
   let sub=await reg.pushManager.getSubscription();
   if(sub){try{const k=sub.options&&sub.options.applicationServerKey;if(k&&nfB64(k)!==V.pub){await sub.unsubscribe();sub=null;}}catch(e){}}
   if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:nfUnb64(V.pub)});
@@ -3197,9 +3207,12 @@ function buildNotifs(){const sec=el('section','pnl notifs');sec.id='notifs';
  sec.addEventListener('click',e=>{const a=e.target.closest('[data-nfa]');if(!a)return;const act=a.dataset.nfa;
   if(act==='on')nfEnable();
   if(act==='copy')nfCopy();
-  if(act==='done'){LS.set('pushSig',nfSig(nfCode()));try{burst(90);}catch(x){}toast('🔔','الإشعارات اتظبطت','هتوصلك التنبيهات في مواعيدها');nfMark();}
+  if(act==='done'){LS.set('pushSig',nfSig(nfCode()));LS.set('pushSigK',nfKeySig());try{burst(90);}catch(x){}toast('🔔','الإشعارات اتظبطت','هتوصلك التنبيهات في مواعيدها');nfMark();}
   if(act==='test'){navigator.serviceWorker.ready.then(r=>r.showNotification('🔔 تجربة',{body:'لو شايف ده يبقى الموبايل مسموح فيه بالإشعارات.',icon:'icon-192.png',lang:'ar',dir:'rtl',tag:'mos-test',data:{go:'day'}})).catch(()=>{});}
-  if(act==='redo'){LS.set('pushSig',null);nfMark();}});
+  if(act==='redo'){LS.set('pushSig',null);LS.set('pushSigK',null);nfMark();}
+  if(act==='loc')askLoc();
+  if(act==='sy')syncConnect();
+  if(act==='syfix'){SY.tok='';SY.err='';saveSY();nfRender();}});
  nfRender();nfRefresh();}
 function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo();const gh='https://github.com/'+repo;
  $('#nfCnt').textContent=st===2?'شغّالة':'مقفولة';$('#nfCnt').classList.toggle('full',st===2);
@@ -3218,7 +3231,7 @@ function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo
    '<p class="note">🔒 الكود فيه مفتاح خاص بموبايلك بس. حطه في GitHub Secrets (محدش يقدر يشوفه)، ومتبعتوش لحد.</p>';}
  else{h+='<div class="nfon"><b>✓ الإشعارات شغالة</b><span>هتوصلك '+planToday().filter(e=>e.notify).length+' تنبيه النهارده في مواعيدها. لو غيّرت مواعيدك هنا، هقولك تنسخ الكود تاني.</span></div>'+
    '<div class="nfrow"><button type="button" class="minibtn" data-nfa="test">جرّب إشعار على الجهاز</button><a class="minibtn" href="'+gh+'/actions/workflows/notify.yml" target="_blank" rel="noopener">إشعار من GitHub</a><button type="button" class="minibtn" data-nfa="redo">اعرض الكود تاني</button></div>';}
- h+='<div class="sub" id="nfMsg" style="margin-top:8px;color:var(--ember)"></div>';
+ h+='<div class="sub" id="nfMsg" style="margin-top:8px;color:var(--ember)"></div>'+autoHTML();
  $('#nfBody').innerHTML=h;
  document.querySelectorAll('#nfDays [data-wd]').forEach(b=>b.classList.toggle('on',(NF.workDays||[]).indexOf(+b.dataset.wd)>=0));
  document.querySelectorAll('#nfCats [data-cat]').forEach(b=>b.classList.toggle('on',!(NF.off||{})[b.dataset.cat]));
@@ -3226,7 +3239,83 @@ function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo
  const nm=new Date().getHours()*60+new Date().getMinutes();
  $('#nfToday').innerHTML=L.filter(e=>e.k!=='work').map(e=>'<div class="nft'+(e.min<nm?' past':'')+(e.notify?'':' mute')+'"><span class="mono">'+MOSPlan.fmt(e.min)+'</span><i>'+e.icon+'</i><b>'+esc(e.label)+'</b><small>'+esc(e.body||'')+'</small></div>').join('');}
 
-buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();buildDayflow();buildNotifs();setupPages();initGo();booted=true;RB.firstRender=true;
+/* ---------- auto-update: prayer times from the internet, location, and settings sync to GitHub ---------- */
+const PTA=Object.assign({loc:'',days:{},at:0,src:''},LS.get('ptimes')||{});
+const locId=()=>[(+LOC.lat).toFixed(3),(+LOC.lng).toFixed(3),LOC.m||'uq'].join(',');
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+let ptBusy=false;
+async function fetchPT(force){if(ptBusy||!navigator.onLine)return;const id=locId();const now=new Date();const need=[0,1].map(i=>new Date(now.getFullYear(),now.getMonth()+i,1));
+ const have=PTA.loc===id&&PTA.days[ymd(need[1])]&&PTA.days[ymd(now)];
+ if(!force&&have&&Date.now()-PTA.at<5*864e5)return;
+ ptBusy=true;try{const days=PTA.loc===id?Object.assign({},PTA.days):{};let ok=0;
+  for(const d of need){const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),9000);
+   try{const r=await fetch('https://api.aladhan.com/v1/calendar/'+d.getFullYear()+'/'+(d.getMonth()+1)+'?latitude='+LOC.lat+'&longitude='+LOC.lng+'&method='+(LOC.m==='eg'?5:4)+'&timezonestring='+encodeURIComponent(nfTZ()),{signal:ctl.signal});
+    const j=await r.json();const mm=s=>{const a=String(s).match(/(\d{1,2}):(\d{2})/);return +a[1]*60+ +a[2];};
+    (j.data||[]).forEach(x=>{const g=x.date.gregorian.date.split('-');const T=x.timings;days[g[2]+'-'+g[1]+'-'+g[0]]={fajr:mm(T.Fajr),sunrise:mm(T.Sunrise),dhuhr:mm(T.Dhuhr),asr:mm(T.Asr),maghrib:mm(T.Maghrib),isha:mm(T.Isha)};});ok++;}
+   catch(e){}finally{clearTimeout(t);}}
+  if(ok){const cut=ymd(new Date(Date.now()-3*864e5));Object.keys(days).forEach(k=>{if(k<cut)delete days[k];});
+   PTA.loc=id;PTA.days=days;PTA.at=Date.now();PTA.src=LOC.m==='eg'?'الهيئة المصرية':'أم القرى';LS.set('ptimes',PTA);try{render();}catch(e){}nfRender();}}
+ finally{ptBusy=false;}}
+/* the whole app (arc, next prayer, timeline, notifications) uses the official times when we have them */
+{const calc=PT.compute;PT.compute=function(date,ramadan){try{if(PTA.loc===locId()){const t=PTA.days[ymd(date)];if(t)return {fajr:t.fajr/60,sunrise:t.sunrise/60,dhuhr:t.dhuhr/60,asr:t.asr/60,maghrib:t.maghrib/60,isha:t.isha/60};}}catch(e){}return calc(date,ramadan);};}
+function ptTimes(n){if(PTA.loc!==locId())return {};const o={};const d=new Date();d.setDate(d.getDate()-1);for(let i=0;i<(n||45);i++){const k=ymd(d);if(PTA.days[k])o[k]=PTA.days[k];d.setDate(d.getDate()+1);}return o;}
+
+/* location: when allowed, follow the phone so prayer times stay right when you travel */
+async function autoLoc(){if(NF.autoLoc===false||!navigator.geolocation||!navigator.onLine)return;
+ try{if(navigator.permissions){const p=await navigator.permissions.query({name:'geolocation'});if(p.state!=='granted')return;}else return;}catch(e){return;}
+ if(Date.now()-(LS.get('locAt')||0)<3*3600e3)return;
+ navigator.geolocation.getCurrentPosition(pos=>{LS.set('locAt',Date.now());const la=pos.coords.latitude,lo=pos.coords.longitude;
+  const km=Math.hypot((la-LOC.lat)*111,(lo-LOC.lng)*111*Math.cos(la*Math.PI/180));if(km<5)return;
+  let best=null,bd=1e9;CITIES.forEach(c=>{const d=Math.hypot(c[1]-la,c[2]-lo);if(d<bd){bd=d;best=c;}});
+  const m=(lo<36&&la>21&&la<32)?'eg':'uq';S.settings.loc={name:bd<0.5?best[0]:'مكاني ('+la.toFixed(2)+', '+lo.toFixed(2)+')',lat:la,lng:lo,m};applyLoc();saveSettings();
+  toast('📍','مكانك اتغيّر: '+S.settings.loc.name,'مواعيد الصلاة والتنبيهات اتحدّثت لوحدها');fetchPT(true);try{render();}catch(e){}},()=>{},{enableHighAccuracy:false,maximumAge:3600e3,timeout:15000});}
+function askLoc(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(()=>{NF.autoLoc=true;LS.set('notif',NF);LS.set('locAt',0);autoLoc();nfRender();},()=>{const m=$('#nfMsg');if(m)m.textContent='مقدرتش أوصل لمكانك. اسمح للتطبيق بالموقع من إعدادات الموبايل.';},{timeout:15000});}
+
+/* settings sync: the app pushes your latest settings (encrypted) to GitHub so the notifications follow them */
+const SY=Object.assign({tok:'',at:0,hash:'',err:''},LS.get('sync')||{});
+const saveSY=()=>LS.set('sync',SY);
+const syncOn=()=>!!(SY.tok&&LS.get('syncKey')&&LS.get('pushSub'));
+let syT=null,syBusy=false;
+function syncPayload(){return JSON.stringify({sub:LS.get('pushSub'),cfg:nfCfg()});}
+function syncSoon(ms){if(!syncOn())return;clearTimeout(syT);syT=setTimeout(syncNow,ms==null?4000:ms);}
+function syncCheck(){if(!syncOn())return;const h=nfSig(syncPayload());if(h!==SY.hash||Date.now()-SY.at>12*3600e3)syncSoon(SY.hash?4000:500);}
+async function syncNow(){if(!syncOn()||syBusy||!navigator.onLine)return;syBusy=true;
+ const repo=nfRepo(),br='push-config',api='https://api.github.com/repos/'+repo;const H={Authorization:'Bearer '+SY.tok,Accept:'application/vnd.github+json'};
+ const gh=async(path,opt)=>{const r=await fetch(api+path,Object.assign({headers:H,cache:'no-store'},opt||{}));let j=null;try{j=await r.json();}catch(e){}return {s:r.status,j};};
+ try{const pay=syncPayload();const h=nfSig(pay);
+  const body=new TextEncoder().encode(JSON.stringify(Object.assign({v:2,t:Date.now()},JSON.parse(pay))));
+  const key=await crypto.subtle.importKey('raw',nfUnb64(LS.get('syncKey')),'AES-GCM',false,['encrypt']);const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,body);const file='v2.'+nfB64(iv)+'.'+nfB64(ct);
+  let cur=await gh('/contents/config.enc?ref='+br+'&t='+Date.now());
+  if(cur.s===401)throw new Error('401');
+  if(cur.s===404){const rb=await gh('/git/ref/heads/'+br);
+   if(rb.s===404){const info=await gh('');const main=(info.j&&info.j.default_branch)||'main';const mr=await gh('/git/ref/heads/'+main);if(!mr.j||!mr.j.object)throw new Error(mr.s);
+    const cr=await gh('/git/refs',{method:'POST',body:JSON.stringify({ref:'refs/heads/'+br,sha:mr.j.object.sha})});if(cr.s>=300)throw new Error(cr.s);}}
+  const put=await gh('/contents/config.enc',{method:'PUT',body:JSON.stringify({message:'sync settings',content:btoa(file),branch:br,sha:cur.j&&cur.j.sha||undefined})});
+  if(put.s>=300)throw new Error(put.s);
+  SY.at=Date.now();SY.hash=h;SY.err='';saveSY();}
+ catch(e){const c=String(e.message||e);SY.err=c==='401'?'التوكن انتهى أو غلط. اعمل توكن جديد وحطه هنا.':(c==='403'||c==='404')?'التوكن مالوش صلاحية Contents: Read and write على الريبو.':'مقدرتش أوصل لـ GitHub دلوقتي. هحاول تاني لوحدي.';saveSY();}
+ finally{syBusy=false;nfRender();}}
+async function syncConnect(){const i=$('#syTok');const v=(i&&i.value||'').trim();if(!v)return;SY.tok=v;SY.hash='';SY.err='';saveSY();
+ if(!LS.get('syncKey')){LS.set('syncKey',nfB64(crypto.getRandomValues(new Uint8Array(32))));}
+ nfRender();await syncNow();if(!SY.err)toast('🔄','التحديث التلقائي اشتغل','أي تعديل في مواعيدك هيوصل للإشعارات لوحده');}
+const ago=t=>{if(!t)return 'لسه';const m=Math.round((Date.now()-t)/60000);return m<1?'دلوقتي':m<60?'من '+m+' دقيقة':m<1440?'من '+Math.round(m/60)+' ساعة':'من '+Math.round(m/1440)+' يوم';};
+function autoTick(){fetchPT();syncCheck();}
+function autoInit(){setTimeout(()=>{fetchPT();autoLoc();},1500);
+ window.addEventListener('online',()=>{fetchPT();syncSoon(1000);});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden){fetchPT();autoLoc();nfRefresh();syncCheck();}});}
+function autoHTML(){const pt=PTA.loc===locId()&&PTA.days[ymd(new Date())];
+ let h='<div class="nfauto"><div class="rsub">AUTO · بيتحدّث لوحده</div>'+
+  '<div class="nfa"><i>🕌</i><span><b>مواعيد الصلاة</b>'+(pt?'من الإنترنت ('+esc(PTA.src)+') · اتحدّثت '+ago(PTA.at):'محسوبة على الموبايل · هتتحدّث من الإنترنت أول ما يبقى فيه نت')+'</span><em class="'+(pt?'ok':'')+'">'+(pt?'✓':'…')+'</em></div>'+
+  '<div class="nfa"><i>📍</i><span><b>مكانك: '+esc(LOC.name||'')+'</b>'+(NF.autoLoc?'بيتحدّث لوحده لو سافرت':'دوس "تابع مكاني" علشان المواعيد تتظبط لو سافرت')+'</span>'+(NF.autoLoc?'<em class="ok">✓</em>':'<button type="button" class="minibtn" data-nfa="loc">تابع مكاني</button>')+'</div>';
+ if(LS.get('pushSub')){
+  if(SY.tok){h+='<div class="nfa"><i>🔄</i><span><b>مواعيدك ← الإشعارات</b>'+(SY.err?'<span class="er">'+esc(SY.err)+'</span>':'أي تعديل بيوصل لوحده خلال دقايق · آخر تحديث '+ago(SY.at))+'</span>'+(SY.err?'<button type="button" class="minibtn" data-nfa="syfix">غيّر التوكن</button>':'<em class="ok">✓</em>')+'</div>';}
+  else{h+='<div class="nfa"><i>🔄</i><span><b>خلّي تعديلاتك توصل لوحدها</b>مرة واحدة: اعمل توكن من GitHub والتطبيق هيبعت أي تعديل في مواعيدك أو مكانك للإشعارات أوتوماتيك، من غير ما تنسخ الكود تاني.</span></div>'+
+   '<ol class="nfol"><li><a class="minibtn" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">① اعمل توكن</a><small>Repository access ← Only select ← <code>'+esc(nfRepo().split('/')[1])+'</code> · Permissions ← Contents ← <b>Read and write</b> · Expiration: أطول مدة ← Generate</small></li>'+
+   '<li style="flex-wrap:nowrap"><input id="syTok" class="sytok" type="password" autocomplete="off" spellcheck="false" placeholder="الصق التوكن هنا"><button type="button" class="minibtn gold" data-nfa="sy">② وصّل</button></li></ol>';}}
+ return h+'</div>';}
+
+buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();buildComm();buildLessons();buildTaskEditor();renderBackup();initLock();persistStorage();initStore();buildQuick();buildSimple();buildDayflow();buildNotifs();setupPages();initGo();autoInit();booted=true;RB.firstRender=true;
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 })();
