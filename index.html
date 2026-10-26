@@ -868,6 +868,7 @@ html.locked .lock{display:grid}
 .lkpin input{flex:1;min-width:0;background:rgba(7,11,20,.7);border:1px solid var(--line2);border-radius:12px;color:var(--text);padding:11px 12px;font:inherit;font-size:16px;text-align:center;letter-spacing:.3em}
 .lkpin button{border-radius:12px;border:1px solid var(--line2);background:var(--panel);color:var(--text);padding:0 16px;cursor:pointer}
 .lk small{color:var(--ember);min-height:1.2em;font-size:12.5px}
+.lkalt{background:none;border:none;color:var(--frost);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:4px}.lkalt[hidden],.lkpin[hidden]{display:none}
 .lksel{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:4px 6px;font:inherit;font-size:12.5px}
 #lkSet input{background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;color:var(--text);padding:8px 10px;font:inherit}
 /* savings */
@@ -1314,7 +1315,7 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
 <div class="splash" id="splash" hidden></div>
-<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة / Face ID</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بـ Face ID / البصمة</button><button class="lkalt" id="lkAlt" type="button" hidden>استخدم الباسورد</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
 <script src="plan.js"></script>
@@ -2611,16 +2612,22 @@ async function bioCheck(){if(!LK.cred)return false;const a=await navigator.crede
  return !!(a&&a.response&&a.response.authenticatorData&&(new Uint8Array(a.response.authenticatorData)[32]&4));}
 let lkFails=+(LK.fails||0),lkWait=+(LK.wait||0),hiddenAt=0;
 function showLock(){document.documentElement.classList.add('locked');const l=$('#lock');l.hidden=false;$('#lkPin').value='';$('#lkMsg').textContent='';
- $('#lkBio').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=false;}$('#lkTxt').textContent=LK.cred?'مقفول. افتحه بالبصمة أو Face ID، أو اكتب الباسورد':'مقفول. اكتب الباسورد';
+ $('#lkBio').hidden=!LK.cred;$('#lkAlt').hidden=!LK.cred;{const pr=document.querySelector('.lkpin');if(pr)pr.hidden=!!LK.cred;}$('#lkTxt').textContent=LK.cred?'افتحه بـ Face ID أو البصمة':'مقفول. اكتب الباسورد';
  if(LK.cred)setTimeout(tryBio,350);else setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},300);}
 function unlock(){document.documentElement.classList.remove('locked');$('#lock').hidden=true;lkFails=0;if(!LS.get('setupAsked')&&typeof setupAsk==='function')setTimeout(setupAsk,700);if(LK.fails||LK.wait||LK.lockouts){LK.fails=0;LK.wait=0;LK.lockouts=0;saveLock();}}
-async function tryBio(){if(!LK.cred||$('#lock').hidden)return;try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. جرّب تاني أو اكتب الباسورد.';}
- catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'دوس على الزرار علشان تفتح بالبصمة':'البصمة مش متاحة دلوقتي. اكتب الباسورد.';}}
+let bioBusy=false;
+async function tryBio(){if(!LK.cred||$('#lock').hidden||bioBusy)return;bioBusy=true;$('#lkMsg').textContent='';
+ try{if(await bioCheck()){unlock();return;}$('#lkMsg').textContent='مقدرتش أتأكد. المس الشاشة وجرّب تاني، أو استخدم الباسورد.';}
+ catch(e){$('#lkMsg').textContent=e&&e.name==='NotAllowedError'?'المس الشاشة علشان يفتح بـ Face ID':'Face ID مش متاح دلوقتي. استخدم الباسورد.';}
+ finally{bioBusy=false;}}
+function lkShowPin(){const pr=document.querySelector('.lkpin');if(pr)pr.hidden=false;$('#lkAlt').hidden=true;setTimeout(()=>{try{$('#lkPin').focus();}catch(e){}},50);}
 async function tryPin(){const v=$('#lkPin').value;if(!v)return;if(Date.now()<lkWait){$('#lkMsg').textContent='استنى شوية وجرّب تاني';return;}
  $('#lkGo').disabled=true;let ok=false;try{ok=await passOK(v);}catch(e){}$('#lkGo').disabled=false;
  if(ok){unlock();return;}lkFails++;$('#lkPin').value='';
  LK.fails=lkFails;saveLock();if(lkFails>=5){lkWait=Date.now()+30000*Math.max(1,(LK.lockouts=(LK.lockouts||0)+1));lkFails=0;LK.fails=0;LK.wait=lkWait;saveLock();$('#lkMsg').textContent='غلط 5 مرات. استنى شوية وجرّب تاني.';}else $('#lkMsg').textContent='الباسورد غلط';}
-function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkGo').addEventListener('click',tryPin);
+function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkAlt').addEventListener('click',lkShowPin);
+ $('#lock').addEventListener('click',e=>{if(e.target.closest('.lkpin,#lkAlt,#lkBio'))return;tryBio();});
+ window.addEventListener('pageshow',e=>{if(e.persisted&&!$('#lock').hidden)setTimeout(tryBio,350);});$('#lkGo').addEventListener('click',tryPin);
  $('#lkPin').addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
  document.addEventListener('visibilitychange',()=>{if(document.hidden){hiddenAt=Date.now();if(!LK.after)showLock();}else if(hiddenAt&&Date.now()-hiddenAt>=LK.after*60000&&$('#lock').hidden)showLock();});
  renderLockSet();showLock();}
