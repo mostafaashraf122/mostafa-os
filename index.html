@@ -3222,7 +3222,14 @@ function buildNotifs(){const sec=el('section','pnl notifs');sec.id='notifs';
  /* on open: if reminders that were due never arrived, say so once every 6h */
  let nfTries=0;const nfWarn=async()=>{if(document.documentElement.classList.contains('locked')){if(++nfTries<120)setTimeout(nfWarn,5000);return;} /* wait until the app is unlocked */
   try{const d=await nfHealthData();if(d&&d.missed.length&&Date.now()-(LS.get('nfWarnAt')||0)>6*3600e3){LS.set('nfWarnAt',Date.now());toast('⚠','في تنبيهات مجتش','المزيد ← الإشعارات: دوس «جدّد الاشتراك»');}}catch(e){}};
- setTimeout(nfWarn,3000);}
+ nfAutoConfirm().then(()=>setTimeout(nfWarn,3000));}
+/* the GitHub step is already done if pushes from GitHub actually reach this phone and settings sync works:
+   no need to ask for the code again (pushes only arrive when the secret has this phone's keys) */
+async function nfAutoConfirm(){try{
+  if(nfState()!==1||!syncOn()||SY.err||!('caches' in window))return;
+  const c=await caches.open('mos-meta');const r=await c.match('./__lastpush');if(!r)return;const last=await r.json();
+  if(!last||!last.t||Date.now()-last.t>3*864e5)return;
+  LS.set('pushSigK',nfKeySig());LS.set('pushSig',nfSig(nfCode()));nfMark();}catch(e){}}
 /* ---------- notification health: did the reminders that were due actually arrive? ----------
    The service worker stamps every push it receives (cache mos-meta / __lastpush).
    Anything scheduled after the last stamp (+3 min) and more than 15 min ago = didn't arrive. */
