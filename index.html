@@ -2449,7 +2449,7 @@ const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYT
 const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-flash-latest',share:true},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
-delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
+delete AI.cfg.noSearchNow;delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
 if(!/^gemini-[\w.\-]+$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
 if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
 try{localStorage.removeItem('mos:aiBrief');}catch(e){}
@@ -2540,22 +2540,24 @@ async function pickModels(rt,key){/* ask Google which models this key can use, n
   const j=await r.json();const ms=(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).indexOf('generateContent')>=0).map(m=>String(m.name||'').replace(/^models\//,''));
   const ver=n=>{const x=n.match(/gemini-(\d+(?:\.\d+)?)/);return x?+x[1]:0;};
   const flash=ms.filter(n=>/^gemini-[\d.]+-flash(-\d+)?$/.test(n)).sort((a,b)=>ver(b)-ver(a));
-  const out=[...new Set((ms.indexOf('gemini-flash-latest')>=0?['gemini-flash-latest']:[]).concat(flash,ms.filter(n=>/flash/.test(n)&&!/image|tts|audio|live|embed|lite/.test(n))))];
-  return {models:out.slice(0,6)};}catch(e){return {net:true};}}
+  const ok=n=>/flash/.test(n)&&!/image|tts|audio|live|embed|omni|banana|robotics|computer/.test(n);
+  const pref=['gemini-3-flash-preview','gemini-3.1-flash-lite','gemini-3.5-flash','gemini-flash-latest','gemini-3.6-flash','gemini-3.7-flash','gemini-3.8-flash'];/* fast + free first; the newest are often overloaded */
+  const out=[...new Set(pref.filter(n=>ms.indexOf(n)>=0).concat(flash,ms.filter(ok)))];
+  return {models:out.slice(0,7)};}catch(e){return {net:true};}}
 async function probeKey(key){let best='',bestStatus=0;AI.probeLog=[];
  for(let i=0;i<GROUTES.length;i++){const rt=GROUTES[i];let list=rt.models;
   if(rt.id==='gl'){const pm=await pickModels(rt,key);if(pm.net)return {ok:null};if(pm.models&&pm.models.length)list=pm.models;else if(pm.err){AI.probeLog.push(rt.id+(rt.q?'?':'')+' list '+pm.status+': '+pm.err);if(!best||!/API key not valid/i.test(pm.err)){best=pm.err;bestStatus=pm.status;}if(pm.status!==404&&pm.status!==405)continue;}}
   for(const m of list){
-   try{const r=await fetch(gUrl(rt,m,'generateContent',key),{method:'POST',headers:gHdr(rt,key),body:JSON.stringify({contents:[{role:'user',parts:[{text:'قول أهلا'}]}],generationConfig:{maxOutputTokens:20}})});
+   try{const c=new AbortController();const tm=setTimeout(()=>c.abort(),15000);let r;try{r=await fetch(gUrl(rt,m,'generateContent',key),{method:'POST',signal:c.signal,headers:gHdr(rt,key),body:JSON.stringify({contents:[{role:'user',parts:[{text:'قول أهلا'}]}],generationConfig:{maxOutputTokens:20}})});}catch(er){clearTimeout(tm);if(er.name==='AbortError'){AI.probeLog.push(m+' slow');continue;}throw er;}clearTimeout(tm);
     if(r.ok){AI.cfg.gmodels=list;return {ok:true,route:i,model:m};}const j=await r.json().catch(()=>({}));const msg=(j.error&&j.error.message)||('HTTP '+r.status);AI.probeLog.push(rt.id+(rt.q?'?':'')+' '+m+' '+r.status+': '+msg);
-    if(r.status===404)continue;
+    if(r.status===404||r.status===503||r.status===500)continue;
     if(r.status===429){AI.cfg.gmodels=list;return {ok:true,route:i,model:m,busy:true};}
     if(!best||!/API key not valid/i.test(msg)){best=msg;bestStatus=r.status;}break;}
    catch(e){return {ok:null};}}}
  return {ok:false,why:best||'مفيش موديل شغال بالمفتاح ده'};}
 /* ---------- transport ---------- */
 async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;
- const free=!AI.cfg.gkey;const total=setTimeout(()=>ctl.abort(),opts.timeout||(free?45000:75000));
+ const free=!AI.cfg.gkey;const total=setTimeout(()=>ctl.abort(),opts.timeout||(free?45000:100000));
  /* stall guard: if nothing arrives for a while, abort instead of hanging forever */
  let stall=null;const kick=ms=>{clearTimeout(stall);stall=setTimeout(()=>{AI.stalled=true;ctl.abort();},ms||25000);};
  const sleep=ms=>new Promise((ok,no)=>{const t=setTimeout(ok,ms);ctl.signal.addEventListener('abort',()=>{clearTimeout(t);no(new DOMException('','AbortError'));},{once:true});});
@@ -2567,12 +2569,24 @@ async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortC
  const gemini=async()=>{
   const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
   const mk=(web)=>{const b={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||2048,temperature:.7}};if(opts.json)b.generationConfig.responseMimeType='application/json';else if(web)b.tools=[{google_search:{}}];return JSON.stringify(b);};
-  const rt=GROUTES[AI.cfg.groute|0]||GROUTES[0];const pool=(AI.cfg.gmodels&&AI.cfg.gmodels.length?AI.cfg.gmodels:rt.models);const models=[...new Set([AI.cfg.gmodel].concat(pool).filter(m=>m&&pool.indexOf(m)>=0))];if(!models.length)models.push(pool[0]);let res=null,last=0;const src={};
-  const call=(m,web)=>{kick(30000);return fetch(gUrl(rt,m,'streamGenerateContent',AI.cfg.gkey),{method:'POST',signal:ctl.signal,headers:gHdr(rt,AI.cfg.gkey),body:mk(web)});};
-  for(const m of models){res=await call(m,true);
-   if(!res.ok&&(res.status===400||res.status===429)&&!opts.json){const r2=await call(m,false);if(r2.ok)res=r2;}/* search not allowed or used up → answer without it */
-   if(res.ok){if(AI.cfg.gmodel!==m){AI.cfg.gmodel=m;saveAI();}break;}last=res.status;if(res.status!==404&&res.status!==503&&res.status!==500)break;}
-  if(!res||!res.ok)throw httpErr(last||(res&&res.status),'gemini');
+  const rt=GROUTES[AI.cfg.groute|0]||GROUTES[0];
+  if(!AI.cfg.gmodels||!AI.cfg.gmodels.length){AI.cfg.gmodel='';const pm=await pickModels(rt,AI.cfg.gkey);if(pm.models&&pm.models.length){AI.cfg.gmodels=pm.models;saveAI();}}
+  const pool=(AI.cfg.gmodels&&AI.cfg.gmodels.length?AI.cfg.gmodels:rt.models);const models=[...new Set([AI.cfg.gmodel].concat(pool).filter(m=>m&&pool.indexOf(m)>=0))];if(!models.length)models.push(pool[0]);let res=null,last=0,lastMsg='';const src={};
+  /* Google Search inside Gemini isn't included in the free tier for most keys: try it, and if Google says no, remember for a day and use Wikipedia instead */
+  const canSearch=!opts.json&&!(AI.cfg.noSearch&&Date.now()-AI.cfg.noSearch<864e5);
+  const lastQ=messages[messages.length-1].content;
+  const withWiki=async()=>{if(opts.json||ADVICE_RX.test(lastQ)||contents._wiki)return;contents._wiki=1;onText&&onText('🔎 بدوّر…');try{const w=await wikiCtx(lastQ,ctl.signal);if(w)contents[contents.length-1].parts[0].text=lastQ+'\n\n(معلومات من ويكيبيديا لو ليها علاقة بسؤالي، واذكر إنها من ويكيبيديا: '+w+')';}catch(e){if(AI.stopped)throw e;}};
+  if(!canSearch)await withWiki();
+  const call=async(m,web)=>{const c=new AbortController();const stop=()=>c.abort();ctl.signal.addEventListener('abort',stop,{once:true});const tm=setTimeout(stop,20000);kick(30000);
+   try{const r=await fetch(gUrl(rt,m,'streamGenerateContent',AI.cfg.gkey),{method:'POST',signal:c.signal,headers:gHdr(rt,AI.cfg.gkey),body:mk(web)});clearTimeout(tm);return r;}
+   catch(e){clearTimeout(tm);if(ctl.signal.aborted)throw e;return {ok:false,status:504,json:async()=>({error:{message:'slow'}})};}};
+  let searchOff=false;for(const m of models){let web=canSearch&&!searchOff;res=await call(m,web);
+   if(!res.ok&&web&&(res.status===429||res.status===400)){AI.cfg.noSearch=Date.now();searchOff=true;saveAI();await withWiki();res=await call(m,false);}
+   if(res.ok){if(AI.cfg.gmodel!==m){AI.cfg.gmodel=m;saveAI();}break;}
+   last=res.status;try{const j=await res.json();lastMsg=(j.error&&j.error.message)||'';}catch(e){}
+   if([404,500,503,504,429].indexOf(res.status)<0)break;/* busy/retired/slow → try the next model right away */
+   onText&&onText('✺ الموديل ده زحمة، بجرّب غيره…');}
+  if(!res||!res.ok){if(last===429)throw new Error('وصلت لحد جوجل المجاني دلوقتي. استنى دقيقة وجرّب تاني.');if(last===503||last===504)throw new Error('موديلات جوجل كلها زحمة دلوقتي. جرّب كمان دقيقة.');throw httpErr(last||(res&&res.status),'gemini');}
   await pump(res,j=>{const c=j.candidates&&j.candidates[0];if(!c)return '';const gm=c.groundingMetadata;if(gm&&gm.groundingChunks)gm.groundingChunks.forEach(g=>{if(g.web&&g.web.uri)src[g.web.uri]=g.web.title||g.web.uri;});
    const p=c.content&&c.content.parts;return p?p.filter(x=>!x.thought).map(x=>x.text||'').join(''):'';});
   const ss=Object.entries(src).slice(0,5);if(ss.length&&full.trim()){full+='\n\n**المصادر:**\n'+ss.map(s=>'- ['+String(s[1]).replace(/[\[\]()]/g,'').slice(0,60)+']('+s[0]+')').join('\n');onText&&onText(full);}};
@@ -2693,7 +2707,7 @@ function buildCoach(){
  $('#aiChips').innerHTML=QUICK.slice(0,8).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  const P=$('#aiProfile');P.value=AI.cfg.profile;P.addEventListener('change',()=>{AI.cfg.profile=P.value.trim()||DEF_PROFILE;saveAI();toast('✓','المرشد حفظ الكلام عنك','');});
- [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.replace(/[\s"'`]/g,'');saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();if(AI.cfg.gkey)probeKey(AI.cfg.gkey).then(pr=>{if(pr.ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;saveAI();}else if(pr.ok===false)toast('✺','جوجل رفض المفتاح',(pr.why||'').slice(0,90));});toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
+ [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.replace(/[\s"'`]/g,'');saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();AI.cfg.gmodels=null;if(AI.cfg.gkey)probeKey(AI.cfg.gkey).then(pr=>{if(pr.ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;saveAI();}else if(pr.ok===false)toast('✺','جوجل رفض المفتاح',(pr.why||'').slice(0,90));});toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
  $('#aiMsgs').addEventListener('click',async e=>{if(!e.target.closest('#aiKeySave'))return;const st=$('#aiKeySt'),btn=$('#aiKeySave');
   const say=(t,c)=>{st.textContent=t;st.className='aikst '+(c||'');};
   const v=($('#aiKeyQ').value||'').replace(/[\s"'`]/g,'');
@@ -2702,7 +2716,7 @@ function buildCoach(){
   const pr=await probeKey(v);const ok=pr.ok,why=pr.why||'';if(ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;saveAI();}
   btn.disabled=false;
   if(ok===false){say('❌ جوجل رفض المفتاح: '+why.slice(0,220)+' · (المفتاح اللي اتلزق: '+v.length+' حرف، آخره '+v.slice(-4)+')','bad');return;}
-  AI.cfg.gkey=v;saveAI();const k=$('#aiKey');if(k)k.value=v;
+  AI.cfg.gkey=v;delete AI.cfg.noSearch;saveAI();const k=$('#aiKey');if(k)k.value=v;
   say(ok?'✅ تمام! المفتاح شغال'+(AI.cfg.groute>=2?' (مفتاح Vertex)':'')+' والمرشد بقى بيدوّر في جوجل. اسأله أي حاجة.':'✅ اتحفظ. (مقدرتش أجرّبه دلوقتي علشان النت، هيشتغل أول ما النت يرجع)','good');
   setTimeout(()=>{renderChat();},2500);});
  {const sh=$('#aiShare');if(sh){sh.checked=AI.cfg.share!==false;sh.addEventListener('change',()=>{AI.cfg.share=sh.checked;saveAI();});}}
