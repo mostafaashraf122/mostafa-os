@@ -2450,7 +2450,7 @@ const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-flash-latest',share:true},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
-if(!/^gemini-(flash-latest|2\.5-flash|2\.0-flash|2\.0-flash-001)$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
+if(!/^gemini-[\w.\-]+$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
 if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
 try{localStorage.removeItem('mos:aiBrief');}catch(e){}
 const saveAI=()=>LS.set('ai',AI.cfg);
@@ -2534,16 +2534,25 @@ const GROUTES=[{id:'gl',base:'https://generativelanguage.googleapis.com/v1beta/m
  {id:'vx',q:1,base:'https://aiplatform.googleapis.com/v1/publishers/google/models/',models:['gemini-2.5-flash','gemini-2.0-flash-001']}];
 function gUrl(rt,model,method,key){return rt.base+encodeURIComponent(model)+':'+method+(method==='streamGenerateContent'?'?alt=sse':'')+(rt.q?(method==='streamGenerateContent'?'&':'?')+'key='+encodeURIComponent(key):'');}
 function gHdr(rt,key){const h={'Content-Type':'application/json'};if(!rt.q)h['x-goog-api-key']=key;return h;}
-async function probeKey(key){let best='';
- for(let i=0;i<GROUTES.length;i++){const rt=GROUTES[i];for(const m of rt.models){
-  try{const r=await fetch(gUrl(rt,m,'generateContent',key),{method:'POST',headers:gHdr(rt,key),body:JSON.stringify({contents:[{role:'user',parts:[{text:'قول أهلا'}]}],generationConfig:{maxOutputTokens:20}})});
-   if(r.ok)return {ok:true,route:i,model:m};const j=await r.json().catch(()=>({}));const msg=(j.error&&j.error.message)||('HTTP '+r.status);
-   if(r.status===404)continue;/* model not on this route */
-   if(r.status===429)return {ok:true,route:i,model:m,busy:true};/* key works, just at its limit right now */
-   if(!best||!/API key not valid/i.test(msg))best=msg;break;}
-  catch(e){return {ok:null};}}}
- return {ok:false,why:best};}
-
+async function pickModels(rt,key){/* ask Google which models this key can use, newest flash first (old model names get retired) */
+ try{const r=await fetch(rt.base.replace(/models\/$/,'models')+'?pageSize=200'+(rt.q?'&key='+encodeURIComponent(key):''),{headers:rt.q?{}:{'x-goog-api-key':key}});
+  if(!r.ok){const j=await r.json().catch(()=>({}));return {err:(j.error&&j.error.message)||('HTTP '+r.status),status:r.status};}
+  const j=await r.json();const ms=(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).indexOf('generateContent')>=0).map(m=>String(m.name||'').replace(/^models\//,''));
+  const ver=n=>{const x=n.match(/gemini-(\d+(?:\.\d+)?)/);return x?+x[1]:0;};
+  const flash=ms.filter(n=>/^gemini-[\d.]+-flash(-\d+)?$/.test(n)).sort((a,b)=>ver(b)-ver(a));
+  const out=[...new Set((ms.indexOf('gemini-flash-latest')>=0?['gemini-flash-latest']:[]).concat(flash,ms.filter(n=>/flash/.test(n)&&!/image|tts|audio|live|embed|lite/.test(n))))];
+  return {models:out.slice(0,6)};}catch(e){return {net:true};}}
+async function probeKey(key){let best='',bestStatus=0;AI.probeLog=[];
+ for(let i=0;i<GROUTES.length;i++){const rt=GROUTES[i];let list=rt.models;
+  if(rt.id==='gl'){const pm=await pickModels(rt,key);if(pm.net)return {ok:null};if(pm.models&&pm.models.length)list=pm.models;else if(pm.err){AI.probeLog.push(rt.id+(rt.q?'?':'')+' list '+pm.status+': '+pm.err);if(!best||!/API key not valid/i.test(pm.err)){best=pm.err;bestStatus=pm.status;}if(pm.status!==404&&pm.status!==405)continue;}}
+  for(const m of list){
+   try{const r=await fetch(gUrl(rt,m,'generateContent',key),{method:'POST',headers:gHdr(rt,key),body:JSON.stringify({contents:[{role:'user',parts:[{text:'قول أهلا'}]}],generationConfig:{maxOutputTokens:20}})});
+    if(r.ok){AI.cfg.gmodels=list;return {ok:true,route:i,model:m};}const j=await r.json().catch(()=>({}));const msg=(j.error&&j.error.message)||('HTTP '+r.status);AI.probeLog.push(rt.id+(rt.q?'?':'')+' '+m+' '+r.status+': '+msg);
+    if(r.status===404)continue;
+    if(r.status===429){AI.cfg.gmodels=list;return {ok:true,route:i,model:m,busy:true};}
+    if(!best||!/API key not valid/i.test(msg)){best=msg;bestStatus=r.status;}break;}
+   catch(e){return {ok:null};}}}
+ return {ok:false,why:best||'مفيش موديل شغال بالمفتاح ده'};}
 /* ---------- transport ---------- */
 async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;
  const free=!AI.cfg.gkey;const total=setTimeout(()=>ctl.abort(),opts.timeout||(free?45000:75000));
@@ -2558,7 +2567,7 @@ async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortC
  const gemini=async()=>{
   const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
   const mk=(web)=>{const b={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||2048,temperature:.7}};if(opts.json)b.generationConfig.responseMimeType='application/json';else if(web)b.tools=[{google_search:{}}];return JSON.stringify(b);};
-  const rt=GROUTES[AI.cfg.groute|0]||GROUTES[0];const models=[...new Set([AI.cfg.gmodel].concat(rt.models).filter(m=>m&&rt.models.indexOf(m)>=0))];if(!models.length)models.push(rt.models[0]);let res=null,last=0;const src={};
+  const rt=GROUTES[AI.cfg.groute|0]||GROUTES[0];const pool=(AI.cfg.gmodels&&AI.cfg.gmodels.length?AI.cfg.gmodels:rt.models);const models=[...new Set([AI.cfg.gmodel].concat(pool).filter(m=>m&&pool.indexOf(m)>=0))];if(!models.length)models.push(pool[0]);let res=null,last=0;const src={};
   const call=(m,web)=>{kick(30000);return fetch(gUrl(rt,m,'streamGenerateContent',AI.cfg.gkey),{method:'POST',signal:ctl.signal,headers:gHdr(rt,AI.cfg.gkey),body:mk(web)});};
   for(const m of models){res=await call(m,true);
    if(!res.ok&&(res.status===400||res.status===429)&&!opts.json){const r2=await call(m,false);if(r2.ok)res=r2;}/* search not allowed or used up → answer without it */
@@ -2690,9 +2699,9 @@ function buildCoach(){
   const v=($('#aiKeyQ').value||'').replace(/[\s"'`]/g,'');
   if(v.length<20||!/^(AIza|AQ\.)/.test(v)){say('ده مش شكل مفتاح جوجل. المفتاح لازم يبدأ بـ AIza أو AQ. — انسخه كله من صفحة جوجل والزقه تاني.','bad');return;}
   btn.disabled=true;say('⏳ بجرّب المفتاح مع جوجل…');
-  const pr=await probeKey(v);const ok=pr.ok,why=pr.why||'';if(ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;}
+  const pr=await probeKey(v);const ok=pr.ok,why=pr.why||'';if(ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;saveAI();}
   btn.disabled=false;
-  if(ok===false){say('❌ جوجل رفض المفتاح: '+why.slice(0,140)+' · اتأكد إنك نسخته كله، أو اعمل مفتاح جديد.','bad');return;}
+  if(ok===false){say('❌ جوجل رفض المفتاح: '+why.slice(0,220)+' · (المفتاح اللي اتلزق: '+v.length+' حرف، آخره '+v.slice(-4)+')','bad');return;}
   AI.cfg.gkey=v;saveAI();const k=$('#aiKey');if(k)k.value=v;
   say(ok?'✅ تمام! المفتاح شغال'+(AI.cfg.groute>=2?' (مفتاح Vertex)':'')+' والمرشد بقى بيدوّر في جوجل. اسأله أي حاجة.':'✅ اتحفظ. (مقدرتش أجرّبه دلوقتي علشان النت، هيشتغل أول ما النت يرجع)','good');
   setTimeout(()=>{renderChat();},2500);});
