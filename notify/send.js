@@ -66,6 +66,28 @@ async function send(sub,ev){
     if(sc===404||sc===410)console.log('::warning::The phone subscription expired. Open Mostafa OS on your phone once — it re-subscribes and syncs on its own.');
     return false;}}
 
+/* ---------- relay helpers (GitHub API with the workflow's own token) ---------- */
+const HANDOFF=25*60e3;
+async function gh(method,path,body){
+  const r=await fetch('https://api.github.com/repos/'+process.env.GITHUB_REPOSITORY+path,{method,
+    headers:{Authorization:'Bearer '+process.env.GH_TOKEN,Accept:'application/vnd.github+json','User-Agent':'mostafa-os','Content-Type':'application/json'},
+    body:body?JSON.stringify(body):undefined});
+  let j=null;try{j=await r.json();}catch(e){}return {status:r.status,json:j};}
+/* is another Notifications run already working (or about to)? */
+async function relayAlive(){
+  try{for(const s of ['in_progress','queued','pending','waiting']){
+      const r=await gh('GET','/actions/workflows/notify.yml/runs?per_page=20&status='+s);
+      const runs=((r.json&&r.json.workflow_runs)||[]).filter(x=>String(x.id)!==String(process.env.GITHUB_RUN_ID));
+      if(runs.length)return true;}
+    return false;}catch(e){log('relay check failed:',e.message);return false;}}
+/* start the next run, which picks up exactly where this window ends */
+async function handOff(end){
+  for(let i=0;i<5;i++){
+    const r=await gh('POST','/actions/workflows/notify.yml/dispatches',{ref:process.env.GITHUB_REF_NAME||'main',inputs:{test:'false',from:String(end)}});
+    if(r.status===204){log('next run started for',new Date(end).toISOString());return true;}
+    log('could not start next run (',r.status,') retrying');await sleep(30e3);}
+  console.log('::warning::Could not start the next run. The schedule will restart the notifications.');return false;}
+
 (async()=>{
   const S=readSecret();
   webpush.setVapidDetails(S.mail||'mailto:mostafa-os@users.noreply.github.com',S.pub,S.priv);
@@ -80,10 +102,18 @@ async function send(sub,ev){
     if(!ok)process.exitCode=1;
     return;}
 
-  const k=Math.floor((Date.now()+LEAD)/WIN);const start=k*WIN-LEAD,end=start+WIN;
-  log('window',new Date(start).toISOString(),'→',new Date(end).toISOString());
+  /* Relay: GitHub's own schedule runs hours late or not at all, so each run covers its window
+     and starts the next run itself (HANDOFF before the end). The schedule is only a watchdog
+     that restarts the relay if it ever stops. */
+  const FROM=+process.env.FROM||0;
+  if(!FROM&&await relayAlive()){log('relay is running, watchdog has nothing to do');return;}
+  const start=FROM||Date.now()-STALE,end=start+WIN;
+  log('window',new Date(start).toISOString(),'→',new Date(end).toISOString(),FROM?'(relay)':'(start)');
+  if(FROM&&Date.now()>FROM)log('started',Math.round((Date.now()-FROM)/60e3),'min late');
+  let handed=false;
   const sent=new Set();let loaded=Date.now(),shown=false;
   while(Date.now()<end){
+    if(!handed&&Date.now()>=end-HANDOFF){handed=true;await handOff(end);}
     if(Date.now()-loaded>=RELOAD){st=await buildState(S);loaded=Date.now();}
     const list=Plan.events(start,end,st.cfg).filter(e=>!sent.has(e.k+'@'+e.date));
     if(!shown){list.forEach(e=>log('  ',new Date(e.at).toISOString().slice(11,16),'UTC',e.k));shown=true;}
@@ -91,8 +121,9 @@ async function send(sub,ev){
     if(!next){await sleep(Math.min(end-Date.now(),RELOAD));continue;}
     const wait=next.at-Date.now();
     if(wait< -STALE){log('skip (too late)',next.k);sent.add(next.k+'@'+next.date);continue;}
-    if(wait>15000){await sleep(Math.min(wait,RELOAD-(Date.now()-loaded)));continue;}
+    if(wait>15000){await sleep(Math.min(wait,RELOAD-(Date.now()-loaded),handed?Infinity:Math.max(1000,end-HANDOFF-Date.now())));continue;}
     await send(st.sub,next);sent.add(next.k+'@'+next.date);
   }
+  if(!handed)await handOff(end);
   log('done');
 })();
