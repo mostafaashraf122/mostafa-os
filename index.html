@@ -3216,8 +3216,39 @@ function buildNotifs(){const sec=el('section','pnl notifs');sec.id='notifs';
   if(act==='redo'){LS.set('pushSig',null);LS.set('pushSigK',null);nfMark();}
   if(act==='loc')askLoc();
   if(act==='sy')syncConnect();
-  if(act==='syfix'){SY.tok='';SY.err='';saveSY();nfRender();}});
- nfRender();nfRefresh();}
+  if(act==='syfix'){SY.tok='';SY.err='';saveSY();nfRender();}
+  if(act==='fix')nfResub();});
+ nfRender();nfRefresh();
+ /* on open: if reminders that were due never arrived, say so once every 6h */
+ let nfTries=0;const nfWarn=async()=>{if(document.documentElement.classList.contains('locked')){if(++nfTries<120)setTimeout(nfWarn,5000);return;} /* wait until the app is unlocked */
+  try{const d=await nfHealthData();if(d&&d.missed.length&&Date.now()-(LS.get('nfWarnAt')||0)>6*3600e3){LS.set('nfWarnAt',Date.now());toast('⚠','في تنبيهات مجتش','المزيد ← الإشعارات: دوس «جدّد الاشتراك»');}}catch(e){}};
+ setTimeout(nfWarn,3000);}
+/* ---------- notification health: did the reminders that were due actually arrive? ----------
+   The service worker stamps every push it receives (cache mos-meta / __lastpush).
+   Anything scheduled after the last stamp (+3 min) and more than 15 min ago = didn't arrive. */
+async function nfHealthData(){
+ if(nfState()!==2||!hasPlan()||!('caches' in window))return null;
+ let last=null;try{const c=await caches.open('mos-meta');const r=await c.match('./__lastpush');if(r)last=await r.json();}catch(e){}
+ let since=LS.get('nfHealthSince');if(!since){since=Date.now();LS.set('nfHealthSince',since);}
+ const now=Date.now(),from=Math.max(since,now-36*3600e3,last&&last.t?last.t+3*60e3:0);
+ let missed=[];try{if(from<now-15*60e3)missed=MOSPlan.events(from,now-15*60e3,nfCfg());}catch(e){}
+ return {last,missed};}
+async function nfHealth(){const box=$('#nfHealth');if(!box)return;const d=await nfHealthData();if(!d||!$('#nfHealth'))return;
+ if(d.missed.length){const e=d.missed[d.missed.length-1];box.className='nfwarn';box.style.marginTop='10px';
+  box.innerHTML='⚠ كان المفروض يوصلك <b>'+esc(e.label||'تنبيه')+'</b> الساعة '+esc(MOSPlan.fmt(e.min))+' ومجاش'+(d.missed.length>1?' (ومعاه '+(d.missed.length-1)+' تنبيه تاني)':'')+'. آخر إشعار وصل '+ago(d.last&&d.last.t)+'.'+
+   '<div class="nfrow" style="margin-top:8px"><button type="button" class="minibtn gold" data-nfa="fix">جدّد الاشتراك</button><a class="minibtn" href="https://github.com/'+nfRepo()+'/actions/workflows/notify.yml" target="_blank" rel="noopener">شوف GitHub</a></div>'+
+   '<small style="display:block;margin-top:6px">لو اتكرر: اتأكد إن Chrome مش عليه توفير بطارية، والإشعارات مسموحة للموقع.</small>';}
+ else{box.className='sub';box.textContent=d.last&&d.last.t?'✓ آخر إشعار وصل '+ago(d.last.t):'';}}
+/* fresh push subscription (when the old one died on the push server's side) */
+async function nfResub(){const msg=$('#nfMsg');try{
+  const V=LS.get('vapid');if(!V)return nfEnable();
+  const reg=await navigator.serviceWorker.ready;let sub=await reg.pushManager.getSubscription();
+  if(sub){try{await sub.unsubscribe();}catch(e){}}
+  sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:nfUnb64(V.pub)});
+  LS.set('pushSub',sub.toJSON());LS.set('nfHealthSince',Date.now());
+  if(syncOn()){await syncNow();if(!SY.err)toast('🔔','الاشتراك اتجدد','التنبيهات الجاية هتوصل عادي');}
+  nfMark();}
+ catch(e){if(msg)msg.textContent='مقدرتش أجدد الاشتراك: '+(e&&e.message||e);}}
 function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo();const gh='https://github.com/'+repo;
  $('#nfCnt').textContent=st===2?'شغّالة':'مقفولة';$('#nfCnt').classList.toggle('full',st===2);
  const steps='<div class="nfsteps"><span class="'+(st>=1?'ok':'cur')+'">1 · الموبايل</span><span class="'+(st===2?'ok':st===1?'cur':'')+'">2 · GitHub</span><span class="'+(st===2?'ok':'')+'">3 · جاهز</span></div>';
@@ -3234,9 +3265,9 @@ function nfRender(){if(!$('#notifs'))return;const st=nfState();const repo=nfRepo
    '<textarea id="nfCode" class="nfcode" readonly hidden></textarea>'+
    '<p class="note">🔒 الكود فيه مفتاح خاص بموبايلك بس. حطه في GitHub Secrets (محدش يقدر يشوفه)، ومتبعتوش لحد.</p>';}
  else{h+='<div class="nfon"><b>✓ الإشعارات شغالة</b><span>هتوصلك '+planToday().filter(e=>e.notify).length+' تنبيه النهارده في مواعيدها. لو غيّرت مواعيدك هنا، هقولك تنسخ الكود تاني.</span></div>'+
-   '<div class="nfrow"><button type="button" class="minibtn" data-nfa="test">جرّب إشعار على الجهاز</button><a class="minibtn" href="'+gh+'/actions/workflows/notify.yml" target="_blank" rel="noopener">إشعار من GitHub</a><button type="button" class="minibtn" data-nfa="redo">اعرض الكود تاني</button></div>';}
+   '<div class="nfrow"><button type="button" class="minibtn" data-nfa="test">جرّب إشعار على الجهاز</button><a class="minibtn" href="'+gh+'/actions/workflows/notify.yml" target="_blank" rel="noopener">إشعار من GitHub</a><button type="button" class="minibtn" data-nfa="redo">اعرض الكود تاني</button></div><div id="nfHealth" class="sub" style="margin-top:8px"></div>';}
  h+='<div class="sub" id="nfMsg" style="margin-top:8px;color:var(--ember)"></div>'+autoHTML();
- $('#nfBody').innerHTML=h;
+ $('#nfBody').innerHTML=h;nfHealth();
  document.querySelectorAll('#nfDays [data-wd]').forEach(b=>b.classList.toggle('on',(NF.workDays||[]).indexOf(+b.dataset.wd)>=0));
  document.querySelectorAll('#nfCats [data-cat]').forEach(b=>b.classList.toggle('on',!(NF.off||{})[b.dataset.cat]));
  if(!hasPlan())return;const L=planToday();$('#nfTodayN').textContent=L.filter(e=>e.notify).length+' تنبيه';
