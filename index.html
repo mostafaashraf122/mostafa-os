@@ -2450,7 +2450,7 @@ const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-flash-latest',share:true},LS.get('ai')||{}),
  mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
 delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
-if(!/^gemini-(flash-latest|2\.5-flash|2\.0-flash)$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
+if(!/^gemini-(flash-latest|2\.5-flash|2\.0-flash|2\.0-flash-001)$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
 if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
 try{localStorage.removeItem('mos:aiBrief');}catch(e){}
 const saveAI=()=>LS.set('ai',AI.cfg);
@@ -2527,6 +2527,23 @@ async function wikiCtx(q,signal,full){const STOP=new Set('ايه إيه هو ه�
  const e=await fetch('https://ar.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&exchars=600&format=json&origin=*&pageids='+ids.join('|'),{signal}).then(r=>r.json());
  const items=Object.values(e.query&&e.query.pages||{}).filter(p=>p.extract).map(p=>({id:p.pageid,title:p.title,extract:p.extract.replace(/\s+/g,' ').trim()}));const text=items.map(p=>'['+p.title+'] '+p.extract).join('\n').slice(0,900);return full?{items,text}:text;}
 
+/* ---------- Gemini endpoints: old keys (AIza…) on the Gemini API, new keys (AQ.…) may only work on Vertex AI express. The app tries and remembers what works ---------- */
+const GROUTES=[{id:'gl',base:'https://generativelanguage.googleapis.com/v1beta/models/',models:['gemini-flash-latest','gemini-2.5-flash','gemini-2.0-flash']},
+ {id:'gl',q:1,base:'https://generativelanguage.googleapis.com/v1beta/models/',models:['gemini-flash-latest','gemini-2.5-flash']},
+ {id:'vx',base:'https://aiplatform.googleapis.com/v1/publishers/google/models/',models:['gemini-2.5-flash','gemini-2.0-flash-001','gemini-flash-latest']},
+ {id:'vx',q:1,base:'https://aiplatform.googleapis.com/v1/publishers/google/models/',models:['gemini-2.5-flash','gemini-2.0-flash-001']}];
+function gUrl(rt,model,method,key){return rt.base+encodeURIComponent(model)+':'+method+(method==='streamGenerateContent'?'?alt=sse':'')+(rt.q?(method==='streamGenerateContent'?'&':'?')+'key='+encodeURIComponent(key):'');}
+function gHdr(rt,key){const h={'Content-Type':'application/json'};if(!rt.q)h['x-goog-api-key']=key;return h;}
+async function probeKey(key){let best='';
+ for(let i=0;i<GROUTES.length;i++){const rt=GROUTES[i];for(const m of rt.models){
+  try{const r=await fetch(gUrl(rt,m,'generateContent',key),{method:'POST',headers:gHdr(rt,key),body:JSON.stringify({contents:[{role:'user',parts:[{text:'قول أهلا'}]}],generationConfig:{maxOutputTokens:20}})});
+   if(r.ok)return {ok:true,route:i,model:m};const j=await r.json().catch(()=>({}));const msg=(j.error&&j.error.message)||('HTTP '+r.status);
+   if(r.status===404)continue;/* model not on this route */
+   if(r.status===429)return {ok:true,route:i,model:m,busy:true};/* key works, just at its limit right now */
+   if(!best||!/API key not valid/i.test(msg))best=msg;break;}
+  catch(e){return {ok:null};}}}
+ return {ok:false,why:best};}
+
 /* ---------- transport ---------- */
 async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortController();AI.ctl=ctl;
  const free=!AI.cfg.gkey;const total=setTimeout(()=>ctl.abort(),opts.timeout||(free?45000:75000));
@@ -2541,8 +2558,8 @@ async function aiStream(messages,onText,opts){opts=opts||{};const ctl=new AbortC
  const gemini=async()=>{
   const contents=messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
   const mk=(web)=>{const b={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:opts.max||2048,temperature:.7}};if(opts.json)b.generationConfig.responseMimeType='application/json';else if(web)b.tools=[{google_search:{}}];return JSON.stringify(b);};
-  const models=[...new Set([AI.cfg.gmodel,'gemini-flash-latest','gemini-2.5-flash','gemini-2.0-flash'].filter(Boolean))];let res=null,last=0;const src={};
-  const call=(m,web)=>{kick(30000);return fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':streamGenerateContent?alt=sse',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI.cfg.gkey},body:mk(web)});};
+  const rt=GROUTES[AI.cfg.groute|0]||GROUTES[0];const models=[...new Set([AI.cfg.gmodel].concat(rt.models).filter(m=>m&&rt.models.indexOf(m)>=0))];if(!models.length)models.push(rt.models[0]);let res=null,last=0;const src={};
+  const call=(m,web)=>{kick(30000);return fetch(gUrl(rt,m,'streamGenerateContent',AI.cfg.gkey),{method:'POST',signal:ctl.signal,headers:gHdr(rt,AI.cfg.gkey),body:mk(web)});};
   for(const m of models){res=await call(m,true);
    if(!res.ok&&(res.status===400||res.status===429)&&!opts.json){const r2=await call(m,false);if(r2.ok)res=r2;}/* search not allowed or used up → answer without it */
    if(res.ok){if(AI.cfg.gmodel!==m){AI.cfg.gmodel=m;saveAI();}break;}last=res.status;if(res.status!==404&&res.status!==503&&res.status!==500)break;}
@@ -2667,17 +2684,17 @@ function buildCoach(){
  $('#aiChips').innerHTML=QUICK.slice(0,8).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  const P=$('#aiProfile');P.value=AI.cfg.profile;P.addEventListener('change',()=>{AI.cfg.profile=P.value.trim()||DEF_PROFILE;saveAI();toast('✓','المرشد حفظ الكلام عنك','');});
- [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.replace(/[\s"'`]/g,'');saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
+ [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.replace(/[\s"'`]/g,'');saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();if(AI.cfg.gkey)probeKey(AI.cfg.gkey).then(pr=>{if(pr.ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;saveAI();}else if(pr.ok===false)toast('✺','جوجل رفض المفتاح',(pr.why||'').slice(0,90));});toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
  $('#aiMsgs').addEventListener('click',async e=>{if(!e.target.closest('#aiKeySave'))return;const st=$('#aiKeySt'),btn=$('#aiKeySave');
   const say=(t,c)=>{st.textContent=t;st.className='aikst '+(c||'');};
   const v=($('#aiKeyQ').value||'').replace(/[\s"'`]/g,'');
-  if(v.length<20){say('الخانة فاضية أو الكود ناقص. انسخ المفتاح كله من صفحة جوجل والزقه تاني.','bad');return;}
+  if(v.length<20||!/^(AIza|AQ\.)/.test(v)){say('ده مش شكل مفتاح جوجل. المفتاح لازم يبدأ بـ AIza أو AQ. — انسخه كله من صفحة جوجل والزقه تاني.','bad');return;}
   btn.disabled=true;say('⏳ بجرّب المفتاح مع جوجل…');
-  let ok=null,why='';try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1',{headers:{'x-goog-api-key':v}});ok=r.ok;if(!r.ok){const j=await r.json().catch(()=>({}));why=(j.error&&j.error.message)||('HTTP '+r.status);}}catch(er){ok=null;}
+  const pr=await probeKey(v);const ok=pr.ok,why=pr.why||'';if(ok){AI.cfg.groute=pr.route;AI.cfg.gmodel=pr.model;}
   btn.disabled=false;
   if(ok===false){say('❌ جوجل رفض المفتاح: '+why.slice(0,140)+' · اتأكد إنك نسخته كله، أو اعمل مفتاح جديد.','bad');return;}
   AI.cfg.gkey=v;saveAI();const k=$('#aiKey');if(k)k.value=v;
-  say(ok?'✅ تمام! المفتاح شغال والمرشد بقى بيدوّر في جوجل. اسأله أي حاجة.':'✅ اتحفظ. (مقدرتش أجرّبه دلوقتي علشان النت، هيشتغل أول ما النت يرجع)','good');
+  say(ok?'✅ تمام! المفتاح شغال'+(AI.cfg.groute>=2?' (مفتاح Vertex)':'')+' والمرشد بقى بيدوّر في جوجل. اسأله أي حاجة.':'✅ اتحفظ. (مقدرتش أجرّبه دلوقتي علشان النت، هيشتغل أول ما النت يرجع)','good');
   setTimeout(()=>{renderChat();},2500);});
  {const sh=$('#aiShare');if(sh){sh.checked=AI.cfg.share!==false;sh.addEventListener('change',()=>{AI.cfg.share=sh.checked;saveAI();});}}
  const au=$('#aiAuto');au.checked=!!AI.cfg.auto;au.addEventListener('change',()=>{AI.cfg.auto=au.checked;saveAI();});
