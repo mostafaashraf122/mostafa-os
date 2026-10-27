@@ -38,23 +38,32 @@ async function remoteConfig(S){
   catch(e){log('could not read synced settings:',e.message);return null;}}
 
 /* official prayer times for a day (minutes of the local day) */
-const PT_CACHE={};
-async function onlineTimes(cfg,y,m,d){const key=Plan.pkey(y,m,d);const id=[cfg.lat,cfg.lng,cfg.m,key].join('|');if(id in PT_CACHE)return PT_CACHE[id];
+/* successes are kept 3h then re-checked; failures are retried on the next reload (every 10 min) */
+const PT_CACHE={},PT_TTL=3*3600e3;
+async function onlineTimes(cfg,y,m,d){const key=Plan.pkey(y,m,d);const id=[cfg.lat,cfg.lng,cfg.m,cfg.tz,key].join('|');
+  const hit=PT_CACHE[id];if(hit&&Date.now()-hit.t<PT_TTL)return hit.v;
   const method=cfg.m==='eg'?5:4;
   const r=await getJSON('https://api.aladhan.com/v1/timings/'+String(d).padStart(2,'0')+'-'+String(m).padStart(2,'0')+'-'+y+'?latitude='+cfg.lat+'&longitude='+cfg.lng+'&method='+method+(cfg.tz?'&timezonestring='+encodeURIComponent(cfg.tz):''),null,8000);
   let out=null;
   try{const t=r.json.data.timings;const mm=s=>{const a=String(s).match(/(\d{1,2}):(\d{2})/);return +a[1]*60+ +a[2];};
     out={fajr:mm(t.Fajr),sunrise:mm(t.Sunrise),dhuhr:mm(t.Dhuhr),asr:mm(t.Asr),maghrib:mm(t.Maghrib),isha:mm(t.Isha)};}catch(e){}
-  PT_CACHE[id]=out;return out;}
+  if(out)PT_CACHE[id]={v:out,t:Date.now()};else if(hit)return hit.v; /* offline for a moment: keep the last good times */
+  return out;}
 
 async function buildState(S){
   const R=await remoteConfig(S);
   const sub=(R&&R.sub)||S.sub;
   const cfg=Object.assign({},Plan.DEF,S.cfg||{},(R&&R.cfg)||{});cfg.times=Object.assign({},cfg.times||{});
   if(R&&R.t)cfg.lastOpen=R.t; /* the app re-syncs whenever it's opened (at most every 3h): that's the last visit */
-  /* make sure today and tomorrow have official times */
-  for(const off of [-1,0,1]){const p=Plan.partsIn(Date.now()+off*864e5,cfg.tz);const k=Plan.pkey(p.year,p.month,p.day);
-    if(!cfg.times[k]){const t=await onlineTimes(cfg,p.year,p.month,p.day);if(t)cfg.times[k]=t;}}
+  /* prayer times follow the official times on their own: fetched fresh for yesterday/today/tomorrow/after
+     (for the current location and method) and they win over the copy the app synced, which can be old.
+     If the internet source is down: the app's copy, then the built-in calculation. */
+  const src=[];
+  for(const off of [-1,0,1,2]){const p=Plan.partsIn(Date.now()+off*864e5,cfg.tz);const k=Plan.pkey(p.year,p.month,p.day);
+    const t=await onlineTimes(cfg,p.year,p.month,p.day);
+    if(t){cfg.times[k]=t;src.push(k+':online');}else src.push(k+':'+(cfg.times[k]?'app':'calc'));}
+  const tl=src.join(' ')+' '+JSON.stringify(cfg.times[Plan.pkey(...(p=>[p.year,p.month,p.day])(Plan.partsIn(Date.now(),cfg.tz)))]||{});
+  if(tl!==buildState.last){buildState.last=tl;log('prayer times',tl);}
   return {sub,cfg};}
 
 async function send(sub,ev){
