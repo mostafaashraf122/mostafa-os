@@ -1,10 +1,15 @@
 /* Mostafa OS service worker: opens without internet + shows the push notifications.
    Page = network first (so updates land fast), cached copy when offline. */
-const CACHE='mos-v13';
+const CACHE='mos-v14';
 const CORE=['./','./index.html','./plan.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!=='mos-meta'&&k.indexOf('mos-quran')!==0).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);
+  /* the Quran text: downloaded once, then kept in the phone's storage (its own cache, survives app updates) and read from there */
+  if(u.origin===location.origin&&/\/quran\.json$/.test(u.pathname)){
+    e.respondWith((async()=>{const c=await caches.open('mos-quran-v1');const hit=await c.match(r,{ignoreSearch:true});if(hit)return hit;
+      const res=await fetch(r);if(res.ok)await c.put(r,res.clone());return res;})());
+    return;}
   if(u.origin===location.origin){
     e.respondWith((async()=>{const c=await caches.open(CACHE);
       try{const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),4000);const res=await fetch(r,{signal:ctl.signal});clearTimeout(t);

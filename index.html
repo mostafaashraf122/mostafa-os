@@ -1,6 +1,6 @@
 <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#070b14"><link rel="manifest" href="manifest.webmanifest"><script>document.documentElement.className+=" locked";</script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b14'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23f3b94d' stroke-width='6'/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="icon-192.png"><style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Mostafa OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap">
 <style>
 /* Layout: a night console that brightens toward dawn as the day fills up. Phone: one column. Wide: core + counters on one side, modules on the other. */
 :root{
@@ -424,6 +424,51 @@ body.cipher .greet span{filter:blur(5px)}
 .sdots i{width:12px;height:6px;border-radius:3px;background:var(--line2);transition:all .3s;cursor:pointer}
 .sdots i.read{background:var(--mint)} .sdots i.cur{background:var(--gold);width:22px} .sdots i.lock{opacity:.3;cursor:default}
 
+/* mushaf */
+.mushaf{background:radial-gradient(120% 90% at 0% 0%,rgba(94,224,176,.08),rgba(13,20,36,.95) 55%)}
+.qresume{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:linear-gradient(135deg,rgba(243,185,77,.16),rgba(243,185,77,.04));border:1px solid rgba(243,185,77,.4);border-radius:16px;padding:12px 14px;cursor:pointer;margin:4px 0 12px}
+.qresume .qi{font-size:26px;color:var(--gold);line-height:1}
+.qresume b{display:block;font-size:15.5px}
+.qresume small{display:block;color:var(--frost);font-size:12.5px}
+.qresume .go{margin-inline-start:auto;background:var(--gold);color:#1b1305;border-radius:12px;padding:6px 12px;font-weight:700;font-size:13px;white-space:nowrap}
+.qbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.qbar input{flex:1;min-width:150px;background:rgba(7,11,20,.55);border:1px solid var(--line2);border-radius:12px;padding:9px 12px;color:var(--text);font:inherit;font-size:14px}
+.qbar .seg{display:flex;gap:2px;background:rgba(7,11,20,.55);border:1px solid var(--line2);border-radius:12px;padding:3px}
+.qbar .seg button{background:none;border:none;border-radius:9px;padding:5px 12px;font-size:13px;cursor:pointer;color:var(--frost)}
+.qbar .seg button.on{background:var(--gold);color:#1b1305;font-weight:600}
+.qlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;max-height:430px;overflow-y:auto;padding-inline-end:2px;overscroll-behavior:contain}
+.qlist button{display:flex;align-items:center;gap:8px;background:rgba(7,11,20,.45);border:1px solid var(--line);border-radius:11px;padding:8px 10px;cursor:pointer;text-align:start;min-width:0;font-size:14px}
+.qlist button:hover{border-color:var(--line2)}
+.qlist button.cur{border-color:var(--gold);background:rgba(243,185,77,.1)}
+.qlist .no{font-family:var(--mono);font-size:11px;color:var(--gold);min-width:24px;height:24px;border:1px solid rgba(243,185,77,.35);border-radius:50%;display:grid;place-items:center;flex:none}
+.qlist .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qlist .ay{font-size:11px;color:var(--dim);white-space:nowrap}
+.qlist .empty{grid-column:1/-1;color:var(--frost);font-size:13px;padding:10px}
+.qreader{position:fixed;inset:0;z-index:60;background:var(--ink);display:flex;flex-direction:column}
+.qreader[hidden]{display:none}
+.qrhead{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px;background:rgba(13,20,36,.96);border-bottom:1px solid var(--line)}
+.qrt{flex:1;min-width:0;text-align:center}
+.qrt b{display:block;font-family:var(--display);font-size:17px;color:var(--gold2)}
+.qrt small{display:block;color:var(--frost);font-size:12px}
+.qreader .ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--line2);background:rgba(7,11,20,.5);cursor:pointer;font-size:15px;flex:none}
+.qrbar{height:3px;background:var(--line)}
+.qrbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ember),var(--gold2));transition:width .2s}
+.qrbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 40px)}
+.qpage{max-width:760px;margin:0 auto}
+.qsh{text-align:center;margin:4px auto 14px;padding:10px;border:1px solid rgba(243,185,77,.4);border-radius:14px;background:linear-gradient(180deg,rgba(243,185,77,.1),rgba(243,185,77,.02))}
+.qsh b{font-family:var(--quran);font-size:24px;color:var(--gold2);font-weight:700}
+.qsh small{display:block;font-size:11.5px;color:var(--frost)}
+.qbs{text-align:center;font-family:"Amiri Quran",var(--quran);font-size:calc(var(--qfs) * .95);margin:0 0 10px;color:var(--text)}
+.qtxt{font-family:"Amiri Quran",var(--quran);font-size:var(--qfs);line-height:2.25;text-align:justify;color:var(--text);word-spacing:1px}
+.qa{border-radius:6px;transition:background .6s}
+.qa.hl{background:rgba(243,185,77,.18)}
+.qn,.qt .qn{font-style:normal;color:var(--gold);font-size:.82em;white-space:nowrap}
+.qnav{display:flex;gap:8px;justify-content:space-between;margin:28px auto 0;max-width:760px}
+.qnav button{flex:1;background:rgba(7,11,20,.5);border:1px solid var(--line2);border-radius:14px;padding:12px;cursor:pointer;font-size:14px}
+.qnav button:disabled{opacity:.35;cursor:default}
+.qload{text-align:center;color:var(--frost);padding:40px 10px}
+.dk .z .qt{font-family:"Amiri Quran",var(--quran);font-size:18.5px;line-height:2.1}
+.dk .z .qt .qh{display:block;font-family:var(--body);font-size:12px;color:var(--gold);margin-top:6px}
 /* hifz */
 .hifz{background:radial-gradient(120% 90% at 100% 0%,rgba(243,185,77,.10),rgba(13,20,36,.95) 55%)}
 .hhead{display:flex;gap:14px;align-items:center}
@@ -1187,6 +1232,14 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
         <div class="moti" id="moti" title="دوس علشان الجملة اللي بعدها"><span class="k"><span>FUEL · كلام يشحنك</span><b id="motiN"></b></span><p id="motiT"></p><div class="motibar"><i id="motiBar"></i></div></div>
       </section>
 
+      <section class="pnl mushaf" id="mushaf">
+        <div class="ph"><div class="glyph">۞</div><div><h2>المصحف</h2><span class="en">QURAN · بيفتح على آخر مكان وقفت عنده</span></div><span class="cnt" id="qCnt"></span></div>
+        <button class="qresume" id="qResume" type="button"></button>
+        <div class="qbar"><input id="qFind" type="search" placeholder="دوّر على سورة… بالاسم أو الرقم" autocomplete="off" enterkeyhint="search"><div class="seg" id="qSeg"><button type="button" data-qv="s" class="on">السور</button><button type="button" data-qv="j">الأجزاء</button></div></div>
+        <div class="qlist" id="qList"></div>
+        <p class="note">مكانك بيتحفظ لوحده وانت بتقرا. ولو قريت صفحتين تقريبًا، "وردك من القرآن" بيتعلّم لوحده.</p>
+      </section>
+
       <section class="pnl rizq" id="rizq">
         <div class="ph"><div class="glyph" style="color:var(--mint);border-color:rgba(94,224,176,.35);background:rgba(94,224,176,.08)">✧</div><div><h2>أدعية الرزق والتيسير</h2><span class="en">RIZQ · افتح الأبواب بالدعاء</span></div><span class="cnt" id="rzCnt"></span></div>
         <div class="dstage"><div class="dcard" id="dcard"><span class="dwhen" id="dWhen"></span><div class="dtext blur" id="dText"></div><div class="ref" id="dRef"></div><div class="dn" id="dN"></div></div></div>
@@ -1314,6 +1367,11 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
  <div class="aicard"><div class="aihead"><div class="av">✺</div><div><h3>المرشد</h3><small>AI COACH · FREE · ONLINE</small></div><button class="ib" id="aiClose" type="button" aria-label="اقفل">✕</button></div>
  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
  <div class="aifoot"><div class="qchips" id="aiQuick"></div><div class="aiin"><textarea id="aiIn" rows="1" maxlength="2000" placeholder="اكتب للمرشد…"></textarea><button id="aiSend" type="button" title="ابعت">↑</button></div></div></div></div>
+<div class="qreader" id="qReader" hidden role="dialog" aria-modal="true" aria-label="المصحف">
+ <div class="qrhead"><button class="ib" id="qrClose" type="button" aria-label="اقفل المصحف">✕</button><div class="qrt"><b id="qrName"></b><small id="qrMeta"></small></div><button class="ib qfs" id="qrSm" type="button" aria-label="صغّر الخط">ا−</button><button class="ib qfs" id="qrLg" type="button" aria-label="كبّر الخط">ا+</button></div>
+ <div class="qrbar"><i id="qrBar"></i></div>
+ <div class="qrbody" id="qrBody"></div>
+</div>
 <div class="splash" id="splash" hidden></div>
 <div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة</button><button class="lkalt" id="lkAlt" type="button" hidden>استخدم الباسورد</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
@@ -1415,7 +1473,8 @@ const SIGNALS=[
  ['q','لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ','إبراهيم 7'],['t','قاوم. كل مرة بتقاوم فيها بتبقى أقوى من اللي قبلها.'],
  ['e','Never underestimate yourself.'],['t','الفجر في الجامع بيكسبك اليوم كله قبل ما يبدأ.'],['e','Focus. One thing at a time.'],['q','ادْعُونِي أَسْتَجِبْ لَكُمْ','غافر 60'],['q','فَاذْكُرُونِي أَذْكُرْكُمْ','البقرة 152'],['q','إِنَّ مَعَ الْعُسْرِ يُسْرًا','الشرح 6'],['q','رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ','الفرقان 74'],['t','خيركم خيركم لأهله. البيت الهادي هو اللي بيطلع منه الراجل الناجح.'],['t','مراتك شريكة الحلم، مش جمهور ليه. اسمعها النهارده.'],['t','اقرا، واتعلم، وجرّب. اللي بيتعلم كل يوم بيكسب على المدى الطويل.']];
 const AZ_M=[
- ['am1','آية الكرسي','سورة البقرة 255',1],['am2','قُلْ هُوَ اللَّهُ أَحَدٌ، والمعوذتين','الإخلاص والفلق والناس',3],
+ ['am1','<span class="qt">أَعُوذُ بِاللَّهِ مِنَ الشَّيۡطَٰنِ الرَّجِيمِ<br>ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلۡحَيُّ ٱلۡقَيُّومُۚ لَا تَأۡخُذُهُۥ سِنَةٞ وَلَا نَوۡمٞۚ لَّهُۥ مَا فِي ٱلسَّمَٰوَٰتِ وَمَا فِي ٱلۡأَرۡضِۗ مَن ذَا ٱلَّذِي يَشۡفَعُ عِندَهُۥٓ إِلَّا بِإِذۡنِهِۦۚ يَعۡلَمُ مَا بَيۡنَ أَيۡدِيهِمۡ وَمَا خَلۡفَهُمۡۖ وَلَا يُحِيطُونَ بِشَيۡءٖ مِّنۡ عِلۡمِهِۦٓ إِلَّا بِمَا شَآءَۚ وَسِعَ كُرۡسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضَۖ وَلَا يَـُٔودُهُۥ حِفۡظُهُمَاۚ وَهُوَ ٱلۡعَلِيُّ ٱلۡعَظِيمُ</span>','آية الكرسي · البقرة 255',1],
+ ['am2','<span class="qt"><small class="qh">سورة الإخلاص</small>بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ<br>قُلۡ هُوَ ٱللَّهُ أَحَدٌ <i class="qn">﴿١﴾</i> ٱللَّهُ ٱلصَّمَدُ <i class="qn">﴿٢﴾</i> لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ <i class="qn">﴿٣﴾</i> وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ <i class="qn">﴿٤﴾</i><small class="qh">سورة الفلق</small>بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ<br>قُلۡ أَعُوذُ بِرَبِّ ٱلۡفَلَقِ <i class="qn">﴿١﴾</i> مِن شَرِّ مَا خَلَقَ <i class="qn">﴿٢﴾</i> وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ <i class="qn">﴿٣﴾</i> وَمِن شَرِّ ٱلنَّفَّـٰثَٰتِ فِي ٱلۡعُقَدِ <i class="qn">﴿٤﴾</i> وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ <i class="qn">﴿٥﴾</i><small class="qh">سورة الناس</small>بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ<br>قُلۡ أَعُوذُ بِرَبِّ ٱلنَّاسِ <i class="qn">﴿١﴾</i> مَلِكِ ٱلنَّاسِ <i class="qn">﴿٢﴾</i> إِلَٰهِ ٱلنَّاسِ <i class="qn">﴿٣﴾</i> مِن شَرِّ ٱلۡوَسۡوَاسِ ٱلۡخَنَّاسِ <i class="qn">﴿٤﴾</i> ٱلَّذِي يُوَسۡوِسُ فِي صُدُورِ ٱلنَّاسِ <i class="qn">﴿٥﴾</i> مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ <i class="qn">﴿٦﴾</i></span>','الإخلاص والفلق والناس · 3 مرات',3],
  ['am3','اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ','سيد الاستغفار',1],
  ['am4','بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ','',3],
  ['am5','رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا','',3],
@@ -2772,7 +2831,7 @@ const TASK_PANELS=['m-rooh','m-jasad','m-bayt','m-waqt','m-ilm','m-career','m-da
 function pageOf(p){const id=p.id||'';
  if(p.classList.contains('core')||id==='simple'||id==='dayflow'||p.querySelector('#signal'))return 'today';
  if(TASK_PANELS.indexOf(id)>=0)return 'tasks';
- if(['rizq','counters','hifz','stories','mentor','dustur','m-prom','calm'].indexOf(id)>=0||/MARRIAGE/.test(p.textContent.slice(0,400)))return 'soul';
+ if(['mushaf','rizq','counters','hifz','stories','mentor','dustur','m-prom','calm'].indexOf(id)>=0||/MARRIAGE/.test(p.textContent.slice(0,400)))return 'soul';
  if(['money','savings'].indexOf(id)>=0)return 'money';
  if(['coach','lessons','report','garden','badgesP','m-biz'].indexOf(id)>=0)return 'coach';
  return 'more';}
@@ -3361,6 +3420,70 @@ buildReport();buildHifz();buildMentor();buildCoach();buildMoney();buildSave();bu
 setSync('local');netChip();render();connect();
 setupFX();nextMoti();startMoti();RB.firstRender=false;
 window.MOS={PT,isRamadan,LK,LS,enableLock,bioAvailable,nfEnable,askLoc,grantStorage};
+/* =================== المصحف: full Quran (quran.json, saved on the phone after the first open) + resume where you stopped =================== */
+(function mushaf(){
+ const JUZ=[[1,1],[2,142],[2,253],[3,93],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]];
+ const AN=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+ const BASM='بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ';
+ const Q={data:null,loading:null,s:0,v:'s',fs:+LS.get('qFs')||26,last:0,t:0};
+ const R=$('#qReader'),body=$('#qrBody');if(!R||!body)return;
+ function load(){if(Q.data)return Promise.resolve(Q.data);
+  if(!Q.loading)Q.loading=fetch('quran.json').then(r=>{if(!r.ok)throw new Error('http');return r.json();}).then(d=>{Q.data=d;return d;}).catch(e=>{Q.loading=null;throw e;});
+  return Q.loading;}
+ const pos=()=>{const p=LS.get('qpos');return p&&p.s>=1&&p.s<=114?p:null;};
+ const juzOf=(s,a)=>{let j=1;JUZ.forEach((x,i)=>{if(s>x[0]||(s===x[0]&&a>=x[1]))j=i+1;});return j;};
+ function ago(t){if(!t)return '';const m=Math.round((Date.now()-t)/6e4);if(m<2)return 'من شوية';if(m<60)return 'من '+m+' دقيقة';const h=Math.round(m/60);if(h<24)return 'من '+h+' ساعة';const d=Math.round(h/24);return d===1?'امبارح':'من '+d+' يوم';}
+ function renderResume(){const p=pos(),b=$('#qResume');
+  if(p){const sr=SURAHS[p.s-1];b.innerHTML='<span class="qi">۞</span><div><b>كمّل من مكانك: سورة '+sr[0]+'</b><small>آية '+p.a+' من '+sr[1]+' · الجزء '+juzOf(p.s,p.a)+(p.t?' · '+ago(p.t):'')+'</small></div><span class="go">كمّل ←</span>';}
+  else b.innerHTML='<span class="qi">۞</span><div><b>ابدأ من الفاتحة</b><small>وأي مكان هتقف عنده هيتحفظ لوحده</small></div><span class="go">ابدأ ←</span>';
+  const r=LS.get('qr');$('#qCnt').textContent=r&&r.d===todayKey()&&r.n?'النهارده '+r.a+' آية':'';}
+ function renderList(){const f=($('#qFind').value||'').trim().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');const L=$('#qList');const p=pos();let h='';
+  const norm=s=>s.replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+  if(Q.v==='s'){SURAHS.forEach((s,i)=>{const n=i+1;if(f&&!(String(n)===f||norm(s[0]).indexOf(f)>=0))return;
+    h+='<button type="button" data-qs="'+n+'"'+(p&&p.s===n?' class="cur"':'')+'><span class="no">'+n+'</span><span class="nm">'+s[0]+'</span><span class="ay">'+s[1]+' آية</span></button>';});}
+  else{JUZ.forEach((x,i)=>{const j=i+1;if(f&&String(j)!==f&&norm(SURAHS[x[0]-1][0]).indexOf(f)<0)return;
+    h+='<button type="button" data-qs="'+x[0]+'" data-qa="'+x[1]+'"'+(p&&juzOf(p.s,p.a)===j?' class="cur"':'')+'><span class="no">'+j+'</span><span class="nm">الجزء '+j+'</span><span class="ay">'+SURAHS[x[0]-1][0]+' '+x[1]+'</span></button>';});}
+  L.innerHTML=h||'<div class="empty">مفيش سورة بالاسم ده</div>';}
+ function paint(s){const d=Q.data[s-1],sr=SURAHS[s-1];Q.s=s;
+  let h='<div class="qpage" style="--qfs:'+Q.fs+'px"><div class="qsh"><b>سورة '+sr[0]+'</b><small>'+sr[1]+' آية · الجزء '+sr[2]+'</small></div>';
+  if(s!==1&&s!==9)h+='<div class="qbs">'+BASM+'</div>';
+  h+='<div class="qtxt">'+d.map((t,i)=>'<span class="qa" data-a="'+(i+1)+'">'+t+' <i class="qn">﴿'+AN(i+1)+'﴾</i></span> ').join('')+'</div>';
+  h+='<div class="qnav"><button type="button" data-qnav="'+(s+1)+'"'+(s>=114?' disabled':'')+'>السورة اللي بعدها ←</button><button type="button" data-qnav="'+(s-1)+'"'+(s<=1?' disabled':'')+'>→ اللي قبلها</button></div></div>';
+  body.innerHTML=h;$('#qrName').textContent='سورة '+sr[0];}
+ function goAyah(a,hl){const n=body.querySelector('.qa[data-a="'+a+'"]');if(!n||a<=1){body.scrollTop=0;}else{body.scrollTop=Math.max(0,n.offsetTop-body.offsetTop-24);}
+  if(hl&&n&&a>1){n.classList.add('hl');setTimeout(()=>n.classList.remove('hl'),1800);}track(true);}
+ function openQ(s,a,hl){s=Math.min(114,Math.max(1,s|0||1));a=a|0||1;
+  if(R.hidden){R.hidden=false;document.body.style.overflow='hidden';try{history.pushState({mq:1},'');}catch(e){}}
+  if(!Q.data)body.innerHTML='<div class="qload">بيحمّل المصحف… (أول مرة بس، وبعدها بيفتح من ذاكرة الموبايل من غير نت)</div>';
+  load().then(()=>{paint(s);requestAnimationFrame(()=>goAyah(a,hl));}).catch(()=>{body.innerHTML='<div class="qload">محتاج نت أول مرة بس علشان المصحف يتحفظ على موبايلك. جرّب تاني لما النت يرجع.</div>';});}
+ function closeQ(fromPop){if(R.hidden)return;track(true);R.hidden=true;document.body.style.overflow='';renderResume();renderList();
+  if(!fromPop&&history.state&&history.state.mq){try{history.back();}catch(e){}}}
+ /* which ayah is at the top of the screen → saved as your place; new ayat you pass count toward today's wird */
+ function track(force){if(R.hidden||!Q.data||!Q.s)return;const now=Date.now();if(!force&&now-Q.t<250)return;Q.t=now;
+  const top=body.getBoundingClientRect().top+30;const sp=body.querySelectorAll('.qa');let a=1;
+  let lo=0,hi=sp.length-1;while(lo<=hi){const m=(lo+hi)>>1;const rc=sp[m].getClientRects()[0];if(rc&&rc.top<=top){a=m+1;lo=m+1;}else hi=m-1;}
+  if(body.scrollTop+body.clientHeight>=body.scrollHeight-8)a=sp.length;
+  const n=Q.data[Q.s-1].length;LS.set('qpos',{s:Q.s,a,t:now});
+  $('#qrMeta').textContent='آية '+a+' من '+n+' · الجزء '+juzOf(Q.s,a);$('#qrBar').style.width=(a/n*100)+'%';
+  const tk=todayKey();let r=LS.get('qr');if(!r||r.d!==tk)r={d:tk,n:0,a:0,k:{}};const key=Q.s+':'+a;
+  if(Q.last&&Q.last!==key&&!r.k[key]){r.k[key]=1;r.a++;r.n+=(Q.data[Q.s-1][a-1]||'').replace(/[^ء-يٱ]/g,'').length;
+   if(r.n>=900&&!r.done){r.done=1;if(S.view===tk&&!S.day.c.quran){S.day.c.quran=true;saveDay();try{render();}catch(e){}toast('📖','وردك من القرآن اتعلّم','ربنا يتقبّل · كمّل براحتك');}}}
+  Q.last=key;LS.set('qr',r);}
+ body.addEventListener('scroll',()=>track(false),{passive:true});
+ body.addEventListener('click',e=>{const b=e.target.closest('[data-qnav]');if(b&&!b.disabled){openQ(+b.dataset.qnav,1);return;}
+  const q=e.target.closest('.qa');if(q){LS.set('qpos',{s:Q.s,a:+q.dataset.a,t:Date.now()});q.classList.add('hl');setTimeout(()=>q.classList.remove('hl'),900);$('#qrMeta').textContent='علّمت هنا: آية '+q.dataset.a;}});
+ $('#qrClose').addEventListener('click',()=>closeQ(false));
+ window.addEventListener('popstate',()=>{if(!R.hidden)closeQ(true);});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!R.hidden)closeQ(false);});
+ const setFs=d=>{const p=pos();Q.fs=Math.min(40,Math.max(18,Q.fs+d));LS.set('qFs',Q.fs);const pg=body.querySelector('.qpage');if(pg)pg.style.setProperty('--qfs',Q.fs+'px');if(p&&p.s===Q.s)goAyah(p.a,false);};
+ $('#qrSm').addEventListener('click',()=>setFs(-2));$('#qrLg').addEventListener('click',()=>setFs(2));
+ $('#qResume').addEventListener('click',()=>{const p=pos();if(p)openQ(p.s,p.a,true);else openQ(1,1);});
+ $('#qList').addEventListener('click',e=>{const b=e.target.closest('[data-qs]');if(b)openQ(+b.dataset.qs,+(b.dataset.qa||1),!!b.dataset.qa);});
+ $('#qFind').addEventListener('input',renderList);
+ $('#qSeg').addEventListener('click',e=>{const b=e.target.closest('[data-qv]');if(!b)return;Q.v=b.dataset.qv;$('#qSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderList();});
+ renderResume();renderList();
+ window.MOSQuran={open:openQ};
+})();
 })();
 </script>
 
