@@ -1,29 +1,40 @@
 # Mostafa OS · sends your daily reminders as push notifications from the app.
-# Every 3 hours a run starts, works out the reminders due in the next 3 hours
-# (prayers, wake-up, azkar, workout, focus on your goals, stories, reading, sleep)
-# and sends each one at its exact minute. Free for public repos.
+# Works as a relay: each run covers 3 hours (prayers, wake-up, azkar, workout, focus,
+# stories, reading, sleep), sends each reminder at its exact minute, and starts the next
+# run itself before it ends. GitHub's schedule is often hours late or skipped, so the
+# schedule below is only a watchdog that restarts the relay if it ever stops.
+# Free for public repos.
 # Settings you change in the app sync on their own (encrypted, branch push-config),
 # and prayer times come from the internet every day.
 name: Notifications
 
 on:
   schedule:
-    - cron: '50 2-23/3 * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       test:
         description: 'ابعت إشعار تجربة دلوقتي'
         type: boolean
         default: true
+      from:
+        description: 'internal: start of the window (set by the relay)'
+        type: string
+        default: ''
 
 permissions:
   contents: read
   actions: write
 
+# watchdog runs never overlap each other (so two of them can't both restart the relay)
+concurrency:
+  group: ${{ github.event_name == 'schedule' && 'notify-watchdog' || format('notify-{0}', github.run_id) }}
+  cancel-in-progress: false
+
 jobs:
   send:
     runs-on: ubuntu-latest
-    timeout-minutes: 210
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,4 +53,6 @@ jobs:
           MOS_PUSH: ${{ secrets.MOS_PUSH }}
           GH_TOKEN: ${{ github.token }}
           TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test }}
+          FROM: ${{ inputs.from }}
+          EVENT: ${{ github.event_name }}
         run: node notify/send.js
