@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 240
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - run: npm install --no-save --no-audit --no-fund web-push@3.6.7
       # GitHub pauses scheduled workflows after 60 days without repo activity; this keeps it switched on.
       - name: Keep the schedule alive
