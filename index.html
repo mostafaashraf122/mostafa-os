@@ -1284,19 +1284,19 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
 
     <div class="col" id="mods">
       <section class="pnl aic" id="coach">
-        <div class="ph"><div class="glyph">✺</div><div><h2>المرشد الذكي</h2><span class="en">AI COACH · مستشارك المهني، وبياناتك على موبايلك</span></div><span class="src loc" id="aiSrc">LOCAL</span></div>
+        <div class="ph"><div class="glyph">✺</div><div><h2>المرشد</h2><span class="en">COACH · من بياناتك، على موبايلك ومن غير نت</span></div><span class="src loc" id="aiSrc">LOCAL</span></div>
         <div id="aiBrief"></div>
-        <div class="aiask"><input id="aiQ" type="text" maxlength="600" placeholder="اسأل المرشد… شغل، بيع، دخل، مهارات، بزنس" autocomplete="off" enterkeyhint="send"><button class="minibtn ai" id="aiGo" type="button">اسأل</button></div>
+        <div class="aiask"><input id="aiQ" type="text" maxlength="600" placeholder="اسأل عن بياناتك… صرفت كام؟ صليت الفجر كام يوم؟" autocomplete="off" enterkeyhint="send"><button class="minibtn ai" id="aiGo" type="button">اسأل</button></div>
         <div class="qchips" id="aiChips"></div>
         <div class="ains"><div class="rsub">INSIGHTS · اللي المرشد شايفه في بياناتك</div><div class="insl" id="aiIns"></div></div>
-        <details class="set aiset" style="margin-top:14px"><summary><div class="glyph" style="width:30px;height:30px;font-size:14px">⚙</div><div><b style="font-size:14px">إعدادات المرشد</b><span class="en" style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);display:block">PROFILE · PRIVACY</span></div></summary>
-          <div class="field"><label for="aiProfile">خلفيتك المهنية من الـ CV (ده بس اللي المرشد يعرفه عنك. عدّله براحتك)</label><textarea id="aiProfile" maxlength="2500"></textarea></div>
-          <div class="field"><label class="tg"><input type="checkbox" id="aiAuto"> اعمل خطة النهارده لوحدك أول ما أفتح الموقع</label></div>
-          <div class="field"><label class="tg"><input type="checkbox" id="aiShare"> خلّي المرشد يشوف ملخص بياناتي (يومك، صلاتك، وردك، فلوس الشهر) علشان يرد على أي سؤال عنها. الملخص بيتبعت مع سؤالك بس</label></div>
-          <details style="margin-top:10px"><summary class="sub" style="cursor:pointer;font-size:12.5px">🔑 مفتاح Gemini (علشان المرشد يدوّر على النت)</summary>
+        <details class="set aiset" style="margin-top:14px"><summary><div class="glyph" style="width:30px;height:30px;font-size:14px">⚙</div><div><b style="font-size:14px">إعدادات المرشد</b><span class="en" style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);display:block">CHAT</span></div></summary>
+          <div class="field" hidden><label for="aiProfile">خلفيتك المهنية من الـ CV (ده بس اللي المرشد يعرفه عنك. عدّله براحتك)</label><textarea id="aiProfile" maxlength="2500"></textarea></div>
+          <div class="field" hidden><label class="tg"><input type="checkbox" id="aiAuto"> اعمل خطة النهارده لوحدك أول ما أفتح الموقع</label></div>
+          <div class="field" hidden><label class="tg"><input type="checkbox" id="aiShare"> خلّي المرشد يشوف ملخص بياناتي (يومك، صلاتك، وردك، فلوس الشهر) علشان يرد على أي سؤال عنها. الملخص بيتبعت مع سؤالك بس</label></div>
+          <details hidden style="margin-top:10px"><summary class="sub" style="cursor:pointer;font-size:12.5px">🔑 مفتاح Gemini (علشان المرشد يدوّر على النت)</summary>
             <div class="field"><label for="aiKey">لو حطيت مفتاح Gemini المجاني من aistudio.google.com المرشد هيبقى أذكى وأسرع. لو سبته فاضي هيشتغل ببلاش من غير أي حاجة.</label><input id="aiKey" type="password" autocomplete="off" placeholder="اختياري · AIza..." dir="ltr"></div></details>
           <div class="trow" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="minibtn" id="aiClear" type="button">امسح المحادثة</button></div>
-          <p class="note">🔒 الخصوصية: بيانات الموبايل (مهامك، صلاتك، صحتك، مودك، بيتك، فلوسك، تاريخك) مبتطلعش من موبايلك خالص. المرشد اللي على النت بيعرف خلفيتك المهنية اللي فوق بس، والسؤال اللي إنت بتكتبه بإيدك. أي حاجة عليها 🔒 بتتحسب على موبايلك ومبتتبعتش لحد: الـ INSIGHTS، وأهم 3 حاجات، ومراجعة الأسبوع، وحساب اليوم. المرشد شغال ببلاش من غير حساب، عن طريق خدمة مجانية اسمها Pollinations، علشان كده متكتبش له باسوردات أو أرقام حسابات. نصايح الفلوس للتفكير والتخطيط، مش استشارة مالية مرخّصة.</p>
+          <p class="note">🔒 المرشد بيشتغل على موبايلك بس، ومبيكلّمش أي خدمة على النت. كل الردود والتحليلات بتتحسب من بياناتك هنا.</p>
         </details>
       </section>
       <section class="pnl report" id="report">
@@ -1366,7 +1366,7 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
   <button type="button" data-go="#counters">∞<span>العدّاد</span></button>
   <button type="button" class="rev" id="dockRev">◑<span>الحساب</span><i class="badge" id="dockBadge" hidden>0</i></button>
 </nav>
-<button class="aifab chatfab" id="aiChatFab" type="button" aria-label="كلّم المرشد الذكي" title="المرشد الذكي">✺</button>
+<button class="aifab chatfab" id="aiChatFab" type="button" aria-label="افتح المرشد" title="المرشد">✺</button>
 <button class="aifab" id="aiFab" type="button" aria-label="افتح المرشد الذكي" title="المرشد الذكي">✺<span class="pulse" aria-hidden="true"></span></button>
 <div class="aisheet" id="aiSheet" hidden role="dialog" aria-modal="true" aria-label="المرشد الذكي"><div class="bg" id="aiBg"></div>
  <div class="aicard"><div class="aihead"><div class="av">✺</div><div><h3>المرشد</h3><small>AI COACH · FREE · ONLINE</small></div><button class="ib" id="aiClose" type="button" aria-label="اقفل">✕</button></div>
@@ -2448,8 +2448,8 @@ S.lastToday=todayKey();
 const DEF_PROFILE='مصطفى أشرف سعيد، Sales Account Manager في SYTEQ Technologies بالرياض من سبتمبر 2026 (في فترة التجربة أول 3 شهور، والعمولة نسبة على كل بيعة بتتصرف كل ربع سنة). خبرة +5 سنين في بيع الحلول التقنية للشركات (ERP وCRM وتطبيقات وحلول رقمية)، وإدارة حسابات العملاء، والعروض والتفاوض، وقبل كده أدار فرق سوفتوير وماركتنج واشتغل WordPress Developer. معاه Certified Data Scientist Professional (Python، ML، SQL) وبكالوريوس IT. هدفه: يتطور كإنسان، ويقرب من ربنا، ويزوّد دخله بالحلال، ويبني بزنس خاص بيه قبل الـ 30.';
 const AI={busy:false,ctl:null,brief:null,
  cfg:Object.assign({profile:DEF_PROFILE,inc:'',sav:'',goal:'',auto:true,sens:false,gkey:'',gmodel:'gemini-flash-latest',share:true},LS.get('ai')||{}),
- mem:[],pending:LS.get('aiPending')||[],chat:LS.get('aiChat')||[]};
-delete AI.cfg.noSearchNow;delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
+ mem:[],pending:LS.get('aiPending')||[],chat:[]};try{localStorage.removeItem('mos:aiChat');}catch(e){}
+delete AI.cfg.noSearchNow;delete AI.cfg.gkey;delete AI.cfg.gmodels;delete AI.cfg.noSearch;AI.pending=[];try{localStorage.removeItem('mos:aiPending');}catch(e){}delete AI.cfg.inc;delete AI.cfg.sav;delete AI.cfg.goal;delete AI.cfg.sens;try{localStorage.removeItem('mos:aiMem');}catch(e){}
 if(!/^gemini-[\w.\-]+$/.test(AI.cfg.gmodel||''))AI.cfg.gmodel='gemini-flash-latest';
 if((AI.cfg.profV||0)<3){if(/^مصطفى أشرف سعيد،/.test(AI.cfg.profile||''))AI.cfg.profile=DEF_PROFILE;AI.cfg.profV=3;try{LS.set('ai',AI.cfg);}catch(e){}}
 try{localStorage.removeItem('mos:aiBrief');}catch(e){}
@@ -2671,6 +2671,7 @@ const QUICK=[
  ['◎ أتعلم إيه','إيه أهم مهارة أتعلمها الشهر ده تزوّد دخلي كبياع تقني أو تقربني من البزنس؟ اديني خطة 30 يوم ليها بمصادر مجانية.'],
  ['🎯 RFP ومناقصة','ساعدني أكتب رد قوي على RFP أو مناقصة حكومية: الهيكل، إزاي أبرز القيمة والـ ROI، وأكتر الأخطاء اللي بتخسّر.'],
  ['☁ أنا مضايق','أنا مضايق ومش قادر النهارده. ساعدني أفوق وأرجع خطوة خطوة.']];
+QUICK.splice(0,QUICK.length,...QUICK.filter(q=>q[2]||/^🔒/.test(q[0])));
 const LOCAL_NOTE='\n\n🔒 اتحسب على موبايلك من بياناتك، ومبيتبعتش لأي حد.';
 function localAnswer(kind){const p=progress(S.day);
  if(kind==='plan'){const b=localBrief();return '**خطة النهارده**\n'+b.headline+'\n'+(b.top3.length?b.top3.map((x,i)=>(i+1)+'. '+x).join('\n'):'- اكتب أهم 3 حاجات في كارت الكارير وأنا أرتّبهم لك.')+'\n\n**فلوس:** '+b.money+'\n**تطوير:** '+b.growth+'\n**روح:** '+b.soul+(b.watch?'\n**خلي بالك:** '+b.watch:'')+LOCAL_NOTE;}
@@ -2679,23 +2680,17 @@ function localAnswer(kind){const p=progress(S.day);
  const verdict=p.pct>=80?'يوم قوي. الحمد لله.':p.pct>=50?'يوم كويس، بس إنت أقوى من كده.':p.pct>0?'اليوم كان تقيل. مش مشكلة، المهم بكرة.':'لسه مبدأتش. أصغر بند دلوقتي أحسن من ولا حاجة.';
  return '**حساب اليوم**\nخلّصت **'+p.on+'** من **'+p.tot+'** ('+p.pct+'%). '+verdict+'\n'+(n?'\n**لسه ناقص:**\n'+miss.map(g=>'- '+g.name+': '+g.list.slice(0,4).map(x=>strip(x.label)).join('، ')+(g.list.length>4?' …':'')).join('\n'):'\nمفيش حاجة ناقصة. ما شاء الله.')+'\n\nخطوتك دلوقتي: '+(n?'اختار حاجتين من اللي ناقص وخلّصهم قبل ما تنام.':'احمد ربنا ونام بدري.')+LOCAL_NOTE;}
 function sendLocal(i){const q=QUICK[i];const sh=$('#aiSheet');sh.hidden=false;AI.chat.push({role:'user',content:q[0].replace('🔒 ',''),local:1});AI.chat.push({role:'assistant',content:localAnswer(q[2]),local:1});renderChat();}
-function keyCard(){if(AI.cfg.gkey)return '';return '<div class="aikey"><b>🌐 عايزه يجيبلك من النت بجد؟</b><span>من غير مفتاح المرشد بيشتغل على خدمة مجانية بطيئة (رد كل 30 ثانية) وبيدوّر في ويكيبيديا بس. مفتاح Gemini مجاني وبياخد دقيقة، وبعده المرشد بيدوّر في جوجل ويرد بسرعة:</span><ol><li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> بحساب جوجل</li><li>دوس <b>Create API key</b> وانسخه</li><li>الزقه هنا ودوس حفظ</li></ol><div class="aikrow"><input id="aiKeyQ" type="password" dir="ltr" placeholder="AIza..." autocomplete="off"><button type="button" class="minibtn ai" id="aiKeySave">حفظ</button></div><div class="aikst" id="aiKeySt"></div></div>';}
-function chatHTML(){if(!AI.chat.length)return keyCard()+'<div class="aiempty"><b>أهلًا يا مصطفى</b>اسألني عن البيع والعملاء والدخل والمهارات والبزنس والحياة. ولو سألتني عن بياناتك (صرفت كام؟ حوّشت كام؟ صليت الفجر كام يوم؟ عملت إيه الأسبوع ده؟) هرد عليك من موبايلك نفسه 🔒. وأي سؤال تاني (أخبار، أسعار، معلومة) هدوّرلك عليه على النت.</div>';
+function keyCard(){return '';return '<div class="aikey"><b>🌐 عايزه يجيبلك من النت بجد؟</b><span>من غير مفتاح المرشد بيشتغل على خدمة مجانية بطيئة (رد كل 30 ثانية) وبيدوّر في ويكيبيديا بس. مفتاح Gemini مجاني وبياخد دقيقة، وبعده المرشد بيدوّر في جوجل ويرد بسرعة:</span><ol><li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> بحساب جوجل</li><li>دوس <b>Create API key</b> وانسخه</li><li>الزقه هنا ودوس حفظ</li></ol><div class="aikrow"><input id="aiKeyQ" type="password" dir="ltr" placeholder="AIza..." autocomplete="off"><button type="button" class="minibtn ai" id="aiKeySave">حفظ</button></div><div class="aikst" id="aiKeySt"></div></div>';}
+function chatHTML(){if(!AI.chat.length)return keyCard()+'<div class="aiempty"><b>أهلًا يا مصطفى</b>اسألني عن بياناتك وأنا أرد عليك من موبايلك علطول ومن غير نت 🔒: صرفت كام؟ حوّشت كام؟ صليت الفجر كام يوم؟ عملت إيه الأسبوع ده؟</div>';
  return keyCard()+AI.chat.map(m=>'<div class="msg2 '+(m.role==='user'?'u':'a')+(m.err?' err':'')+'">'+(m.role==='user'?esc(m.content).replace(/\n/g,'<br>'):mdLite(m.content))+(m.mem&&m.mem.length?'<span class="mem">✓ المرشد افتكر: '+esc(m.mem.join(' · '))+'</span>':'')+'</div>').join('');}
 function renderChat(scroll){const box=$('#aiMsgs');if(!box)return;box.innerHTML=chatHTML();if(scroll!==false)box.scrollTop=box.scrollHeight;}
 function openChat(prefill){const sh=$('#aiSheet');sh.hidden=false;renderChat();const ta=$('#aiIn');if(prefill){ta.value='';send(prefill);}else setTimeout(()=>{try{ta.focus({preventScroll:true});}catch(e){}},250);}
 function closeChat(){$('#aiSheet').hidden=true;}
-async function send(text){text=String(text||'').trim();if(!text)return;
- {const la=localData(text);if(la){$('#aiSheet').hidden=false;AI.chat.push({role:'user',content:text,local:1});AI.chat.push({role:'assistant',content:la,local:1});renderChat();return;}}
- if(!navigator.onLine){AI.chat.push({role:'user',content:text,queued:1,local:1});AI.chat.push({role:'assistant',content:'⏳ مفيش نت دلوقتي. حفظت سؤالك على الموبايل، وهبعته لوحدي أول ما النت يرجع.',queued:1,local:1});AI.pending.push(text);LS.set('aiPending',AI.pending);$('#aiSheet').hidden=false;renderChat();return;}if(AI.busy){toast('✺','استنى المرشد يخلّص الرد','');return;}
- const sh=$('#aiSheet');if(sh.hidden){sh.hidden=false;}
- AI.chat.push({role:'user',content:text});const ans={role:'assistant',content:''};AI.chat.push(ans);AI.busy='chat';AI.stopped=false;updSend();
- renderChat();const box=$('#aiMsgs');const node=box.lastElementChild;node.innerHTML='<span class="aidots"><i></i><i></i><i></i></span>';
- const hist=AI.chat.slice(0,-1).filter(m=>!m.err&&!m.local).slice(-12).map(m=>({role:m.role,content:m.content}));
- try{const full=await aiStream(hist,t=>{const c=t.replace(/\[\[[^\]]*\]?\]?$/,'');node.innerHTML=mdLite(c);const nearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<160;if(nearBottom)box.scrollTop=box.scrollHeight;});
-  const r=takeMem(full);ans.content=r.clean;}
- catch(e){if(e.message==='stopped'){ans.content=(node.textContent||'').trim()||'وقفت.';}else{ans.content=e.message;ans.err=true;}}
- AI.busy=false;if(AI.chat.length>40)AI.chat=AI.chat.slice(-40);LS.set('aiChat',AI.chat.filter(m=>!m.err&&!m.local));renderChat(false);box.scrollTop=box.scrollHeight;updSend();}
+async function send(text){text=String(text||'').trim();if(!text)return;$('#aiSheet').hidden=false;
+ /* offline-only coach: answers come from the data on this phone, nothing is sent anywhere */
+ const la=localData(text);AI.chat.push({role:'user',content:text,local:1});
+ AI.chat.push({role:'assistant',local:1,content:la||'المرشد بيرد على أسئلة بياناتك بس، من موبايلك ومن غير نت. جرّب مثلًا:\n- صرفت كام الشهر ده؟\n- حوّشت كام؟\n- صليت الفجر كام يوم الأسبوع ده؟\n- عملت إيه النهارده؟\n- الورد بتاعي آخر 7 أيام\n\nأو دوس على الأزرار اللي تحت: خطة النهارده، راجع أسبوعي، حاسبني على اليوم.'});
+ if(AI.chat.length>40)AI.chat=AI.chat.slice(-40);renderChat();}
 function updSend(){const b=$('#aiSend');if(!b)return;b.textContent=AI.busy==='chat'?'■':'↑';b.title=AI.busy==='chat'?'وقّف':'ابعت';}
 
 /* ---------- panel + settings ---------- */
@@ -2781,7 +2776,7 @@ function initLock(){$('#lkBio').addEventListener('click',tryBio);$('#lkAlt').add
 /* ---------- offline first: the phone is the server; the network is only for the coach ---------- */
 function netChip(){const s=$('#sync');if(!s)return;const on=navigator.onLine;s.textContent=on?'ONLINE':'OFFLINE';s.classList.toggle('on',on);
  s.title=on?'متصل. بياناتك محفوظة على الموبايل':'من غير نت. كل حاجة شغالة ومحفوظة على الموبايل، والمرشد هيرجع لما النت يرجع';}
-window.addEventListener('online',()=>{netChip();toast('📶','رجع النت','المرشد شغال تاني'+(AI.pending.length?' · ببعت أسئلتك اللي استنت':''));flushPending();
+window.addEventListener('online',()=>{netChip();toast('📶','رجع النت','');flushPending();
  const c=LS.get('aiBrief');if(AI.cfg.auto&&!(c&&c.date===todayKey()))setTimeout(()=>makeBrief(true),1500);});
 window.addEventListener('offline',()=>{netChip();toast('📴','النت فصل','كمّل عادي. كل حاجة بتتسجل على الموبايل');});
 async function flushPending(){if(!navigator.onLine||!AI.pending.length||AI.busy)return;const q=AI.pending.shift();LS.set('aiPending',AI.pending);
