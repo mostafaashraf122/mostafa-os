@@ -840,6 +840,7 @@ html,body{transition:background 2s}
 .msg2 .mem{display:block;margin-top:6px;font-size:11.5px;color:var(--mint)}
 .aikey{background:rgba(120,195,255,.07);border:1px solid rgba(120,195,255,.3);border-radius:14px;padding:12px 14px;font-size:13.5px;margin-bottom:10px}
 .aikey>b{display:block;margin-bottom:4px}.aikey span{color:var(--frost);display:block}.aikey ol{margin:6px 0;padding-inline-start:20px}.aikey a,.msg2 a{color:var(--sky)}
+.aikst{font-size:13px;margin-top:6px;color:var(--frost)}.aikst.bad{color:#ffb9a3}.aikst.good{color:var(--mint)}
 .aikrow{display:flex;gap:6px;margin-top:6px}.aikrow input{flex:1;min-width:0;background:rgba(7,11,20,.6);border:1px solid var(--line2);border-radius:10px;padding:8px 10px;color:var(--text);font:inherit}
 .aiempty{margin:auto;text-align:center;color:var(--frost);font-size:14px;max-width:340px;padding:20px 0}
 .aiempty b{display:block;font-family:var(--display);font-size:20px;color:var(--ai2);margin-bottom:6px}
@@ -2638,7 +2639,7 @@ function localAnswer(kind){const p=progress(S.day);
  const verdict=p.pct>=80?'يوم قوي. الحمد لله.':p.pct>=50?'يوم كويس، بس إنت أقوى من كده.':p.pct>0?'اليوم كان تقيل. مش مشكلة، المهم بكرة.':'لسه مبدأتش. أصغر بند دلوقتي أحسن من ولا حاجة.';
  return '**حساب اليوم**\nخلّصت **'+p.on+'** من **'+p.tot+'** ('+p.pct+'%). '+verdict+'\n'+(n?'\n**لسه ناقص:**\n'+miss.map(g=>'- '+g.name+': '+g.list.slice(0,4).map(x=>strip(x.label)).join('، ')+(g.list.length>4?' …':'')).join('\n'):'\nمفيش حاجة ناقصة. ما شاء الله.')+'\n\nخطوتك دلوقتي: '+(n?'اختار حاجتين من اللي ناقص وخلّصهم قبل ما تنام.':'احمد ربنا ونام بدري.')+LOCAL_NOTE;}
 function sendLocal(i){const q=QUICK[i];const sh=$('#aiSheet');sh.hidden=false;AI.chat.push({role:'user',content:q[0].replace('🔒 ',''),local:1});AI.chat.push({role:'assistant',content:localAnswer(q[2]),local:1});renderChat();}
-function keyCard(){if(AI.cfg.gkey)return '';return '<div class="aikey"><b>🌐 عايزه يجيبلك من النت بجد؟</b><span>من غير مفتاح المرشد بيشتغل على خدمة مجانية بطيئة (رد كل 30 ثانية) وبيدوّر في ويكيبيديا بس. مفتاح Gemini مجاني وبياخد دقيقة، وبعده المرشد بيدوّر في جوجل ويرد بسرعة:</span><ol><li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> بحساب جوجل</li><li>دوس <b>Create API key</b> وانسخه</li><li>الزقه هنا ودوس حفظ</li></ol><div class="aikrow"><input id="aiKeyQ" type="password" dir="ltr" placeholder="AIza..." autocomplete="off"><button type="button" class="minibtn ai" id="aiKeySave">حفظ</button></div></div>';}
+function keyCard(){if(AI.cfg.gkey)return '';return '<div class="aikey"><b>🌐 عايزه يجيبلك من النت بجد؟</b><span>من غير مفتاح المرشد بيشتغل على خدمة مجانية بطيئة (رد كل 30 ثانية) وبيدوّر في ويكيبيديا بس. مفتاح Gemini مجاني وبياخد دقيقة، وبعده المرشد بيدوّر في جوجل ويرد بسرعة:</span><ol><li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> بحساب جوجل</li><li>دوس <b>Create API key</b> وانسخه</li><li>الزقه هنا ودوس حفظ</li></ol><div class="aikrow"><input id="aiKeyQ" type="password" dir="ltr" placeholder="AIza..." autocomplete="off"><button type="button" class="minibtn ai" id="aiKeySave">حفظ</button></div><div class="aikst" id="aiKeySt"></div></div>';}
 function chatHTML(){if(!AI.chat.length)return keyCard()+'<div class="aiempty"><b>أهلًا يا مصطفى</b>اسألني عن البيع والعملاء والدخل والمهارات والبزنس والحياة. ولو سألتني عن بياناتك (صرفت كام؟ حوّشت كام؟ صليت الفجر كام يوم؟ عملت إيه الأسبوع ده؟) هرد عليك من موبايلك نفسه 🔒. وأي سؤال تاني (أخبار، أسعار، معلومة) هدوّرلك عليه على النت.</div>';
  return keyCard()+AI.chat.map(m=>'<div class="msg2 '+(m.role==='user'?'u':'a')+(m.err?' err':'')+'">'+(m.role==='user'?esc(m.content).replace(/\n/g,'<br>'):mdLite(m.content))+(m.mem&&m.mem.length?'<span class="mem">✓ المرشد افتكر: '+esc(m.mem.join(' · '))+'</span>':'')+'</div>').join('');}
 function renderChat(scroll){const box=$('#aiMsgs');if(!box)return;box.innerHTML=chatHTML();if(scroll!==false)box.scrollTop=box.scrollHeight;}
@@ -2666,8 +2667,18 @@ function buildCoach(){
  $('#aiChips').innerHTML=QUICK.slice(0,8).map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  $('#aiQuick').innerHTML=QUICK.map((q,i)=>'<button type="button" data-q="'+i+'">'+q[0]+'</button>').join('');
  const P=$('#aiProfile');P.value=AI.cfg.profile;P.addEventListener('change',()=>{AI.cfg.profile=P.value.trim()||DEF_PROFILE;saveAI();toast('✓','المرشد حفظ الكلام عنك','');});
- [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.trim();saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
- $('#aiMsgs').addEventListener('click',e=>{if(!e.target.closest('#aiKeySave'))return;const v=($('#aiKeyQ').value||'').trim();if(!/^AIza[\w-]{20,}$/.test(v)){toast('✺','المفتاح شكله مش صح','لازم يبدأ بـ AIza');return;}AI.cfg.gkey=v;saveAI();const k=$('#aiKey');if(k)k.value=v;renderChat();toast('✺','تمام، المرشد شغال بـ Gemini ويدوّر على النت','');});
+ [['#aiKey','gkey']].forEach(([s,k])=>{const n=$(s);n.value=AI.cfg[k]||'';n.addEventListener('change',()=>{AI.cfg[k]=n.value.replace(/[\s"'`]/g,'');saveAI();if(k==='gkey'){AI.brief=null;aiSig='';renderCoach();toast('✺',AI.cfg.gkey?'المرشد شغال بـ Gemini':'المرشد رجع للمجاني','');}});});
+ $('#aiMsgs').addEventListener('click',async e=>{if(!e.target.closest('#aiKeySave'))return;const st=$('#aiKeySt'),btn=$('#aiKeySave');
+  const say=(t,c)=>{st.textContent=t;st.className='aikst '+(c||'');};
+  const v=($('#aiKeyQ').value||'').replace(/[\s"'`]/g,'');
+  if(v.length<20){say('الخانة فاضية أو الكود ناقص. انسخ المفتاح كله من صفحة جوجل والزقه تاني.','bad');return;}
+  btn.disabled=true;say('⏳ بجرّب المفتاح مع جوجل…');
+  let ok=null,why='';try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1',{headers:{'x-goog-api-key':v}});ok=r.ok;if(!r.ok){const j=await r.json().catch(()=>({}));why=(j.error&&j.error.message)||('HTTP '+r.status);}}catch(er){ok=null;}
+  btn.disabled=false;
+  if(ok===false){say('❌ جوجل رفض المفتاح: '+why.slice(0,140)+' · اتأكد إنك نسخته كله، أو اعمل مفتاح جديد.','bad');return;}
+  AI.cfg.gkey=v;saveAI();const k=$('#aiKey');if(k)k.value=v;
+  say(ok?'✅ تمام! المفتاح شغال والمرشد بقى بيدوّر في جوجل. اسأله أي حاجة.':'✅ اتحفظ. (مقدرتش أجرّبه دلوقتي علشان النت، هيشتغل أول ما النت يرجع)','good');
+  setTimeout(()=>{renderChat();},2500);});
  {const sh=$('#aiShare');if(sh){sh.checked=AI.cfg.share!==false;sh.addEventListener('change',()=>{AI.cfg.share=sh.checked;saveAI();});}}
  const au=$('#aiAuto');au.checked=!!AI.cfg.auto;au.addEventListener('change',()=>{AI.cfg.auto=au.checked;saveAI();});
  $('#aiClear').addEventListener('click',()=>{if(!confirm('أمسح المحادثة كلها؟'))return;AI.chat=[];LS.set('aiChat',[]);renderChat();toast('✓','المحادثة اتمسحت','');});
