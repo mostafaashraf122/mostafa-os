@@ -1381,6 +1381,135 @@ html[dir=rtl] .df-bar i{background:linear-gradient(270deg,var(--sky),var(--gold)
 <div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-label="التطبيق مقفول"><div class="lk"><div class="lkring">🔒</div><h2>MOSTAFA·OS</h2><p id="lkTxt">مقفول. اكتب الباسورد</p><button class="bio" id="lkBio" type="button">افتح بالبصمة</button><button class="lkalt" id="lkAlt" type="button" hidden>استخدم الباسورد</button><div class="lkpin"><input id="lkPin" type="password" maxlength="64" autocomplete="current-password" autocapitalize="off" spellcheck="false" placeholder="الباسورد" aria-label="الباسورد" dir="ltr"><button id="lkGo" type="button">افتح</button></div><small id="lkMsg"></small></div></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="حساب آخر اليوم"><div class="sheet-bg" id="sheetBg"></div><div class="sheet-card" id="sheetCard"></div></div>
 
+<!-- =================== v17 · مكتبتي (الكتب كاملة فصل بفصل) + LIVE · حركة وحياة أكتر =================== -->
+<style id="v17">
+/* ---------- living background: fireflies / bokeh ---------- */
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:.9}
+html.locked #fx{z-index:201;opacity:.7}
+/* scroll progress */
+.scrollp{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--ember),var(--gold),var(--gold2));box-shadow:0 0 12px rgba(243,185,77,.6);transition:width .15s;pointer-events:none}
+/* greeting: shimmering name */
+.greet span{background:linear-gradient(100deg,var(--gold) 0%,#fff3cf 35%,var(--gold) 55%,var(--ember) 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold);animation:gshine 5s linear infinite;text-shadow:none}
+@keyframes gshine{to{background-position:-220% 0}}
+.greet::after{animation:glinew 1.2s cubic-bezier(.2,.9,.2,1) both;transform-origin:inline-start}
+@keyframes glinew{from{transform:scaleX(0)}}
+/* page switch: panels cascade in */
+.pnl.pgx{animation:pgin .6s cubic-bezier(.2,.9,.25,1) both;animation-delay:calc(var(--i,0) * 55ms)}
+@keyframes pgin{from{opacity:0;transform:translateY(18px) scale(.985);filter:blur(4px)}}
+/* dock: sliding pill + bounce */
+.dock{overflow:visible}
+.dock .pill{position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:15px;background:linear-gradient(180deg,rgba(243,185,77,.22),rgba(243,185,77,.08));border:1px solid rgba(243,185,77,.4);box-shadow:0 0 18px rgba(243,185,77,.25);transition:left .45s cubic-bezier(.3,1.4,.4,1),width .45s cubic-bezier(.3,1.4,.4,1);pointer-events:none}
+.dock button{z-index:1}
+.dock button.on{background:transparent;color:var(--gold2)}
+.dock button.pop{animation:dockpop .5s cubic-bezier(.3,1.6,.4,1)}
+@keyframes dockpop{40%{transform:translateY(-6px) scale(1.12)}}
+/* checkbox: ripple ring on tick */
+.it .box{position:relative}
+.it.done .box::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:2px solid var(--gold);animation:tickring .7s ease-out forwards;pointer-events:none}
+@keyframes tickring{to{transform:scale(2.4);opacity:0}}
+.it:active{transform:scale(.985)}
+/* buttons: tactile press */
+.minibtn:active,.ib:active,.dock button:active,.qnav button:active,.saybtn:active,.lk .bio:active,.qlist button:active,.rlist button:active{transform:scale(.95)}
+.minibtn,.ib,.saybtn{transition:transform .15s,background .2s,border-color .2s,color .2s}
+/* core ring: halo that breathes, celebration when the day is full */
+.pnl.core svg{animation:halo 4.5s ease-in-out infinite}
+@keyframes halo{50%{filter:drop-shadow(0 0 22px rgba(243,185,77,.35))}}
+.pnl.core.full svg{animation:halo2 2s ease-in-out infinite}
+@keyframes halo2{50%{filter:drop-shadow(0 0 28px rgba(94,224,176,.6))}}
+.pnl.core.full .ring.r-total{filter:drop-shadow(0 0 10px rgba(255,220,147,.9))}
+/* kpi numbers glow when they change */
+.kpi b.bump{animation:bump .6s cubic-bezier(.3,1.5,.4,1)}
+@keyframes bump{40%{transform:scale(1.18);filter:brightness(1.4)}}
+/* 3D tilt on hover (desktop) */
+@media (hover:hover){.pnl{transform-style:preserve-3d;will-change:transform}.pnl.tilt{transition:transform .12s ease-out,border-color .3s,box-shadow .3s}.pnl.tilt:hover{box-shadow:0 22px 50px rgba(0,0,0,.4),0 0 0 1px rgba(243,185,77,.12)}}
+/* lock: spinning conic ring + drifting aurora + unlock zoom */
+.lk .lkring{position:relative;border:6px solid transparent;background:#0b1120;background-clip:padding-box;overflow:visible;box-shadow:0 0 50px rgba(243,185,77,.22)}
+.lk .lkring::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--gold),transparent 28%,var(--ember) 50%,transparent 78%,var(--gold));-webkit-mask:radial-gradient(circle,transparent 61%,#000 62%);mask:radial-gradient(circle,transparent 61%,#000 62%);animation:lkspin 3.2s linear infinite}
+.lk .lkring::after{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px dashed rgba(243,185,77,.3);animation:lkspin 22s linear infinite reverse}
+@keyframes lkspin{to{transform:rotate(360deg)}}
+.lock .lkico{position:relative;z-index:1;font-size:30px;animation:lkfloat 3s ease-in-out infinite}
+@keyframes lkfloat{50%{transform:translateY(-4px)}}
+.lock::before{content:"";position:absolute;inset:-20%;background:radial-gradient(30% 40% at 30% 30%,rgba(243,185,77,.16),transparent 70%),radial-gradient(30% 40% at 75% 65%,rgba(120,195,255,.12),transparent 70%),radial-gradient(25% 35% at 60% 20%,rgba(255,106,61,.1),transparent 70%);filter:blur(50px);animation:aur 14s ease-in-out infinite alternate;pointer-events:none}
+.lock .lk{position:relative}
+.lock.bye{animation:lkbye .5s cubic-bezier(.6,0,.4,1) forwards}
+@keyframes lkbye{to{opacity:0;transform:scale(1.12);filter:blur(10px)}}
+.wrap.boot{animation:wboot .7s cubic-bezier(.2,.9,.25,1) both}
+@keyframes wboot{from{opacity:0;transform:scale(.97) translateY(10px)}}
+.lk h2{animation:gshine 4s linear infinite;background:linear-gradient(100deg,var(--gold),#fff3cf,var(--gold));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+/* toasts: spring in */
+.toast{animation:tspring .55s cubic-bezier(.3,1.5,.4,1) both}
+@keyframes tspring{from{opacity:0;transform:translateY(-22px) scale(.85)}}
+/* glyphs idle float */
+.ph .glyph{animation:gfloat 5s ease-in-out infinite;animation-delay:calc(var(--i,0) * -1.3s)}
+@keyframes gfloat{50%{transform:translateY(-3px) rotate(-3deg)}}
+.pnl:hover .glyph{animation-play-state:paused}
+
+/* ---------- مكتبتي ---------- */
+.lib .shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px;padding:10px 4px 18px;perspective:1200px}
+.bk{position:relative;display:block;width:100%;background:none;border:none;padding:0;cursor:pointer;text-align:start;transform-style:preserve-3d;animation:bkbob 6s ease-in-out infinite;animation-delay:calc(var(--i,0) * -2s);transition:transform .4s cubic-bezier(.2,.9,.3,1)}
+@keyframes bkbob{50%{transform:translateY(-5px)}}
+.bk:hover{animation-play-state:paused;transform:translateY(-8px) rotateY(-14deg) rotateX(4deg)}
+.bk:active{transform:translateY(-4px) scale(.97)}
+.bk .cov{position:relative;aspect-ratio:2/3;border-radius:6px 14px 14px 6px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 70%,#fff) 0%,var(--c) 30%,color-mix(in srgb,var(--c) 35%,#070b14) 100%);box-shadow:-6px 10px 28px rgba(0,0,0,.5),inset 4px 0 8px rgba(255,255,255,.18),inset -2px 0 6px rgba(0,0,0,.25);color:#120d02;padding:14px 12px 12px 18px;display:flex;flex-direction:column;justify-content:space-between}
+.bk .cov::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.28) 45%,transparent 60%);background-size:250% 100%;background-position:120% 0;transition:background-position .9s}
+.bk:hover .cov::before{background-position:-120% 0}
+.bk .cov::after{content:"";position:absolute;inset-inline-start:7px;top:0;bottom:0;width:1px;background:rgba(0,0,0,.25)}
+.bk .cg{font-size:34px;line-height:1;opacity:.85;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.bk .ct{font-family:var(--display);font-weight:700;font-size:16px;line-height:1.3;text-shadow:0 1px 0 rgba(255,255,255,.25)}
+.bk .ca{font-size:11.5px;opacity:.8;margin-top:3px}
+.bk .cen{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;opacity:.65;direction:ltr;text-align:left;margin-top:8px}
+.bk .cp{position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.25)}
+.bk .cp i{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 8px #fff;transition:width 1s cubic-bezier(.2,.9,.2,1)}
+.bk .cs{position:absolute;inset-inline-end:8px;top:8px;background:rgba(7,11,20,.55);color:#fff;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:10px;backdrop-filter:blur(4px)}
+.bk .cs.done{background:var(--mint);color:#072116;font-weight:700}
+.bk.cur .cov{outline:2px solid var(--gold2);outline-offset:3px;box-shadow:-6px 10px 28px rgba(0,0,0,.5),0 0 30px rgba(243,185,77,.35)}
+.bk .meta{display:block;margin-top:9px;font-size:12px;color:var(--frost);line-height:1.5}
+.bk .meta b{display:block;color:var(--text);font-size:13px}
+.lib .note{margin-top:2px}
+/* reader */
+.bkreader .qrbody{padding-top:0}
+.bkpage{max-width:720px;margin:0 auto;padding-top:18px}
+.bkpart{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--frost);text-align:center;animation:fadein .6s both}
+.bkh{text-align:center;margin:8px 0 6px;font-family:var(--display);font-size:clamp(22px,6vw,30px);line-height:1.3;background:linear-gradient(100deg,var(--c,var(--gold)),#fff3cf,var(--c,var(--gold)));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gshine 7s linear infinite,fadein .7s both}
+.bksub{text-align:center;color:var(--frost);font-size:12.5px;direction:ltr;margin-bottom:14px;animation:fadein .8s both}
+.bkq{position:relative;margin:14px 0 22px;padding:16px 18px 16px 22px;border-radius:18px 6px 18px 6px;background:linear-gradient(135deg,color-mix(in srgb,var(--c,var(--gold)) 14%,transparent),transparent);border:1px solid color-mix(in srgb,var(--c,var(--gold)) 40%,transparent);font-family:var(--display);font-size:18px;line-height:1.7;color:var(--gold2);animation:bkin .7s cubic-bezier(.2,.9,.25,1) both;animation-delay:.15s}
+.bkq::before{content:"❝";position:absolute;inset-inline-start:10px;top:-10px;font-size:34px;color:var(--c,var(--gold));opacity:.7}
+.bkp{font-size:var(--bfs,17px);line-height:1.95;margin:0 0 16px;text-align:justify;color:var(--text);animation:bkin .7s cubic-bezier(.2,.9,.25,1) both;animation-delay:calc(.2s + var(--i,0) * 90ms)}
+@keyframes bkin{from{opacity:0;transform:translateY(16px)}}
+.bkkeys{display:grid;gap:8px;margin:22px 0}
+.bkkeys h4{margin:0 0 4px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--frost)}
+.bkkey{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border-radius:14px;background:rgba(7,11,20,.5);border:1px solid var(--line);font-size:14.5px;line-height:1.6;animation:bkin .6s both;animation-delay:calc(.3s + var(--i,0) * 90ms)}
+.bkkey i{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:var(--mono);font-size:11px;color:#1b1305;background:var(--c,var(--gold))}
+.bkact{position:relative;overflow:hidden;margin:18px 0;padding:16px 16px 16px 18px;border-radius:18px;background:linear-gradient(135deg,rgba(94,224,176,.14),rgba(94,224,176,.03));border:1px solid rgba(94,224,176,.45);animation:bkin .7s both;animation-delay:.5s}
+.bkact::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(94,224,176,.12) 50%,transparent 70%);background-size:250% 100%;animation:dfshine 4s ease-in-out infinite}
+.bkact b{display:block;color:var(--mint);font-family:var(--mono);font-size:11px;letter-spacing:.18em;margin-bottom:6px}
+.bkact p{margin:0;font-size:15.5px;line-height:1.75}
+.bkdone{width:100%;margin:8px 0 16px;padding:15px;border-radius:16px;border:1px solid rgba(243,185,77,.5);background:linear-gradient(135deg,rgba(243,185,77,.22),rgba(243,185,77,.06));color:var(--gold2);font:inherit;font-weight:700;font-size:16px;cursor:pointer;transition:transform .15s,background .3s;box-shadow:0 0 0 0 rgba(243,185,77,.4);animation:ctaglow 2.5s ease-in-out infinite}
+.bkdone:active{transform:scale(.97)}
+.bkdone.on{background:linear-gradient(135deg,rgba(94,224,176,.25),rgba(94,224,176,.06));border-color:rgba(94,224,176,.6);color:var(--mint);animation:none}
+.bkfin{text-align:center;padding:26px 14px;margin:10px 0;border-radius:20px;background:radial-gradient(60% 80% at 50% 0%,rgba(243,185,77,.2),transparent 70%);border:1px solid rgba(243,185,77,.35);animation:bkin .8s both}
+.bkfin b{display:block;font-family:var(--display);font-size:22px;color:var(--gold2)}
+.bkfin small{color:var(--frost)}
+.bktoc{position:absolute;inset:0;z-index:5;background:rgba(7,11,20,.92);backdrop-filter:blur(10px);overflow-y:auto;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 30px);animation:fadein .25s}
+.bktoc[hidden]{display:none}
+.bktoc .tp{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--frost);margin:16px 4px 6px}
+.bktoc button{display:flex;align-items:center;gap:10px;width:100%;text-align:start;background:rgba(17,26,45,.7);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px;cursor:pointer;font:inherit;font-size:14px;color:var(--text);animation:bkin .4s both;animation-delay:calc(var(--i,0) * 25ms)}
+.bktoc button .n{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:11px;border:1px solid var(--line2);color:var(--frost)}
+.bktoc button.done .n{background:var(--mint);color:#072116;border-color:var(--mint)}
+.bktoc button.cur{border-color:var(--gold);background:rgba(243,185,77,.1)}
+.bktoc button .t{flex:1;min-width:0}
+.bktoc button small{display:block;color:var(--dim);font-size:11px;direction:ltr;text-align:start}
+.bkreader .qrbar i{background:linear-gradient(90deg,var(--c,var(--ember)),#fff3cf)}
+.bkreader .qrbody{position:relative}
+</style>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="scrollp" id="scrollp" aria-hidden="true"></div>
+<div class="qreader bkreader" id="bkReader" hidden role="dialog" aria-modal="true" aria-label="قارئ الكتب">
+ <div class="qrhead"><button class="ib" id="bkClose" type="button" aria-label="اقفل الكتاب">✕</button><div class="qrt"><b id="bkName"></b><small id="bkMeta"></small></div><button class="ib" id="bkToc" type="button" aria-label="الفهرس">☰</button><button class="ib qfs" id="bkSm" type="button" aria-label="صغّر الخط">ا−</button><button class="ib qfs" id="bkLg" type="button" aria-label="كبّر الخط">ا+</button></div>
+ <div class="qrbar"><i id="bkBar"></i></div>
+ <div class="qrbody" id="bkBody"><div class="bktoc" id="bkTocBox" hidden></div><div id="bkPage"></div></div>
+</div>
+<script src="books.js"></script>
 <script src="plan.js"></script>
 <script>
 (function(){
@@ -1450,6 +1579,7 @@ const MODS=[
 const BOOKS=[
  ['العادات الذرية','جيمس كلير','إزاي تغيّر نفسك بخطوات صغيرة كل يوم. ماشي مع فكرة الموقع بالظبط'],
  ['الإنسان يبحث عن المعنى','فيكتور فرانكل','قصة حقيقية من معسكرات النازية عن المعنى والصبر. قصير وبيفضل معاك'],
+ ['قوة عقلك الباطن','جوزيف ميرفي','إزاي كلامك لنفسك وتوقعاتك بتصنع ثقتك ونتايجك. الكتاب كامل في مكتبتي'],
  ['العمل العميق','كال نيوبورت','إزاي تشتغل بتركيز في زمن المشتتات والموبايل'],
  ['سيكولوجية المال','مورغان هاوسل','حكايات قصيرة عن الفلوس والادخار والاستثمار، سهل وممتع'],
  ['الأب الغني والأب الفقير','روبرت كيوساكي','بيغيّر طريقة تفكيرك في الدخل والبزنس من بدري'],
@@ -3569,6 +3699,126 @@ window.MOS={PT,isRamadan,LK,LS,enableLock,bioAvailable,nfEnable,askLoc,grantStor
  $('#qSeg').addEventListener('click',e=>{const b=e.target.closest('[data-qv]');if(!b)return;Q.v=b.dataset.qv;$('#qSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderList();});
  renderResume();renderList();
  window.MOSQuran={open:openQ};
+})();
+
+/* =================== مكتبتي · الكتب كاملة فصل بفصل =================== */
+(function library(){
+ const BK=window.MOSBooks||[];if(!BK.length)return;
+ const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const flat=b=>{if(b._f)return b._f;const f=[];b.parts.forEach(p=>p.chapters.forEach(c=>f.push(Object.assign({part:p.name},c))));return b._f=f;};
+ const done=()=>LS.get('bkdone')||{};
+ const nDone=b=>Object.keys(done()[b.id]||{}).length;
+ const pos=()=>LS.get('bkpos');
+ const byId=id=>BK.find(b=>b.id===id);
+ const B={id:null,ci:0,fs:+LS.get('bkFs')||17};
+ const R=$('#bkReader'),body=$('#bkBody'),page=$('#bkPage'),toc=$('#bkTocBox');
+ /* ----- panel on the coach page ----- */
+ const sec=el('section','pnl lib');sec.id='books';sec.dataset.page='coach';
+ sec.innerHTML='<div class="ph"><div class="glyph" style="color:var(--gold2);border-color:rgba(243,185,77,.4);background:rgba(243,185,77,.08)">📖</div><div><h2>مكتبتي</h2><span class="en">LIBRARY · الكتب كاملة فصل بفصل، ومكانك بيتحفظ</span></div><span class="cnt" id="bkCnt"></span></div>'+
+  '<button class="qresume" id="bkResume" type="button"></button><div class="shelf" id="bkShelf"></div><p class="note">شرح كل فصل بالمصري بفكرته وخطوة عملية ليك. لما تخلّص فصل دوس "خلصت الفصل" وبند "خلصت فصل من الكتاب" في الأسبوع و"قريت 10 صفحات" في اليوم بيتعلّموا لوحدهم.</p>';
+ const after=$('#lessons')||$('#coach');after.insertAdjacentElement('afterend',sec);
+ sec.hidden=(typeof PG!=='undefined'&&PG!=='coach');
+ function renderShelf(){const p=pos();let tot=0,dn=0;
+  $('#bkShelf').innerHTML=BK.map((b,i)=>{const n=flat(b).length,d=nDone(b);tot+=n;dn+=d;const pc=Math.round(d/n*100);
+   return '<button type="button" class="bk'+(p&&p.id===b.id?' cur':'')+'" data-bk="'+b.id+'" style="--c:'+b.color+';--i:'+i+'"><div class="cov"><span class="cs'+(d>=n?' done':'')+'">'+(d>=n?'✓ خلصته':pc+'%')+'</span><div><div class="cg">'+b.glyph+'</div><div class="ct">'+E(b.title)+'</div><div class="ca">'+E(b.author)+'</div></div><div class="cen">'+E(b.en)+'</div><div class="cp"><i style="width:'+pc+'%"></i></div></div><span class="meta"><b>'+E(b.tag)+'</b>'+n+' فصل · '+(d?d+' خلصتهم':'لسه مبدأش')+'</span></button>';}).join('');
+  const r=$('#bkResume');
+  if(p&&byId(p.id)){const b=byId(p.id),c=flat(b)[p.ci]||flat(b)[0];r.innerHTML='<span class="qi" style="color:'+b.color+'">'+b.glyph+'</span><div><b>كمّل من مكانك: '+E(b.title)+'</b><small>'+E(c.t)+' · الفصل '+(p.ci+1)+' من '+flat(b).length+'</small></div><span class="go">كمّل ←</span>';}
+  else r.innerHTML='<span class="qi">📖</span><div><b>ابدأ أول كتاب: '+E(BK[0].title)+'</b><small>'+flat(BK[0]).length+' فصل · كل فصل 5 دقايق قراية وخطوة عملية</small></div><span class="go">ابدأ ←</span>';
+  $('#bkCnt').textContent=dn+'/'+tot+' فصل';}
+ /* ----- reader ----- */
+ function paint(){const b=byId(B.id),F=flat(b),ci=B.ci,c=F[ci],n=F.length,d=!!(done()[b.id]||{})[ci];
+  R.style.setProperty('--c',b.color);$('#bkName').textContent=b.title;$('#bkMeta').textContent='الفصل '+(ci+1)+' من '+n+' · '+b.author;$('#bkBar').style.width=((ci+1)/n*100)+'%';
+  let h='<div class="bkpage" style="--c:'+b.color+';--bfs:'+B.fs+'px"><div class="bkpart">'+E(c.part)+'</div><h1 class="bkh">'+E(c.t)+'</h1><div class="bksub">'+E(c.sub||'')+'</div>';
+  if(c.q)h+='<div class="bkq">'+E(c.q)+'</div>';
+  h+=c.p.map((t,i)=>'<p class="bkp" style="--i:'+i+'">'+E(t)+'</p>').join('');
+  if(c.key&&c.key.length)h+='<div class="bkkeys"><h4>KEY · أهم اللي تاخده</h4>'+c.key.map((k,i)=>'<div class="bkkey" style="--i:'+i+'"><i>'+(i+1)+'</i><span>'+E(k)+'</span></div>').join('')+'</div>';
+  if(c.act)h+='<div class="bkact"><b>ACT · طبّقها النهارده</b><p>'+E(c.act)+'</p></div>';
+  h+='<button type="button" class="bkdone'+(d?' on':'')+'" id="bkDone">'+(d?'✓ خلصت الفصل ده · دوس لو عايز تلغي':'خلصت الفصل ✓')+'</button>';
+  if(ci>=n-1&&d)h+='<div class="bkfin"><b>خلصت الكتاب كله 🎉</b><small>'+E(b.title)+' · '+n+' فصل. ارجع لأي فصل وقت ما تحب، أو ابدأ اللي بعده من المكتبة</small></div>';
+  h+='<div class="qnav"><button type="button" data-bknav="'+(ci+1)+'"'+(ci>=n-1?' disabled':'')+'>الفصل اللي بعده ←</button><button type="button" data-bknav="'+(ci-1)+'"'+(ci<=0?' disabled':'')+'>→ اللي قبله</button></div></div>';
+  page.innerHTML=h;toc.hidden=true;body.scrollTop=0;
+  LS.set('bkpos',{id:b.id,ci,t:Date.now()});
+  if(S.settings&&S.settings.book!==b.title){S.settings.book=b.title;try{saveSettings();}catch(e){}}}
+ function renderToc(){const b=byId(B.id),D=done()[b.id]||{};let h='',k=0;
+  b.parts.forEach(p=>{h+='<div class="tp">'+E(p.name)+'</div>';p.chapters.forEach(c=>{const i=k++;h+='<button type="button" data-bkgo="'+i+'" class="'+(D[i]?'done ':'')+(i===B.ci?'cur':'')+'" style="--i:'+i+'"><span class="n">'+(D[i]?'✓':i+1)+'</span><span class="t">'+E(c.t)+'<small>'+E(c.sub||'')+'</small></span></button>';});});
+  toc.innerHTML=h;}
+ function open(id,ci){const b=byId(id);if(!b)return;B.id=id;B.ci=Math.max(0,Math.min(flat(b).length-1,ci|0));
+  if(R.hidden){R.hidden=false;document.body.style.overflow='hidden';try{history.pushState({mb:1},'');}catch(e){}}
+  paint();}
+ function close(fromPop){if(R.hidden)return;R.hidden=true;document.body.style.overflow='';renderShelf();
+  if(!fromPop&&history.state&&history.state.mb){try{history.back();}catch(e){}}}
+ function markDone(ev){const b=byId(B.id),all=done(),D=all[b.id]||(all[b.id]={}),ci=B.ci,n=flat(b).length;
+  if(D[ci]){delete D[ci];LS.set('bkdone',all);paint();return;}
+  D[ci]=todayKey();LS.set('bkdone',all);const keep=body.scrollTop;
+  const x=ev&&ev.clientX||innerWidth/2,y=ev&&ev.clientY||innerHeight/2;sparks(x,y,22,[b.color,'#ffdc93','#fff']);
+  try{navigator.vibrate&&navigator.vibrate([20,30,20]);}catch(e){}
+  const tk=todayKey();let extra='';
+  try{if(S.view===tk&&S.day&&!S.day.c.read){S.day.c.read=true;saveDay();extra='اتعلّم "قريت 10 صفحات"';}
+   if(S.week&&!S.week.c.w_book){S.week.c.w_book=true;saveWeek();extra+=(extra?' و':'اتعلّم ')+'"خلصت فصل من الكتاب"';}
+   if(extra)render();}catch(e){}
+  const dn=Object.keys(D).length;
+  if(dn>=n){setTimeout(()=>burst(160),200);toast('🏆','خلصت الكتاب كله: '+b.title,'كتاب كامل في دماغك. برافو عليك',' +50 XP');}
+  else toast('📖','برافو، فصل كمان خلص',(extra||'فاضل '+(n-dn)+' فصل في '+b.title));
+  paint();body.scrollTop=keep;}
+ /* events */
+ sec.addEventListener('click',e=>{const b=e.target.closest('[data-bk]');if(b){const p=pos();open(b.dataset.bk,p&&p.id===b.dataset.bk?p.ci:0);return;}
+  if(e.target.closest('#bkResume')){const p=pos();if(p&&byId(p.id))open(p.id,p.ci);else open(BK[0].id,0);}});
+ body.addEventListener('click',e=>{const nv=e.target.closest('[data-bknav]');if(nv&&!nv.disabled){B.ci=+nv.dataset.bknav;paint();return;}
+  const g=e.target.closest('[data-bkgo]');if(g){B.ci=+g.dataset.bkgo;paint();return;}
+  if(e.target.closest('#bkDone'))markDone(e);});
+ $('#bkClose').addEventListener('click',()=>close(false));
+ $('#bkToc').addEventListener('click',()=>{if(toc.hidden){renderToc();toc.hidden=false;body.scrollTop=0;}else toc.hidden=true;});
+ const setFs=d=>{B.fs=Math.min(26,Math.max(14,B.fs+d));LS.set('bkFs',B.fs);const pg=page.querySelector('.bkpage');if(pg)pg.style.setProperty('--bfs',B.fs+'px');};
+ $('#bkSm').addEventListener('click',()=>setFs(-1));$('#bkLg').addEventListener('click',()=>setFs(1));
+ window.addEventListener('popstate',()=>{if(!R.hidden)close(true);});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!R.hidden)close(false);});
+ renderShelf();window.MOSBooksOpen=open;
+})();
+
+/* =================== LIVE · حركة وحياة في كل حتة =================== */
+(function live(){
+ const RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+ /* 1) fireflies + bokeh canvas, follows the finger / mouse softly */
+ (function(){const c=$('#fx');if(!c||RM)return;const x=c.getContext('2d');let W,H,P=[],mx=-1,my=-1,run=true;const DPR=Math.min(2,devicePixelRatio||1);
+  const COL=()=>{const t=document.body.dataset.tod;return t==='fajr'?['255,143,177','243,185,77']:t==='day'?['120,195,255','94,224,176']:t==='sunset'?['255,106,61','243,185,77']:['243,185,77','120,195,255'];};
+  function size(){W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;const n=Math.min(34,Math.floor(innerWidth*innerHeight/26000)+10);P=[];for(let i=0;i<n;i++)P.push(mk(true));}
+  function mk(any){const big=Math.random()<.3;return{x:Math.random()*W,y:any?Math.random()*H:H+20,r:(big?18+Math.random()*26:1.2+Math.random()*2.2)*DPR,big,vx:(Math.random()-.5)*.25*DPR,vy:-(.08+Math.random()*.25)*DPR,a:Math.random()*6.28,s:.4+Math.random()*.8,ci:Math.random()<.5?0:1};}
+  function draw(t){if(!run)return;x.clearRect(0,0,W,H);const cols=COL();
+   for(const p of P){p.a+=.012*p.s;p.x+=p.vx+Math.sin(p.a)*.3*DPR;p.y+=p.vy;
+    if(mx>=0){const dx=mx*DPR-p.x,dy=my*DPR-p.y,d2=dx*dx+dy*dy,r=220*DPR;if(d2<r*r){const f=(1-Math.sqrt(d2)/r)*(p.big?.02:.05);p.x+=dx*f;p.y+=dy*f;}}
+    if(p.y<-40*DPR||p.x<-40*DPR||p.x>W+40*DPR)Object.assign(p,mk(false));
+    const al=(p.big?.05:.35)*(0.55+0.45*Math.sin(t/900*p.s+p.a));const col=cols[p.ci];
+    if(p.big){const g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,'rgba('+col+','+al.toFixed(3)+')');g.addColorStop(1,'rgba('+col+',0)');x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fill();}
+    else{x.shadowBlur=10*DPR;x.shadowColor='rgba('+col+',.9)';x.fillStyle='rgba('+col+','+al.toFixed(3)+')';x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fill();x.shadowBlur=0;}}
+   requestAnimationFrame(draw);}
+  size();addEventListener('resize',size);requestAnimationFrame(draw);
+  addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});addEventListener('pointerleave',()=>{mx=my=-1;});
+  document.addEventListener('visibilitychange',()=>{run=!document.hidden;if(run)requestAnimationFrame(draw);});})();
+ /* 2) scroll progress line */
+ (function(){const b=$('#scrollp');if(!b)return;const f=()=>{const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;b.style.width=(m>0?h.scrollTop/m*100:0)+'%';};addEventListener('scroll',f,{passive:true});f();})();
+ /* 3) page switch cascade + dock pill */
+ (function(){const d=$('#dock');if(!d)return;const pill=el('i','pill');d.prepend(pill);
+  function movePill(){const on=d.querySelector('button.on');if(!on){pill.style.width='0';return;}const r=on.getBoundingClientRect(),dr=d.getBoundingClientRect();pill.style.left=(r.left-dr.left)+'px';pill.style.width=r.width+'px';}
+  function cascade(){if(RM)return;let i=0;document.querySelectorAll('.grid .pnl').forEach(p=>{if(p.hidden)return;p.classList.remove('pgx');void p.offsetWidth;p.style.setProperty('--i',Math.min(i++,8));p.classList.add('pgx');});}
+  if(typeof goPage==='function'){const g=goPage;goPage=function(pg){const was=typeof PG!=='undefined'?PG:null;g.apply(this,arguments);requestAnimationFrame(movePill);if(was!==pg)cascade();};}
+  d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');});
+  addEventListener('resize',movePill);setTimeout(movePill,300);setTimeout(movePill,1200);
+  document.querySelectorAll('.ph .glyph').forEach((g,i)=>g.style.setProperty('--i',i%5));})();
+ /* 4) numbers that bump when they change (KPIs, the big percent) */
+ (function(){if(RM||!('MutationObserver' in window))return;const seen=new WeakMap();
+  const targets=()=>document.querySelectorAll('.kpi b,.pct,.cnt');
+  const mo=new MutationObserver(()=>{targets().forEach(n=>{const v=n.textContent;if(seen.has(n)&&seen.get(n)!==v){n.classList.remove('bump');void n.offsetWidth;n.classList.add('bump');}seen.set(n,v);});});
+  targets().forEach(n=>seen.set(n,n.textContent));mo.observe(document.body,{subtree:true,childList:true,characterData:true});})();
+ /* 5) full-day celebration halo on the ring */
+ (function(){if(typeof setRing!=='function')return;const s=setRing;setRing=function(id,r,frac){s.apply(this,arguments);if(id==='#rT'){const c=document.querySelector('.pnl.core');if(c)c.classList.toggle('full',frac>=.999);}};})();
+ /* 6) 3D tilt on hover (desktop only) */
+ (function(){if(RM||!matchMedia('(hover:hover)').matches)return;
+  document.addEventListener('pointermove',e=>{const p=e.target.closest&&e.target.closest('.grid .pnl');if(!p)return;p.classList.add('tilt');const r=p.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;p.style.transform='perspective(1100px) rotateX('+(-py*3).toFixed(2)+'deg) rotateY('+(px*3).toFixed(2)+'deg) translateY(-2px)';},{passive:true});
+  document.addEventListener('pointerout',e=>{const p=e.target.closest&&e.target.closest('.grid .pnl');if(p&&!p.contains(e.relatedTarget)){p.style.transform='';}},{passive:true});})();
+ /* 7) lock → unlock: zoom out, then the app breathes in */
+ (function(){const lk=$('#lock');if(!lk)return;const ring=lk.querySelector('.lkring');if(ring&&!ring.querySelector('.lkico')){ring.innerHTML='<span class="lkico">'+ring.textContent.trim()+'</span>';}
+  if(typeof unlock!=='function'||RM)return;const u=unlock;unlock=function(){const self=this,args=arguments;lk.classList.add('bye');
+   setTimeout(()=>{lk.classList.remove('bye');u.apply(self,args);const w=document.querySelector('.wrap');if(w){w.classList.remove('boot');void w.offsetWidth;w.classList.add('boot');}},420);};})();
 })();
 })();
 </script>
